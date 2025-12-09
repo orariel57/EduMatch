@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>EduMatch | הפרופיל שלי</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ===== Header – זהה לשאר העמודים ===== -->
+    <header>
+        <div class="top-bar">
+            <a href="index.html">
+                <img src="./image/logoEduMatch.png" alt="EduMatch" class="logo-img">
+            </a>
+
+            <nav>
+                <ul class="main-nav">
+                    <li><a href="index.html">דף הבית</a></li>
+                    <li><a href="teachers.html">חיפוש מורים</a></li>
+                    <li><a href="book.html">הזמנת שיעור</a></li>
+                    <li><a href="profile.html" class="active">הפרופיל שלי</a></li>
+                </ul>
+
+                <ul class="auth-nav">
+                    <li><a href="login.html">התחברות/הרשמה</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- כותרת עמוד -->
+        <section class="page-header">
+            <h1>הפרופיל שלי</h1>
+            <p>כאן תוכלו לראות ולעדכן את פרטי החשבון שלכם ולנהל את הפעילות באתר.</p>
+        </section>
+
+        <!-- ===== פריסת פרופיל: פרטי משתמש + פעילויות ===== -->
+        <section class="profile-layout">
+
+            <!-- צד ימין: פרטי משתמש -->
+            <aside class="profile-sidebar profile-card">
+                <h2>פרטי משתמש</h2>
+
+                <!-- כאן אפשר לדמיין שהתוכן מגיע מההרשמה / שרת -->
+                <div class="profile-user-info">
+                    <div class="profile-user-row">
+                        <span class="profile-label">שם:</span>
+                        <span class="profile-value" id="profile-name">אור אריאל</span>
+                    </div>
+
+                    <div class="profile-user-row">
+                        <span class="profile-label">אימייל:</span>
+                        <span class="profile-value" id="profile-email">example@mail.com</span>
+                    </div>
+
+                    <div class="profile-user-row">
+                        <span class="profile-label">עיר:</span>
+                        <span class="profile-value" id="profile-city">נס ציונה</span>
+                    </div>
+
+                    <div class="profile-user-row">
+                        <span class="profile-label">תחום:</span>
+                        <span class="profile-value" id="profile-field">תלמידת תיכון - מתמטיקה 5 יחידות</span>
+                    </div>
+
+                    <div class="profile-user-role">
+                        <span class="role-pill" id="profile-role-pill">תלמידה</span>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- צד שמאל: מועדפים + שיעורים -->
+            <section class="profile-main">
+
+                <!-- ===== המועדפים שלי (לתלמידים בלבד) ===== -->
+                <section class="profile-card" id="favorites-section" aria-labelledby="favorites-title">
+                    <div class="profile-section-header">
+                        <h2 id="favorites-title">המועדפים שלי</h2>
+                        <p class="profile-section-subtitle">מורים ששמרת – אפשר להזמין מהם שיעור נוסף או להסיר מהרשימה.
+                        </p>
+                    </div>
+
+                    <div class="favorites-list">
+                        <!-- מורה 1 -->
+                        <article class="favorite-teacher-card">
+                            <div class="favorite-main">
+                                <div>
+                                    <h3>רן לוי</h3>
+                                    <p class="favorite-meta">
+                                        מתמטיקה • תל אביב • 120 ש"ח / 60 דקות
+                                    </p>
+                                    <p class="favorite-mode">
+                                        💻 מקוון · 🏫 פרונטלי
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="favorite-actions">
+                                <button type="button" class="btn-secondary btn-remove-favorite">
+                                    הסר מהמועדפים
+                                </button>
+                                <a href="book.html" class="btn-primary">
+                                    הזמנת שיעור נוסף
+                                </a>
+                            </div>
+                        </article>
+
+                        <!-- מורה 2 -->
+                        <article class="favorite-teacher-card">
+                            <div class="favorite-main">
+                                <div>
+                                    <h3>סיון כהן</h3>
+                                    <p class="favorite-meta">
+                                        אנגלית • רחובות • 100 ש"ח / 45 דקות
+                                    </p>
+                                    <p class="favorite-mode">
+                                        💻 מקוון
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="favorite-actions">
+                                <button type="button" class="btn-secondary btn-remove-favorite">
+                                    הסר מהמועדפים
+                                </button>
+                                <a href="book.html" class="btn-primary">
+                                    הזמנת שיעור נוסף
+                                </a>
+                            </div>
+                        </article>
+                    </div>
+
+                    <!-- מוצג אם אין בכלל מועדפים (JS יוכל להחליף) -->
+                    <p class="empty-state" id="favorites-empty" style="display:none;">
+                        עדיין לא שמרת מורים למועדפים.
+                    </p>
+                </section>
+
+                <!-- ===== היסטוריית שיעורים ===== -->
+                <section class="profile-card" aria-labelledby="history-title">
+                    <div class="profile-section-header">
+                        <h2 id="history-title">היסטוריית שיעורים</h2>
+                        <p class="profile-section-subtitle">כל השיעורים שכבר התקיימו.</p>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table class="lessons-table">
+                            <thead>
+                                <tr>
+                                    <th>תאריך</th>
+                                    <th>שעה</th>
+                                    <th>שם הצד השני</th>
+                                    <th>סטטוס</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>03.12.2025</td>
+                                    <td>18:00</td>
+                                    <td>רן לוי (מורה)</td>
+                                    <td>התקיים</td>
+                                </tr>
+                                <tr>
+                                    <td>27.11.2025</td>
+                                    <td>20:30</td>
+                                    <td>סיון כהן (מורה)</td>
+                                    <td>התקיים</td>
+                                </tr>
+                                <tr>
+                                    <td>15.11.2025</td>
+                                    <td>17:00</td>
+                                    <td>טל בר (מורה)</td>
+                                    <td>בוטל ע"י המורה</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- ===== שיעורים עתידיים ===== -->
+                <section class="profile-card" aria-labelledby="upcoming-title">
+                    <div class="profile-section-header">
+                        <h2 id="upcoming-title">שיעורים עתידיים</h2>
+                        <p class="profile-section-subtitle">שיעורים שאושרו וטרם התקיימו.</p>
+                    </div>
+
+                    <div class="upcoming-list" id="upcoming-list">
+                        <!-- שיעור 1 -->
+                        <article class="upcoming-lesson">
+                            <div class="upcoming-main">
+                                <h3>שיעור עם רן לוי</h3>
+                                <p class="upcoming-meta">
+                                    10.12.2025 • 18:00 • מתמטיקה • מקוון
+                                </p>
+                            </div>
+                            <div class="upcoming-actions">
+                                <button type="button" class="btn-secondary btn-cancel-lesson">
+                                    בטל שיעור
+                                </button>
+                            </div>
+                        </article>
+
+                        <!-- שיעור 2 -->
+                        <article class="upcoming-lesson">
+                            <div class="upcoming-main">
+                                <h3>שיעור עם סיון כהן</h3>
+                                <p class="upcoming-meta">
+                                    14.12.2025 • 20:00 • אנגלית • פרונטלי (רחובות)
+                                </p>
+                            </div>
+                            <div class="upcoming-actions">
+                                <button type="button" class="btn-secondary btn-cancel-lesson">
+                                    בטל שיעור
+                                </button>
+                            </div>
+                        </article>
+                    </div>
+
+                    <p class="empty-state" id="upcoming-empty" style="display:none;">
+                        אין כרגע שיעורים עתידיים.
+                    </p>
+                </section>
+
+            </section>
+
+        </section>
+    </main>
+
+    <!-- ===== FOOTER – זהה לשאר העמודים ===== -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="privacy.html">מדיניות פרטיות</a>
+                <a href="terms.html">תנאי שימוש</a>
+                <p>© 2025 EduMatch כל הזכויות שמורות.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== JS לעמוד הפרופיל ===== -->
+    <script>
+        // סימולציה: תפקיד משתמש – 'student' או 'teacher'
+        const currentUserRole = 'student'; // אפשר לשנות ל-'teacher' כדי לראות איך המועדפים נעלמים
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // ===== הצגת/הסתרת "המועדפים שלי" לפי תפקיד =====
+            const favoritesSection = document.getElementById('favorites-section');
+            const rolePill = document.getElementById('profile-role-pill');
+
+            if (currentUserRole === 'teacher') {
+                favoritesSection.style.display = 'none';
+                if (rolePill) {
+                    rolePill.textContent = 'מורה';
+                }
+            } else {
+                favoritesSection.style.display = 'block';
+                if (rolePill) {
+                    rolePill.textContent = 'תלמיד/ה';
+                }
+            }
+
+            // ===== הסרת מורה מהמועדפים =====
+            const favoritesEmpty = document.getElementById('favorites-empty');
+            const favoriteCards = document.querySelectorAll('.favorite-teacher-card');
+
+            favoriteCards.forEach(card => {
+                const removeBtn = card.querySelector('.btn-remove-favorite');
+                removeBtn.addEventListener('click', () => {
+                    const teacherName = card.querySelector('h3')?.textContent || 'המורה';
+                    const confirmRemove = confirm(`האם להסיר את ${teacherName} מהמועדפים?`);
+                    if (confirmRemove) {
+                        card.remove();
+                        checkIfFavoritesEmpty();
+                    }
+                });
+            });
+
+            function checkIfFavoritesEmpty() {
+                const remaining = document.querySelectorAll('.favorite-teacher-card');
+                if (remaining.length === 0) {
+                    favoritesEmpty.style.display = 'block';
+                }
+            }
+
+            // ===== ביטול שיעור עתידי =====
+            const upcomingList = document.getElementById('upcoming-list');
+            const upcomingEmpty = document.getElementById('upcoming-empty');
+
+            if (upcomingList) {
+                upcomingList.addEventListener('click', (event) => {
+                    if (event.target.classList.contains('btn-cancel-lesson')) {
+                        const lessonCard = event.target.closest('.upcoming-lesson');
+                        const title = lessonCard.querySelector('h3')?.textContent || 'השיעור';
+
+                        const confirmCancel = confirm(
+                            `האם בטוח שתרצי לבטל את "${title}"?\n` +
+                            `ייתכן שהביטול כפוף למדיניות ביטולים של המורה.`
+                        );
+
+                        if (confirmCancel) {
+                            lessonCard.remove();
+                            const remainingLessons = upcomingList.querySelectorAll('.upcoming-lesson');
+                            if (remainingLessons.length === 0) {
+                                upcomingEmpty.style.display = 'block';
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+
+</body>
+
+</html>

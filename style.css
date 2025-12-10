@@ -413,6 +413,12 @@ footer {
     .benefits-grid {
         grid-template-columns: 1fr;
     }
+    @media (max-width: 600px) {
+    .logo-img {
+        height: 80px;
+    }
+}
+
 
     .top-bar {
         flex-direction: column;

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>EduMatch | הפרופיל שלי</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ===== Header – זהה לשאר העמודים ===== -->
+    <header>
+        <div class="top-bar">
+            <a href="index.html">
+                <img src="./image/logoEduMatch.png" alt="EduMatch" class="logo-img">
+            </a>
+
+            <nav>
+                <ul class="main-nav">
+                    <li><a href="index.html">דף הבית</a></li>
+                    <li><a href="teachers.html">חיפוש מורים</a></li>
+                    <li><a href="profile.html" class="active">הפרופיל שלי</a></li>
+                </ul>
+
+                <ul class="auth-nav">
+                    <li><a href="login.html">התחברות/הרשמה</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- כותרת עמוד -->
+        <section class="page-header">
+            <h1>הפרופיל שלי</h1>
+            <p>כאן תוכלו לראות ולעדכן את פרטי החשבון שלכם ולנהל את הפעילות באתר.</p>
+        </section>
+
+        <!-- ===== הודעת מערכת (אם אין משתמש מחובר) ===== -->
+        <section class="profile-card" id="no-user-card" style="display:none; max-width: 900px; margin: 0 auto 18px;">
+            <h2>לא נמצאה התחברות</h2>
+            <p>נראה שלא התחברת עדיין. כדי לראות את הפרופיל, עברי לעמוד ההתחברות/הרשמה.</p>
+            <a href="login.html" class="btn-primary" style="display:inline-block; margin-top:10px;">להתחברות/הרשמה</a>
+        </section>
+
+        <!-- ===== פריסת פרופיל: פרטי משתמש + פעילויות ===== -->
+        <section class="profile-layout" id="profile-layout" style="display:none;">
+
+            <!-- צד ימין: פרטי משתמש -->
+            <aside class="profile-sidebar profile-card">
+                <h2>פרטי משתמש</h2>
+
+                <div class="profile-user-info">
+                    <div class="profile-user-row">
+                        <span class="profile-label">שם:</span>
+                        <span class="profile-value" id="profile-name">—</span>
+                    </div>
+
+                    <div class="profile-user-row">
+                        <span class="profile-label">אימייל:</span>
+                        <span class="profile-value" id="profile-email">—</span>
+                    </div>
+
+                    <div class="profile-user-row">
+                        <span class="profile-label">עיר:</span>
+                        <span class="profile-value" id="profile-city">—</span>
+                    </div>
+
+                    <div class="profile-user-row">
+                        <span class="profile-label">תחום:</span>
+                        <span class="profile-value" id="profile-field">—</span>
+                    </div>
+
+                    <div class="profile-user-role">
+                        <span class="role-pill" id="profile-role-pill">—</span>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- צד שמאל: מועדפים + שיעורים -->
+            <section class="profile-main">
+
+                <!-- ===== המועדפים שלי (לתלמידים בלבד) ===== -->
+                <section class="profile-card" id="favorites-section" aria-labelledby="favorites-title">
+                    <div class="profile-section-header">
+                        <h2 id="favorites-title">המועדפים שלי</h2>
+                        <p class="profile-section-subtitle">
+                            מורים ששמרת – אפשר להזמין מהם שיעור נוסף או להסיר מהרשימה.
+                        </p>
+                    </div>
+
+                    <!-- ריק – ימולא בעתיד מ-localStorage אם תחליטי -->
+                    <div class="favorites-list" id="favorites-list"></div>
+
+                    <p class="empty-state" id="favorites-empty" style="display:block;">
+                        עדיין לא שמרת מורים למועדפים.
+                    </p>
+                </section>
+
+                <!-- ===== היסטוריית שיעורים ===== -->
+                <section class="profile-card" aria-labelledby="history-title">
+                    <div class="profile-section-header">
+                        <h2 id="history-title">היסטוריית שיעורים</h2>
+                        <p class="profile-section-subtitle">כאן יופיעו שיעורים שכבר התקיימו (בשלב זה אין נתונים).</p>
+                    </div>
+
+                    <p class="empty-state" id="history-empty" style="display:block;">
+                        עדיין אין שיעורים שהתקיימו.
+                    </p>
+                </section>
+
+                <!-- ===== שיעורים עתידיים ===== -->
+                <section class="profile-card" aria-labelledby="upcoming-title">
+                    <div class="profile-section-header">
+                        <h2 id="upcoming-title">שיעורים עתידיים</h2>
+                        <p class="profile-section-subtitle">כאן יופיעו שיעורים עתידיים שאושרו (בשלב זה אין נתונים).</p>
+                    </div>
+
+                    <div class="upcoming-list" id="upcoming-list"></div>
+
+                    <p class="empty-state" id="upcoming-empty" style="display:block;">
+                        אין כרגע שיעורים עתידיים.
+                    </p>
+                </section>
+
+            </section>
+        </section>
+    </main>
+
+    <!-- ===== FOOTER – זהה לשאר העמודים ===== -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="privacy.html">מדיניות פרטיות</a>
+                <a href="terms.html">תנאי שימוש</a>
+                <p>© 2025 EduMatch כל הזכויות שמורות.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== JS ===== -->
+    <script src="js/storage.js"></script>
+    <script src="js/profile.js"></script>
+
+
+</body>
+
+</html>

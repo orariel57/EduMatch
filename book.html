@@ -2,406 +2,569 @@
 <html lang="he" dir="rtl">
 
 <head>
-    <meta charset="UTF-8">
-    <title>EduMatch | הזמנת שיעור</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>EduMatch | הזמנת שיעור</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
 </head>
+
+<script src="js/nav.js"></script>
 
 <body>
 
-    <!-- ===== Header – זהה לשאר העמודים ===== -->
-    <header>
-        <div class="top-bar">
-            <a href="index.html">
-                <img src="./image/logoEduMatch.png" alt="EduMatch" class="logo-img">
-            </a>
+  <header>
+    <div class="top-bar">
+      <a href="index.html">
+        <img src="./image/logoEduMatch.png" alt="EduMatch" class="logo-img">
+      </a>
+      <button class="nav-toggle" aria-label="פתח תפריט" aria-expanded="false">☰</button>
 
-            <nav>
-                <ul class="main-nav">
-                    <li><a href="index.html">דף הבית</a></li>
-                    <li><a href="teachers.html">חיפוש מורים</a></li>
-                    <li><a href="profile.html">הפרופיל שלי</a></li>
-                </ul>
+      <nav>
+        <ul class="main-nav">
+          <li><a href="index.html">דף הבית</a></li>
+          <li><a href="teachers.html">חיפוש מורים</a></li>
+          <li><a href="profile.html">הפרופיל שלי</a></li>
+        </ul>
 
-                <ul class="auth-nav">
-                    <li><a href="login.html">התחברות/הרשמה</a></li>
-                </ul>
-            </nav>
+        <ul class="auth-nav">
+          <li><a href="login.html">התחברות/הרשמה</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="page-header">
+      <h1>הזמנת שיעור</h1>
+      <p>בחרי תאריך ושעה פנויים אצל המורה, ואשרי את ההזמנה.</p>
+    </section>
+
+    <section class="booking-card" id="booking-error" style="display:none;">
+      <h2>לא נמצא מורה להזמנה</h2>
+      <p class="auth-card-desc">חזרי לעמוד חיפוש המורים ובחרי מורה דרך הכפתור "בדוק זמינות".</p>
+      <a class="btn-primary" href="teachers.html">חזרה לחיפוש מורים</a>
+    </section>
+
+    <section class="booking-card" id="booking-no-availability" style="display:none;">
+      <h2>המורה עדיין לא הגדיר/ה זמינות</h2>
+      <p class="auth-card-desc">בינתיים אי אפשר לבחור תאריך ושעה. בקשי מהמורה לעדכן זמינות בפרופיל.</p>
+      <a class="btn-primary" href="teachers.html">חזרה לחיפוש מורים</a>
+    </section>
+
+    <section class="booking-layout" id="booking-layout" style="display:none;">
+
+      <section class="booking-card booking-teacher-card" aria-labelledby="teacher-card-title">
+        <h2 id="teacher-card-title">פרטי המורה</h2>
+
+        <div class="booking-teacher-header">
+          <div>
+            <h3 class="booking-teacher-name" id="teacher-name">—</h3>
+            <div class="booking-teacher-meta-line">
+              <span class="booking-teacher-subject" id="teacher-subject">—</span>
+              <span class="booking-separator">•</span>
+              <span class="booking-teacher-city" id="teacher-city">—</span>
+            </div>
+          </div>
         </div>
-    </header>
 
-    <main>
+        <div class="booking-teacher-extra">
+          <div class="booking-lesson-modes" id="teacher-modes"></div>
 
-        <!-- כותרת עמוד -->
-        <section class="page-header">
-            <h1>הזמנת שיעור</h1>
-            <p>בחרי תאריך ושעה פנויים אצל המורה, ואשרי את ההזמנה.</p>
+          <p class="booking-teacher-price">
+            מחיר לשיעור: <strong id="teacher-price">—</strong> /
+            <span id="lesson-duration-label">— דקות</span>
+          </p>
+        </div>
+      </section>
+
+      <div class="booking-main-columns">
+
+        <section class="booking-card booking-calendar-card" aria-labelledby="calendar-title">
+          <h2 id="calendar-title">בחרי תאריך</h2>
+
+          <div class="calendar-header">
+            <button type="button" class="calendar-nav-btn" id="prev-month" aria-label="חודש קודם">‹</button>
+
+            <div class="calendar-current-month">
+              <span id="calendar-month-label"></span>
+            </div>
+
+            <button type="button" class="calendar-nav-btn" id="next-month" aria-label="חודש הבא">›</button>
+          </div>
+
+          <div class="calendar-grid calendar-grid-names">
+            <div class="calendar-day-name">א'</div>
+            <div class="calendar-day-name">ב'</div>
+            <div class="calendar-day-name">ג'</div>
+            <div class="calendar-day-name">ד'</div>
+            <div class="calendar-day-name">ה'</div>
+            <div class="calendar-day-name">ו'</div>
+            <div class="calendar-day-name">ש'</div>
+          </div>
+
+          <div id="calendar-days" class="calendar-grid calendar-grid-days"></div>
         </section>
 
-        <!-- ===== פריסת העמוד: כרטיס מורה + יומן + שעות + סיכום ===== -->
-        <section class="booking-layout">
-
-            <!-- כרטיס מורה מקוצר -->
-            <section class="booking-card booking-teacher-card" aria-labelledby="teacher-card-title">
-                <h2 id="teacher-card-title">פרטי המורה</h2>
-
-                <div class="booking-teacher-header">
-                    <div>
-                        <h3 class="booking-teacher-name">רן לוי</h3>
-                        <div class="booking-teacher-meta-line">
-                            <span class="booking-teacher-subject">מתמטיקה</span>
-                            <span class="booking-separator">•</span>
-                            <span class="booking-teacher-city">תל אביב</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="booking-teacher-extra">
-                    <div class="booking-lesson-modes">
-                        <span class="lesson-mode-tag" data-mode="online">💻 מקוון</span>
-                        <span class="lesson-mode-tag" data-mode="in-person">🏫 פרונטלי</span>
-                    </div>
-
-                    <p class="booking-teacher-price">
-                        מחיר לשיעור: <strong>120 ש"ח</strong> / <span id="lesson-duration-label">60 דקות</span>
-                    </p>
-                </div>
-            </section>
-
-            <!-- צד שמאל: יומן + שעות + סיכום -->
-            <div class="booking-main-columns">
-
-                <!-- יומן תאריכים -->
-                <section class="booking-card booking-calendar-card" aria-labelledby="calendar-title">
-                    <h2 id="calendar-title">בחרי תאריך</h2>
-
-                    <div class="calendar-header">
-                        <button type="button" class="calendar-nav-btn" id="prev-month" aria-label="חודש קודם">
-                            ‹
-                        </button>
-
-                        <div class="calendar-current-month">
-                            <span id="calendar-month-label"></span>
-                        </div>
-
-                        <button type="button" class="calendar-nav-btn" id="next-month" aria-label="חודש הבא">
-                            ›
-                        </button>
-                    </div>
-
-                    <!-- שמות הימים -->
-                    <div class="calendar-grid calendar-grid-names">
-                        <div class="calendar-day-name">א'</div>
-                        <div class="calendar-day-name">ב'</div>
-                        <div class="calendar-day-name">ג'</div>
-                        <div class="calendar-day-name">ד'</div>
-                        <div class="calendar-day-name">ה'</div>
-                        <div class="calendar-day-name">ו'</div>
-                        <div class="calendar-day-name">ש'</div>
-                    </div>
-
-                    <!-- הימים עצמם נבנים ב-JS -->
-                    <div id="calendar-days" class="calendar-grid calendar-grid-days"></div>
-                </section>
-
-                <!-- רשימת שעות זמינות -->
-                <section class="booking-card booking-times-card" aria-labelledby="times-title">
-                    <h2 id="times-title">בחרי שעה</h2>
-                    <p class="booking-times-hint">בחרי קודם תאריך ביומן כדי לראות שעות זמינות.</p>
-
-                    <div id="time-slots" class="time-slots">
-                        <!-- נבנה ב-JS לפי היום שנבחר -->
-                    </div>
-                </section>
-
-                <!-- סיכום הזמנה -->
-                <section class="booking-card booking-summary-card" aria-labelledby="summary-title">
-                    <h2 id="summary-title">סיכום הזמנה</h2>
-
-                    <div class="booking-summary-row">
-                        <span class="summary-label">תאריך נבחר:</span>
-                        <span class="summary-value" id="summary-date">לא נבחר</span>
-                    </div>
-
-                    <div class="booking-summary-row">
-                        <span class="summary-label">שעה נבחרת:</span>
-                        <span class="summary-value" id="summary-time">לא נבחר</span>
-                    </div>
-
-                    <div class="booking-summary-row">
-                        <span class="summary-label">אופן השיעור:</span>
-                        <div class="summary-value">
-                            <!-- שניהם נתמכים אצל המורה – בחירה ביניהם -->
-                            <label class="summary-radio">
-                                <input type="radio" name="summary-lesson-mode" value="online" checked>
-                                מקוון
-                            </label>
-                            <label class="summary-radio">
-                                <input type="radio" name="summary-lesson-mode" value="in-person">
-                                פרונטלי
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="booking-summary-row">
-                        <span class="summary-label">משך שיעור:</span>
-                        <span class="summary-value" id="summary-duration">60 דקות</span>
-                    </div>
-
-                    <div class="booking-summary-row">
-                        <span class="summary-label">מחיר השיעור:</span>
-                        <span class="summary-value" id="summary-price">120 ש"ח</span>
-                    </div>
-
-                    <div class="booking-summary-actions">
-                        <button type="button" class="btn-primary" id="confirm-booking" disabled>
-                            אישור הזמנה
-                        </button>
-                        <a href="teachers.html" class="btn-secondary">
-                            ביטול
-                        </a>
-                    </div>
-                </section>
-
-            </div>
+        <section class="booking-card booking-times-card" aria-labelledby="times-title">
+          <h2 id="times-title">בחרי שעה</h2>
+          <p class="booking-times-hint" id="times-hint">בחרי קודם תאריך ביומן כדי לראות שעות זמינות.</p>
+          <div id="time-slots" class="time-slots"></div>
         </section>
-    </main>
 
-    <!-- ===== FOOTER – זהה לשאר העמודים ===== -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-links">
-                <a href="privacy.html">מדיניות פרטיות</a>
-                <a href="terms.html">תנאי שימוש</a>
-                <p>© 2025 EduMatch כל הזכויות שמורות.</p>
-            </div>
-        </div>
-    </footer>
+        <section class="booking-card booking-summary-card" aria-labelledby="summary-title">
+          <h2 id="summary-title">סיכום הזמנה</h2>
 
-    <!-- ===== JS לעמוד ההזמנה ===== -->
-    <script>
-        // סימולציה: האם המשתמש מחובר
-        // אפשר להחליף ל-true כדי לבדוק את זרימת "הבקשה נשלחה..."
-        const isUserLoggedIn = false;
+          <div class="booking-summary-row">
+            <span class="summary-label">תאריך נבחר:</span>
+            <span class="summary-value" id="summary-date">לא נבחר</span>
+          </div>
 
-        // נתוני המורה לדוגמה (יכולים להיות דינמיים בעתיד)
-        const lessonDurationMinutes = 60;
-        const lessonPriceShekels = 120;
+          <div class="booking-summary-row">
+            <span class="summary-label">שעה נבחרת:</span>
+            <span class="summary-value" id="summary-time">לא נבחר</span>
+          </div>
 
-        // זמני שיעור לדוגמה – נטענים לכל תאריך זמין
-        const baseTimeSlots = ["16:00", "17:00", "18:30", "20:00"];
+          <div class="booking-summary-row">
+            <span class="summary-label">אופן השיעור:</span>
+            <div class="summary-value" id="summary-mode-box"></div>
+          </div>
 
-        let currentYear, currentMonth;   // החודש שמוצג ביומן
-        let selectedDate = null;
-        let selectedTime = null;
+          <div class="booking-summary-row">
+            <span class="summary-label">משך שיעור:</span>
+            <span class="summary-value" id="summary-duration">—</span>
+          </div>
 
-        const monthNamesHebrew = [
-            "ינואר", "פברואר", "מרץ", "אפריל", "מאי", "יוני",
-            "יולי", "אוגוסט", "ספטמבר", "אוקטובר", "נובמבר", "דצמבר"
-        ];
+          <div class="booking-summary-row">
+            <span class="summary-label">מחיר השיעור:</span>
+            <span class="summary-value" id="summary-price">—</span>
+          </div>
 
-        const calendarMonthLabel = document.getElementById("calendar-month-label");
-        const calendarDaysContainer = document.getElementById("calendar-days");
-        const timeSlotsContainer = document.getElementById("time-slots");
+          <div class="booking-summary-actions">
+            <button type="button" class="btn-primary" id="confirm-booking" disabled>אישור הזמנה</button>
+            <a href="teachers.html" class="btn-secondary">ביטול</a>
+          </div>
+        </section>
 
-        const summaryDateEl = document.getElementById("summary-date");
-        const summaryTimeEl = document.getElementById("summary-time");
-        const summaryDurationEl = document.getElementById("summary-duration");
-        const summaryPriceEl = document.getElementById("summary-price");
-        const confirmBtn = document.getElementById("confirm-booking");
+      </div>
+    </section>
+  </main>
 
-        // ===== אתחול ראשוני של היומן =====
-        (function initCalendar() {
-            const today = new Date();
-            currentYear = today.getFullYear();
-            currentMonth = today.getMonth();
+  <footer>
+    <div class="footer-content">
+      <div class="footer-links">
+        <a href="privacy.html">מדיניות פרטיות</a>
+        <a href="terms.html">תנאי שימוש</a>
+        <p>© 2025 EduMatch כל הזכויות שמורות.</p>
+      </div>
+    </div>
+  </footer>
 
-            summaryDurationEl.textContent = lessonDurationMinutes + " דקות";
-            summaryPriceEl.textContent = lessonPriceShekels + " ש\"ח";
+  <script>
+    function normalize(str) { return (str || "").trim().toLowerCase(); }
 
-            renderCalendar(currentYear, currentMonth);
+    function getQueryParam(name) {
+      const url = new URL(window.location.href);
+      return url.searchParams.get(name);
+    }
 
-            document.getElementById("prev-month").addEventListener("click", () => {
-                changeMonth(-1);
-            });
+    function buildModeTags(lessonMode) {
+      const box = document.getElementById("teacher-modes");
+      box.innerHTML = "";
 
-            document.getElementById("next-month").addEventListener("click", () => {
-                changeMonth(1);
-            });
-        })();
+      const addTag = (mode, label) => {
+        const span = document.createElement("span");
+        span.className = "lesson-mode-tag";
+        span.dataset.mode = mode;
+        span.textContent = label;
+        box.appendChild(span);
+      };
 
-        function changeMonth(offset) {
-            currentMonth += offset;
-            if (currentMonth < 0) {
-                currentMonth = 11;
-                currentYear--;
-            } else if (currentMonth > 11) {
-                currentMonth = 0;
-                currentYear++;
-            }
+      if (lessonMode === "online") addTag("online", "💻 מקוון");
+      else if (lessonMode === "in-person") addTag("in-person", "🏫 פרונטלי");
+      else {
+        addTag("online", "💻 מקוון");
+        addTag("in-person", "🏫 פרונטלי");
+      }
+    }
 
-            selectedDate = null;
-            selectedTime = null;
-            updateSummary();
-            updateConfirmButtonState();
-            timeSlotsContainer.innerHTML = "";
-            document.querySelector(".booking-times-hint").textContent =
-                "בחרי קודם תאריך ביומן כדי לראות שעות זמינות.";
+    function buildModeRadios(lessonMode) {
+      const box = document.getElementById("summary-mode-box");
+      box.innerHTML = "";
 
-            renderCalendar(currentYear, currentMonth);
+      const mk = (value, label, checked) => {
+        const lab = document.createElement("label");
+        lab.className = "summary-radio";
+        lab.innerHTML = `<input type="radio" name="summary-lesson-mode" value="${value}" ${checked ? "checked" : ""}> ${label}`;
+        box.appendChild(lab);
+      };
+
+      if (lessonMode === "online") mk("online", "מקוון", true);
+      else if (lessonMode === "in-person") mk("in-person", "פרונטלי", true);
+      else {
+        mk("online", "מקוון", true);
+        mk("in-person", "פרונטלי", false);
+      }
+    }
+
+    // ===== דמו מורה + דמו זמינות (במקום DB) =====
+    const DEMO_TEACHERS = [
+      {
+        fullName: "דנה לוי",
+        email: "dana.levi@example.com",
+        city: "באר שבע",
+        lessonMode: "online",
+        duration: 60,
+        subjects: [
+          { subject: "מתמטיקה", price: 120 },
+          { subject: "אנגלית", price: 110 }
+        ],
+        availabilityWeekly: {
+          sun: { enabled: true, start: "16:00", end: "20:00" },
+          mon: { enabled: true, start: "10:00", end: "14:00" },
+          tue: { enabled: false, start: "", end: "" },
+          wed: { enabled: true, start: "12:00", end: "18:00" },
+          thu: { enabled: true, start: "09:00", end: "13:00" },
+          fri: { enabled: false, start: "", end: "" },
+          sat: { enabled: false, start: "", end: "" }
+        }
+      },
+      {
+        fullName: "יואב כהן",
+        email: "yoav.cohen@example.com",
+        city: "תל אביב",
+        lessonMode: "in-person",
+        duration: 45,
+        subjects: [
+          { subject: "פייתון", price: 180 },
+          { subject: "SQL", price: 160 }
+        ],
+        availabilityWeekly: {
+          sun: { enabled: true, start: "17:00", end: "21:00" },
+          mon: { enabled: false, start: "", end: "" },
+          tue: { enabled: true, start: "09:00", end: "12:00" },
+          wed: { enabled: true, start: "15:00", end: "19:00" },
+          thu: { enabled: false, start: "", end: "" },
+          fri: { enabled: false, start: "", end: "" },
+          sat: { enabled: false, start: "", end: "" }
+        }
+      }
+    ];
+
+    // ===== מיפוי Date.getDay() => מפתח availability =====
+    const dayKeyByGetDay = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+
+    function hasAnyAvailability(av) {
+      if (!av) return false;
+      return Object.values(av).some(v => v && v.enabled);
+    }
+
+    function timeToMinutes(t) {
+      const [h, m] = (t || "00:00").split(":").map(Number);
+      return (h * 60) + (m || 0);
+    }
+
+    function minutesToTime(mins) {
+      const h = Math.floor(mins / 60);
+      const m = mins % 60;
+      return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+    }
+
+    function buildSlotsForDay(availabilityDay, durationMinutes) {
+      if (!availabilityDay?.enabled) return [];
+      const start = timeToMinutes(availabilityDay.start);
+      const end = timeToMinutes(availabilityDay.end);
+      const dur = Math.max(1, Number(durationMinutes) || 60);
+
+      if (!availabilityDay.start || !availabilityDay.end) return [];
+      if (start >= end) return [];
+
+      const slots = [];
+      for (let t = start; t + dur <= end; t += dur) {
+        slots.push(minutesToTime(t));
+      }
+      return slots;
+    }
+
+    // ===== State =====
+    let currentYear, currentMonth;
+    let selectedDate = null;
+    let selectedTime = null;
+
+    const monthNamesHebrew = [
+      "ינואר", "פברואר", "מרץ", "אפריל", "מאי", "יוני",
+      "יולי", "אוגוסט", "ספטמבר", "אוקטובר", "נובמבר", "דצמבר"
+    ];
+
+    // DOM
+    const layoutEl = document.getElementById("booking-layout");
+    const errorEl = document.getElementById("booking-error");
+    const noAvailEl = document.getElementById("booking-no-availability");
+
+    const teacherNameEl = document.getElementById("teacher-name");
+    const teacherCityEl = document.getElementById("teacher-city");
+    const teacherSubjectEl = document.getElementById("teacher-subject");
+    const teacherPriceEl = document.getElementById("teacher-price");
+    const durationLabelEl = document.getElementById("lesson-duration-label");
+
+    const calendarMonthLabel = document.getElementById("calendar-month-label");
+    const calendarDaysContainer = document.getElementById("calendar-days");
+    const timeSlotsContainer = document.getElementById("time-slots");
+    const timesHintEl = document.getElementById("times-hint");
+
+    const summaryDateEl = document.getElementById("summary-date");
+    const summaryTimeEl = document.getElementById("summary-time");
+    const summaryDurationEl = document.getElementById("summary-duration");
+    const summaryPriceEl = document.getElementById("summary-price");
+    const confirmBtn = document.getElementById("confirm-booking");
+
+    // ===== 1) טוענים מורה מה-URL (דמו) =====
+    const teacherEmail = getQueryParam("teacher"); // אופציונלי
+    const requestedSubject = getQueryParam("subject"); // אופציונלי
+
+    // אם לא מגיע אימייל — ניקח מורה ראשון כדמו (כדי שהעמוד תמיד יעבוד בהגשה)
+    const teacher =
+      (teacherEmail
+        ? DEMO_TEACHERS.find(t => normalize(t.email) === normalize(teacherEmail))
+        : null) || DEMO_TEACHERS[0];
+
+    const teacherWeeklyAvailability = teacher?.availabilityWeekly || {};
+
+    if (!teacher) {
+      errorEl.style.display = "block";
+    } else {
+      if (!hasAnyAvailability(teacherWeeklyAvailability)) {
+        noAvailEl.style.display = "block";
+      } else {
+        layoutEl.style.display = "block";
+
+        // בחירת מקצוע להצגה (subject מה-URL אם קיים, אחרת הראשון)
+        const subjects = teacher.subjects || [];
+        let chosen = null;
+
+        if (requestedSubject) {
+          chosen = subjects.find(s => normalize(s.subject) === normalize(requestedSubject))
+            || subjects.find(s => normalize(s.subject).includes(normalize(requestedSubject)))
+            || null;
+        }
+        if (!chosen) chosen = subjects[0] || { subject: "לא צוין", price: "—" };
+
+        const duration = Number(teacher.duration || 60);
+
+        teacherNameEl.textContent = teacher.fullName || "—";
+        teacherCityEl.textContent = teacher.city || "לא צוין";
+        teacherSubjectEl.textContent = chosen.subject || "לא צוין";
+        teacherPriceEl.textContent = `${chosen.price ?? "—"} ש"ח`;
+        durationLabelEl.textContent = `${duration} דקות`;
+
+        summaryDurationEl.textContent = `${duration} דקות`;
+        summaryPriceEl.textContent = `${chosen.price ?? "—"} ש"ח`;
+
+        buildModeTags(teacher.lessonMode);
+        buildModeRadios(teacher.lessonMode);
+        // ✅ עדכון תצוגה בסיכום לפי אופן השיעור שנבחר (דמו)
+        const summaryModeBox = document.getElementById("summary-mode-box");
+
+        // יוצרים שורת טקסט קטנה מתחת לרדיו
+        const modeChosenLine = document.createElement("div");
+        modeChosenLine.id = "mode-chosen-line";
+        modeChosenLine.style.marginTop = "8px";
+        modeChosenLine.style.fontSize = "14px";
+        modeChosenLine.style.opacity = "0.9";
+
+        function updateModeChosenLine() {
+          const picked = document.querySelector('input[name="summary-lesson-mode"]:checked')?.value || "online";
+          modeChosenLine.textContent = `נבחר: ${picked === "in-person" ? "פרונטלי" : "מקוון"}`;
         }
 
-        function renderCalendar(year, month) {
-            calendarDaysContainer.innerHTML = "";
+        // מוסיפים למסך רק פעם אחת
+        if (summaryModeBox && !document.getElementById("mode-chosen-line")) {
+          summaryModeBox.appendChild(modeChosenLine);
+          updateModeChosenLine();
 
-            const firstDayOfMonth = new Date(year, month, 1);
-            const daysInMonth = new Date(year, month + 1, 0).getDate();
-            const startDayIndex = firstDayOfMonth.getDay(); // 0=א', 6=ש'
-
-            calendarMonthLabel.textContent = monthNamesHebrew[month] + " " + year;
-
-            // רווחים לפני היום הראשון
-            for (let i = 0; i < startDayIndex; i++) {
-                const blankCell = document.createElement("div");
-                blankCell.className = "calendar-day calendar-day--empty";
-                calendarDaysContainer.appendChild(blankCell);
-            }
-
-            const today = new Date();
-            const isSameMonthAsToday = (year === today.getFullYear() && month === today.getMonth());
-
-            for (let day = 1; day <= daysInMonth; day++) {
-                const date = new Date(year, month, day);
-                const dayOfWeek = date.getDay(); // 0=א',...,6=ש'
-
-                const dayCell = document.createElement("button");
-                dayCell.type = "button";
-                dayCell.classList.add("calendar-day");
-                dayCell.textContent = day;
-
-                // היום
-                if (isSameMonthAsToday && day === today.getDate()) {
-                    dayCell.classList.add("calendar-day--today");
-                }
-
-                // ימים לא זמינים – לדוגמה: שישי-שבת (5,6)
-                const isDisabled = (dayOfWeek === 5 || dayOfWeek === 6);
-                if (isDisabled) {
-                    dayCell.classList.add("calendar-day--disabled");
-                    dayCell.disabled = true;
-                } else {
-                    // יום זמין – אפשר לבחור
-                    dayCell.addEventListener("click", () => onDateSelected(year, month, day));
-                }
-
-                // אם זה היום שנבחר
-                if (selectedDate &&
-                    selectedDate.getFullYear() === year &&
-                    selectedDate.getMonth() === month &&
-                    selectedDate.getDate() === day) {
-                    dayCell.classList.add("calendar-day--selected");
-                }
-
-                calendarDaysContainer.appendChild(dayCell);
-            }
+          summaryModeBox.addEventListener("change", updateModeChosenLine);
         }
 
-        function onDateSelected(year, month, day) {
-            selectedDate = new Date(year, month, day);
-            selectedTime = null;
 
-            // הסרת בחירה קודמת
-            document.querySelectorAll(".calendar-day--selected").forEach(el => {
-                el.classList.remove("calendar-day--selected");
-            });
+        initCalendar();
+      }
+    }
 
-            // סימון היום הנבחר
-            const dayCells = calendarDaysContainer.querySelectorAll(".calendar-day");
-            dayCells.forEach(cell => {
-                if (cell.textContent === String(day) && !cell.classList.contains("calendar-day--disabled")) {
-                    cell.classList.add("calendar-day--selected");
-                }
-            });
+    // ===== 2) יומן =====
+    function initCalendar() {
+      const today = new Date();
+      currentYear = today.getFullYear();
+      currentMonth = today.getMonth();
 
-            // עדכון סיכום
-            const displayDate = `${day} ${monthNamesHebrew[month]} ${year}`;
-            summaryDateEl.textContent = displayDate;
-            summaryTimeEl.textContent = "לא נבחר";
+      renderCalendar(currentYear, currentMonth);
 
-            // טעינת השעות לאותו יום
-            loadTimeSlotsForDate(selectedDate);
+      document.getElementById("prev-month").addEventListener("click", () => changeMonth(-1));
+      document.getElementById("next-month").addEventListener("click", () => changeMonth(1));
+    }
 
-            updateConfirmButtonState();
+    function changeMonth(offset) {
+      currentMonth += offset;
+      if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+      else if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+
+      selectedDate = null;
+      selectedTime = null;
+      updateSummary();
+      updateConfirmButtonState();
+      timeSlotsContainer.innerHTML = "";
+      timesHintEl.textContent = "בחרי קודם תאריך ביומן כדי לראות שעות זמינות.";
+
+      renderCalendar(currentYear, currentMonth);
+    }
+
+    function isTeacherAvailableOnDate(dateObj) {
+      const key = dayKeyByGetDay[dateObj.getDay()];
+      const dayAvail = teacherWeeklyAvailability?.[key];
+      return !!dayAvail?.enabled;
+    }
+
+    function renderCalendar(year, month) {
+      calendarDaysContainer.innerHTML = "";
+
+      const firstDayOfMonth = new Date(year, month, 1);
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const startDayIndex = firstDayOfMonth.getDay(); // 0=א'
+
+      calendarMonthLabel.textContent = `${monthNamesHebrew[month]} ${year}`;
+
+      for (let i = 0; i < startDayIndex; i++) {
+        const blankCell = document.createElement("div");
+        blankCell.className = "calendar-day calendar-day--empty";
+        calendarDaysContainer.appendChild(blankCell);
+      }
+
+      const today = new Date();
+      const isSameMonthAsToday = (year === today.getFullYear() && month === today.getMonth());
+      const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const date = new Date(year, month, day);
+        const dayOfWeek = date.getDay();
+
+        const dayCell = document.createElement("button");
+        dayCell.type = "button";
+        dayCell.classList.add("calendar-day");
+        dayCell.textContent = day;
+
+        if (isSameMonthAsToday && day === today.getDate()) {
+          dayCell.classList.add("calendar-day--today");
         }
 
-        function loadTimeSlotsForDate(date) {
-            timeSlotsContainer.innerHTML = "";
-            document.querySelector(".booking-times-hint").textContent =
-                "בחרי שעה זמינה מתוך הרשימה.";
+        // חסימות: עבר + סופ"ש + לא זמין לפי המורה
+        const startOfCellDate = new Date(year, month, day);
 
-            // כאן אפשר בעתיד לבדוק זמינות ספציפית לפי תאריך.
-            baseTimeSlots.forEach(timeStr => {
-                const btn = document.createElement("button");
-                btn.type = "button";
-                btn.className = "time-slot";
-                btn.textContent = timeStr;
+        const isPastDay = startOfCellDate < startOfToday;
+        const isWeekend = (dayOfWeek === 5 || dayOfWeek === 6);
+        const isUnavailableForTeacher = !isTeacherAvailableOnDate(date);
 
-                btn.addEventListener("click", () => onTimeSelected(timeStr));
-                timeSlotsContainer.appendChild(btn);
-            });
+        const isDisabled = isPastDay || isWeekend || isUnavailableForTeacher;
+
+        if (isDisabled) {
+          dayCell.classList.add("calendar-day--disabled");
+          dayCell.disabled = true;
+        } else {
+          dayCell.addEventListener("click", () => onDateSelected(year, month, day));
         }
 
-        function onTimeSelected(timeStr) {
-            selectedTime = timeStr;
-
-            document.querySelectorAll(".time-slot--selected").forEach(el => {
-                el.classList.remove("time-slot--selected");
-            });
-
-            document.querySelectorAll(".time-slot").forEach(el => {
-                if (el.textContent === timeStr) {
-                    el.classList.add("time-slot--selected");
-                }
-            });
-
-            summaryTimeEl.textContent = timeStr;
-            updateConfirmButtonState();
+        if (selectedDate &&
+          selectedDate.getFullYear() === year &&
+          selectedDate.getMonth() === month &&
+          selectedDate.getDate() === day) {
+          dayCell.classList.add("calendar-day--selected");
         }
 
-        function updateSummary() {
-            if (!selectedDate) {
-                summaryDateEl.textContent = "לא נבחר";
-            }
-            if (!selectedTime) {
-                summaryTimeEl.textContent = "לא נבחר";
-            }
+        calendarDaysContainer.appendChild(dayCell);
+      }
+    }
+
+    function onDateSelected(year, month, day) {
+      selectedDate = new Date(year, month, day);
+      selectedTime = null;
+
+      document.querySelectorAll(".calendar-day--selected").forEach(el => el.classList.remove("calendar-day--selected"));
+
+      calendarDaysContainer.querySelectorAll(".calendar-day").forEach(cell => {
+        if (cell.textContent === String(day) && !cell.classList.contains("calendar-day--disabled")) {
+          cell.classList.add("calendar-day--selected");
         }
+      });
 
-        function updateConfirmButtonState() {
-            confirmBtn.disabled = !(selectedDate && selectedTime);
-        }
+      summaryDateEl.textContent = `${day} ${monthNamesHebrew[month]} ${year}`;
+      summaryTimeEl.textContent = "לא נבחר";
 
-        // ===== לחיצה על "אישור הזמנה" =====
-        confirmBtn.addEventListener("click", () => {
-            if (!selectedDate || !selectedTime) {
-                return;
-            }
+      loadTimeSlotsForDate(selectedDate);
+      updateConfirmButtonState();
+    }
 
-            if (!isUserLoggedIn) {
-                alert("יש להתחבר כדי להזמין שיעור.\nנעביר אותך לעמוד ההתחברות.");
-                window.location.href = "login.html";
-                return;
-            }
+    function loadTimeSlotsForDate(dateObj) {
+      timeSlotsContainer.innerHTML = "";
 
-            alert("הבקשה נשלחה. נעדכן לאחר אישור המורה.");
-            // כאן בעתיד אפשר להפנות לעמוד 'הפרופיל שלי' או 'השיעורים שלי'
-        });
-    </script>
-    <script src="js/storage.js"></script>
-<script src="js/auth.js"></script>
-<script src="js/book.js"></script>
+      const key = dayKeyByGetDay[dateObj.getDay()];
+      const dayAvail = teacherWeeklyAvailability?.[key];
+      const duration = Number(teacher?.duration || 60);
 
+      const slots = buildSlotsForDay(dayAvail, duration);
+
+      if (!slots.length) {
+        timesHintEl.textContent = "אין שעות זמינות ביום הזה. בחרי יום אחר.";
+        return;
+      }
+
+      timesHintEl.textContent = "בחרי שעה זמינה מתוך הרשימה.";
+
+      slots.forEach(timeStr => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "time-slot";
+        btn.textContent = timeStr;
+        btn.addEventListener("click", () => onTimeSelected(timeStr));
+        timeSlotsContainer.appendChild(btn);
+      });
+    }
+
+    function onTimeSelected(timeStr) {
+      selectedTime = timeStr;
+
+      document.querySelectorAll(".time-slot--selected").forEach(el => el.classList.remove("time-slot--selected"));
+      document.querySelectorAll(".time-slot").forEach(el => {
+        if (el.textContent === timeStr) el.classList.add("time-slot--selected");
+      });
+
+      summaryTimeEl.textContent = timeStr;
+      updateConfirmButtonState();
+    }
+
+    function updateSummary() {
+      if (!selectedDate) summaryDateEl.textContent = "לא נבחר";
+      if (!selectedTime) summaryTimeEl.textContent = "לא נבחר";
+    }
+
+    function updateConfirmButtonState() {
+      confirmBtn.disabled = !(selectedDate && selectedTime);
+    }
+
+    // ===== 3) אישור הזמנה (דמו בלבד) =====
+    confirmBtn.addEventListener("click", () => {
+      if (!selectedDate || !selectedTime) return;
+
+      const pickedMode = document.querySelector('input[name="summary-lesson-mode"]:checked')?.value || "online";
+      const modeLabel = pickedMode === "in-person" ? "פרונטלי" : "מקוון";
+
+      alert(
+        "דמו בלבד: \n" +
+        "הזמנה נשלחה .\n\n" +
+        `מורה: ${teacher.fullName}\n` +
+        `תאריך: ${summaryDateEl.textContent}\n` +
+        `שעה: ${selectedTime}\n` +
+        `אופן: ${modeLabel}`
+      );
+    });
+  </script>
 
 </body>
 

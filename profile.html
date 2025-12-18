@@ -8,14 +8,16 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
+<script src="js/nav.js"></script>
+
 <body>
 
-    <!-- ===== Header – זהה לשאר העמודים ===== -->
     <header>
         <div class="top-bar">
             <a href="index.html">
                 <img src="./image/logoEduMatch.png" alt="EduMatch" class="logo-img">
             </a>
+            <button class="nav-toggle" aria-label="פתח תפריט" aria-expanded="false">☰</button>
 
             <nav>
                 <ul class="main-nav">
@@ -33,104 +35,173 @@
 
     <main>
 
-        <!-- כותרת עמוד -->
         <section class="page-header">
-            <h1>הפרופיל שלי</h1>
-            <p>כאן תוכלו לראות ולעדכן את פרטי החשבון שלכם ולנהל את הפעילות באתר.</p>
+            <h1 id="profile-greeting">שלום</h1>
         </section>
 
-        <!-- ===== הודעת מערכת (אם אין משתמש מחובר) ===== -->
-        <section class="profile-card" id="no-user-card" style="display:none; max-width: 900px; margin: 0 auto 18px;">
+        <section class="profile-card" id="no-user-card" style="display:none; max-width:900px; margin:0 auto;">
             <h2>לא נמצאה התחברות</h2>
-            <p>נראה שלא התחברת עדיין. כדי לראות את הפרופיל, עברי לעמוד ההתחברות/הרשמה.</p>
-            <a href="login.html" class="btn-primary" style="display:inline-block; margin-top:10px;">להתחברות/הרשמה</a>
+            <p>כדי לצפות בפרופיל יש להתחבר למערכת.</p>
+            <a href="login.html" class="btn-primary">להתחברות</a>
         </section>
 
-        <!-- ===== פריסת פרופיל: פרטי משתמש + פעילויות ===== -->
         <section class="profile-layout" id="profile-layout" style="display:none;">
 
-            <!-- צד ימין: פרטי משתמש -->
+            <!-- ===== צד ימין ===== -->
             <aside class="profile-sidebar profile-card">
                 <h2>פרטי משתמש</h2>
 
                 <div class="profile-user-info">
-                    <div class="profile-user-row">
-                        <span class="profile-label">שם:</span>
-                        <span class="profile-value" id="profile-name">—</span>
+                    <div class="profile-user-row"><span class="profile-label">שם:</span><span id="profile-name">—</span>
                     </div>
-
-                    <div class="profile-user-row">
-                        <span class="profile-label">אימייל:</span>
-                        <span class="profile-value" id="profile-email">—</span>
-                    </div>
-
-                    <div class="profile-user-row">
-                        <span class="profile-label">עיר:</span>
-                        <span class="profile-value" id="profile-city">—</span>
-                    </div>
-
-                    <div class="profile-user-row">
-                        <span class="profile-label">תחום:</span>
-                        <span class="profile-value" id="profile-field">—</span>
-                    </div>
-
-                    <div class="profile-user-role">
-                        <span class="role-pill" id="profile-role-pill">—</span>
-                    </div>
+                    <div class="profile-user-row"><span class="profile-label">אימייל:</span><span
+                            id="profile-email">—</span></div>
+                    <div class="profile-user-row"><span class="profile-label">עיר:</span><span
+                            id="profile-city">—</span></div>
+                    <div class="profile-user-row"><span class="profile-label">תחום:</span><span
+                            id="profile-field">—</span></div>
+                    <div class="profile-user-role"><span class="role-pill" id="profile-role-pill">—</span></div>
                 </div>
+
+                <div class="form-row" style="margin-top:16px;">
+                    <button type="button" class="btn-secondary" id="edit-profile-btn">ערוך פרטים</button>
+                </div>
+
+                <!-- ===== טופס עריכה ===== -->
+                <form id="edit-profile-form" class="profile-card" style="display:none; margin-top:16px;">
+                    <h3>עריכת פרטים</h3>
+
+                    <div class="form-row">
+                        <label>שם מלא</label>
+                        <input type="text" id="edit-fullName" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label>טלפון</label>
+                        <input type="tel" id="edit-phone" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label>עיר</label>
+                        <input type="text" id="edit-city">
+                    </div>
+
+                    <!-- ===== שדות מורה בלבד ===== -->
+                    <div id="teacher-edit-fields" style="display:none;">
+
+                        <div class="form-row">
+                            <label>שנות ניסיון</label>
+                            <input type="number" id="edit-experience" min="0">
+                        </div>
+
+                        <div class="form-row">
+                            <label>משך שיעור (בדקות)</label>
+                            <input type="number" id="edit-duration" min="0">
+                        </div>
+
+                        <!-- תחומי הוראה -->
+                        <div class="form-row">
+                            <label>תחומי הוראה</label>
+                            <div id="subjects-list"></div>
+                        </div>
+
+                        <div class="form-row" style="display:flex; gap:8px;">
+                            <input type="text" id="new-subject-name" placeholder="תחום לימוד">
+                            <input type="number" id="new-subject-price" placeholder="₪ לשיעור" min="0">
+                            <button type="button" class="btn-secondary" id="add-subject-btn">➕</button>
+                        </div>
+
+                        <!-- ===== זמינות שבועית ===== -->
+                        <div class="form-row" style="margin-top:20px;">
+                            <label>זמינות שבועית</label>
+
+                            <table style="width:100%; font-size:14px;">
+                                <thead>
+                                    <tr>
+                                        <th>יום</th>
+                                        <th>זמין</th>
+                                        <th>התחלה</th>
+                                        <th>סיום</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>א'</td>
+                                        <td><input type="checkbox" data-day="sun"></td>
+                                        <td><input type="time" data-start="sun"></td>
+                                        <td><input type="time" data-end="sun"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>ב'</td>
+                                        <td><input type="checkbox" data-day="mon"></td>
+                                        <td><input type="time" data-start="mon"></td>
+                                        <td><input type="time" data-end="mon"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>ג'</td>
+                                        <td><input type="checkbox" data-day="tue"></td>
+                                        <td><input type="time" data-start="tue"></td>
+                                        <td><input type="time" data-end="tue"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>ד'</td>
+                                        <td><input type="checkbox" data-day="wed"></td>
+                                        <td><input type="time" data-start="wed"></td>
+                                        <td><input type="time" data-end="wed"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>ה'</td>
+                                        <td><input type="checkbox" data-day="thu"></td>
+                                        <td><input type="time" data-start="thu"></td>
+                                        <td><input type="time" data-end="thu"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>ו'</td>
+                                        <td><input type="checkbox" data-day="fri"></td>
+                                        <td><input type="time" data-start="fri"></td>
+                                        <td><input type="time" data-end="fri"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>ש'</td>
+                                        <td><input type="checkbox" data-day="sat"></td>
+                                        <td><input type="time" data-start="sat"></td>
+                                        <td><input type="time" data-end="sat"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                    <div class="form-row filter-actions" style="margin-top:12px;">
+                        <button type="submit" class="btn-primary">שמור</button>
+                        <button type="button" class="btn-secondary" id="cancel-edit-btn">ביטול</button>
+                    </div>
+                </form>
             </aside>
 
-            <!-- צד שמאל: מועדפים + שיעורים -->
+            <!-- ===== צד שמאל ===== -->
             <section class="profile-main">
 
-                <!-- ===== המועדפים שלי (לתלמידים בלבד) ===== -->
-                <section class="profile-card" id="favorites-section" aria-labelledby="favorites-title">
-                    <div class="profile-section-header">
-                        <h2 id="favorites-title">המועדפים שלי</h2>
-                        <p class="profile-section-subtitle">
-                            מורים ששמרת – אפשר להזמין מהם שיעור נוסף או להסיר מהרשימה.
-                        </p>
-                    </div>
-
-                    <!-- ריק – ימולא בעתיד מ-localStorage אם תחליטי -->
-                    <div class="favorites-list" id="favorites-list"></div>
-
-                    <p class="empty-state" id="favorites-empty" style="display:block;">
-                        עדיין לא שמרת מורים למועדפים.
-                    </p>
+                <section class="profile-card" id="favorites-section">
+                    <h2>המועדפים שלי</h2>
+                    <p class="empty-state">עדיין לא שמרת מורים למועדפים.</p>
                 </section>
 
-                <!-- ===== היסטוריית שיעורים ===== -->
-                <section class="profile-card" aria-labelledby="history-title">
-                    <div class="profile-section-header">
-                        <h2 id="history-title">היסטוריית שיעורים</h2>
-                        <p class="profile-section-subtitle">כאן יופיעו שיעורים שכבר התקיימו (בשלב זה אין נתונים).</p>
-                    </div>
-
-                    <p class="empty-state" id="history-empty" style="display:block;">
-                        עדיין אין שיעורים שהתקיימו.
-                    </p>
+                <section class="profile-card">
+                    <h2>היסטוריית שיעורים</h2>
+                    <p class="empty-state">אין שיעורים שהתקיימו.</p>
                 </section>
 
-                <!-- ===== שיעורים עתידיים ===== -->
-                <section class="profile-card" aria-labelledby="upcoming-title">
-                    <div class="profile-section-header">
-                        <h2 id="upcoming-title">שיעורים עתידיים</h2>
-                        <p class="profile-section-subtitle">כאן יופיעו שיעורים עתידיים שאושרו (בשלב זה אין נתונים).</p>
-                    </div>
-
-                    <div class="upcoming-list" id="upcoming-list"></div>
-
-                    <p class="empty-state" id="upcoming-empty" style="display:block;">
-                        אין כרגע שיעורים עתידיים.
-                    </p>
+                <section class="profile-card">
+                    <h2>שיעורים עתידיים</h2>
+                    <p class="empty-state">אין שיעורים עתידיים.</p>
                 </section>
 
             </section>
         </section>
     </main>
 
-    <!-- ===== FOOTER – זהה לשאר העמודים ===== -->
     <footer>
         <div class="footer-content">
             <div class="footer-links">
@@ -141,10 +212,7 @@
         </div>
     </footer>
 
-    <!-- ===== JS ===== -->
-    <script src="js/storage.js"></script>
     <script src="js/profile.js"></script>
-
 
 </body>
 

@@ -45,7 +45,8 @@
                 <!-- מקצוע -->
                 <div class="form-row">
                     <label for="filter-subject">מקצוע <span>*</span></label>
-                    <input type="text" id="filter-subject" name="subject" placeholder="לדוגמה: מתמטיקה, אנגלית" required>
+                    <input type="text" id="filter-subject" name="subject" placeholder="לדוגמה: מתמטיקה, אנגלית"
+                        required>
                 </div>
 
                 <!-- עיר -->
@@ -149,12 +150,15 @@
         </div>
     </footer>
 
-    <!-- ===== JS ===== -->
+    <!--  של הבועה===== JS ===== -->
+
     <script>
-        // בועה מעל הסליידר - נשארת פה (הכי בטוח לפני teachers.js)
         document.addEventListener("DOMContentLoaded", () => {
             const slider = document.getElementById("search-price-range");
             const bubble = document.getElementById("search-price-bubble");
+            const form = document.getElementById("search-form");
+
+            const DEFAULT_PRICE = 150;
 
             function updateBubble() {
                 const val = slider.value;
@@ -163,16 +167,26 @@
                 const percent = ((val - min) / (max - min)) * 100;
 
                 bubble.textContent = val;
-                bubble.style.left = `calc(${percent}% )`;
+                bubble.style.left = `calc(${percent}%)`;
             }
 
-            slider.addEventListener("input", updateBubble);
+            // דיפולט בטעינה
+            slider.value = DEFAULT_PRICE;
             updateBubble();
+
+            // עדכון בזמן גרירה
+            slider.addEventListener("input", updateBubble);
+
+            // עדכון אחרי "נקה סינון"
+            form.addEventListener("reset", () => {
+                // חשוב: אחרי שהטופס הספיק להתאפס
+                setTimeout(() => {
+                    slider.value = DEFAULT_PRICE; // לוודא גם את הערך
+                    updateBubble();
+                }, 0);
+            });
         });
     </script>
-
-    <script src="js/storage.js"></script>
-    <script src="js/auth.js"></script>
     <script src="js/teachers.js"></script>
 
 </body>

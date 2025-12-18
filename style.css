@@ -1,415 +1,979 @@
 /* =========================
-   בסיס כללי + פונטים
+   Fonts
    ========================= */
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Poppins:wght@500;600;700&display=swap');
 
+/* =========================
+   Variables
+   ========================= */
 :root {
-    --primary: #0095B6;
-    /* כחול עיקרי */
-    --secondary: #b9d9eb;
-    /* תכלת */
-    --background: #F5F5DC;
-    /* בז' */
-}
+  --primary: #0095B6;     /* כחול עיקרי */
+  --secondary: #b9d9eb;   /* תכלת */
+  --background: #F5F5DC;  /* בז' */
 
-/* איפוס כללי */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+  /* UI tokens (שימוש חוזר) */
+  --text: #222;
+  --muted: #555;
 
-html {
-    scroll-behavior: smooth;
-}
+  --border-soft: 1px solid #e1dfd6;
 
-/* גוף הדף */
-body {
-    direction: rtl;
-    font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    background-color: var(--background);
-    color: #222;
-    line-height: 1.6;
-    font-size: 16px;
-    /* טקסט רגיל */
-}
+  --radius-18: 18px;
+  --radius-20: 20px;
+  --radius-24: 24px;
+  --radius-pill: 999px;
 
-/* קישורים ורשימות */
-a {
-    text-decoration: none;
-    color: inherit;
-}
-
-a:hover {
-    text-decoration: none;
-}
-
-ul {
-    list-style: none;
-}
-
-/* קונטיינר מרכזי */
-main {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2.5rem 2rem 3rem;
-}
-
-section {
-    margin-bottom: 3rem;
-}
-
-/* כותרות */
-h1,
-h2,
-h3 {
-    font-family: 'Poppins', 'Open Sans', sans-serif;
-    font-weight: 700;
-}
-
-/* כותרת ראשית – 32px */
-h1 {
-    font-size: 32px;
-    color: var(--primary);
-}
-
-/* כותרות אזור – 22px */
-h2 {
-    font-size: 22px;
-    margin-bottom: 1.5rem;
-    color: var(--primary);
-}
-
-/* כותרות משניות */
-h3 {
-    font-size: 18px;
-    margin-bottom: 0.6rem;
-    color: var(--primary);
+  --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --shadow-card: 0 10px 25px rgba(0, 0, 0, 0.06);
+  --shadow-hero: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
 /* =========================
-   כפתורים
+   Reset / Base
+   ========================= */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  direction: rtl;
+  font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background-color: var(--background);
+  color: var(--text);
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+a { text-decoration: none; color: inherit; }
+a:hover { text-decoration: none; }
+ul { list-style: none; }
+
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem 3rem;
+}
+
+section { margin-bottom: 3rem; }
+
+/* Typography */
+h1, h2, h3 {
+  font-family: 'Poppins', 'Open Sans', sans-serif;
+  font-weight: 700;
+}
+h1 { font-size: 32px; color: var(--primary); }
+h2 { font-size: 22px; margin-bottom: 1.5rem; color: var(--primary); }
+h3 { font-size: 18px; margin-bottom: 0.6rem; color: var(--primary); }
+
+/* =========================
+   Utility Base Classes (לא חובה לשימוש ב-HTML)
+   ========================= */
+/* כרטיס בסיסי (שומר על אותם ערכים שהיו אצלך בכרטיסים השונים) */
+.card {
+  background-color: #ffffff;
+  border-radius: var(--radius-24);
+  box-shadow: var(--shadow-card);
+}
+
+/* טאג/צ׳יפ בסיסי */
+.pill {
+  display: inline-block;
+  border-radius: var(--radius-pill);
+}
+
+/* =========================
+   Buttons
    ========================= */
 .btn-primary,
 .btn-secondary {
-    display: inline-block;
-    padding: 0.75rem 1.6rem;
-    border-radius: 999px;
-    font-weight: 600;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
+  display: inline-block;
+  padding: 0.75rem 1.6rem;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
 }
 
 .btn-primary {
-    background-color: var(--primary);
-    color: #fff;
-    border: 2px solid var(--primary);
+  background-color: var(--primary);
+  color: #fff;
+  border: 2px solid var(--primary);
 }
-
-.btn-primary:hover {
-    opacity: 0.92;
-}
+.btn-primary:hover { opacity: 0.92; }
 
 .btn-secondary {
-    background-color: #ffffff;
-    color: var(--primary);
-    border: 2px solid var(--primary);
+  background-color: #ffffff;
+  color: var(--primary);
+  border: 2px solid var(--primary);
 }
-
 .btn-secondary:hover {
-    background-color: var(--primary);
-    color: #ffffff;
+  background-color: var(--primary);
+  color: #ffffff;
 }
 
 /* =========================
    Header & Nav
    ========================= */
 header {
-    background-color: #ffffff;
-    border-bottom: 2px solid var(--secondary);
-    position: sticky;
-    top: 0;
-    z-index: 100;
+  background-color: #ffffff;
+  border-bottom: 2px solid var(--secondary);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .top-bar {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 1rem 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
 }
 
-/* לוגו */
-.logo a {
-    display: flex;
-    align-items: center;
-}
+.logo a { display: flex; align-items: center; }
 
 .logo-img {
-    height: 120px;
-    /* אפשר לשחק עם הגובה */
-    display: block;
-    border-radius: 20px;
+  height: 120px;
+  display: block;
+  border-radius: 20px;
 }
 
-
-/* ניווט */
 nav {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
 }
 
 .main-nav,
 .auth-nav {
-    display: flex;
-    align-items: center;
-    gap: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
 }
 
-/* קישורי ניווט רגילים */
 .main-nav a {
-    font-size: 16px;
-    padding: 0.25rem 0.5rem;
-    color: #333;
+  font-size: 16px;
+  padding: 0.25rem 0.5rem;
+  color: #333;
 }
+.main-nav a:hover { color: var(--primary); }
 
-.main-nav a:hover {
-    color: var(--primary);
-}
-
-/* קישור התחברות/הרשמה */
 .auth-nav a {
-    font-size: 16px;
-    padding: 0.5rem 1.1rem;
-    border-radius: 999px;
-    border: 2px solid var(--primary);
-    color: var(--primary);
-    background-color: #ffffff;
+  font-size: 16px;
+  padding: 0.5rem 1.1rem;
+  border-radius: var(--radius-pill);
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  background-color: #ffffff;
 }
-
 .auth-nav a:hover {
-    background-color: var(--primary);
-    color: #ffffff;
+  background-color: var(--primary);
+  color: #ffffff;
 }
 
 /* =========================
-   Hero Section
+   Home - Hero
    ========================= */
 .hero {
-    margin-top: 2rem;
-    padding: 3rem 2.5rem;
-    border-radius: 24px;
-    background-color: var(--secondary);
-    /* תכלת */
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 3rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  margin-top: 2rem;
+  padding: 3rem 2.5rem;
+  border-radius: var(--radius-24);
+  background-color: var(--secondary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+  box-shadow: var(--shadow-hero);
 }
 
-.hero-content {
-    flex: 1.2;
-}
-
-.hero-content h1 {
-    margin-bottom: 1rem;
-}
+.hero-content { flex: 1.2; }
+.hero-content h1 { margin-bottom: 1rem; }
 
 .hero-content p {
-    font-size: 16px;
-    max-width: 500px;
-    margin-bottom: 1.6rem;
-    color: #333;
+  font-size: 16px;
+  max-width: 500px;
+  margin-bottom: 1.6rem;
+  color: #333;
 }
 
-.hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
+.hero-actions { display: flex; flex-wrap: wrap; gap: 1rem; }
 
-/* Placeholder לתמונה */
 .hero-image {
-    flex: 1;
-    min-height: 220px;
-    border-radius: 24px;
-    border: 3px dashed var(--primary);
-    background: rgba(255, 255, 255, 0.7);
+  flex: 1;
+  min-height: 220px;
+  border-radius: var(--radius-24);
+  border: 3px dashed var(--primary);
+  background: rgba(255, 255, 255, 0.7);
 }
 
 /* =========================
-   "איך זה עובד"
+   Home - How it works
    ========================= */
-.how-it-works {
-    text-align: right;
-}
+.how-it-works { text-align: right; }
 
-/* הכרטיסים בשורה כמו בדוגמה */
 .how-it-works .steps {
-    display: flex;
-    gap: 1.5rem;
-    margin-top: 1.5rem;
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
 }
 
 .step {
-    background-color: #ffffff;
-    border-radius: 20px;
-    padding: 2rem 1.5rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    border: 1px solid #eee;
-    width: 100%;
-    position: relative;
-    text-align: right;
+  background-color: #ffffff;
+  border-radius: var(--radius-20);
+  padding: 2rem 1.5rem;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid #eee;
+  width: 100%;
+  position: relative;
+  text-align: right;
 }
 
-/* עיגול המספר */
 .step-number {
-    position: absolute;
-    top: -15px;
-    right: 20px;
-    width: 36px;
-    height: 36px;
-    background: var(--secondary);
-    /* תכלת */
-    color: #000;
-    /* מספר שחור */
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 700;
-    font-size: 18px;
+  position: absolute;
+  top: -15px;
+  right: 20px;
+  width: 36px;
+  height: 36px;
+  background: var(--secondary);
+  color: #000;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
 }
 
-/* כותרת בתוך כרטיס */
 .step h3 {
-    margin-top: 15px;
-    margin-bottom: 0.5rem;
-    font-size: 18px;
-    color: #000;
+  margin-top: 15px;
+  margin-bottom: 0.5rem;
+  font-size: 18px;
+  color: #000;
 }
-
-/* טקסט בתוך כרטיס */
-.step p {
-    font-size: 16px;
-    color: #333;
-}
+.step p { font-size: 16px; color: #333; }
 
 /* =========================
-   "למה EduMatch"
+   Home - Why EduMatch
    ========================= */
-.why-edumatch {
-    text-align: right;
-}
+.why-edumatch { text-align: right; }
 
-#why-edumatch-title {
-    margin-bottom: 0.7rem;
-}
+#why-edumatch-title { margin-bottom: 0.7rem; }
 
 #why-edumatch-subtitle {
-    font-size: 16px;
-    color: #555;
-    margin-bottom: 1.8rem;
-    font-weight: 400;
+  font-size: 16px;
+  color: var(--muted);
+  margin-bottom: 1.8rem;
+  font-weight: 400;
 }
 
 .benefits-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1.5rem;
-    text-align: right;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  text-align: right;
 }
 
 .benefit {
-    background-color: #ffffff;
-    border-radius: 18px;
-    padding: 1.5rem;
-    border: 1px solid #e1dfd6;
+  background-color: #ffffff;
+  border-radius: var(--radius-18);
+  padding: 1.5rem;
+  border: var(--border-soft);
 }
 
-.benefit h3 {
-    color: #000;
-}
-
-.benefit p {
-    font-size: 16px;
-    color: #444;
-}
+.benefit h3 { color: #000; }
+.benefit p { font-size: 16px; color: #444; }
 
 /* =========================
    Footer
    ========================= */
 footer {
-    background-color: var(--primary);
-    color: #ffffff;
-    margin-top: 2rem;
-    padding: 1.7rem 0;
-    width: 100%;
+  background-color: var(--primary);
+  color: #ffffff;
+  margin-top: 2rem;
+  padding: 1.7rem 0;
+  width: 100%;
 }
 
 .footer-content {
-    width: 100%;
-    padding: 0 2rem;
-    display: flex;
-    justify-content: center;
+  width: 100%;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: center;
 }
 
 .footer-links {
-    display: flex;
-    gap: 2rem;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
 }
 
 .footer-links a {
-    font-size: 14px;
-    color: #ffffff;
-    text-decoration: none;
+  font-size: 14px;
+  color: #ffffff;
+  text-decoration: none;
+}
+.footer-links a:hover { text-decoration: underline; }
+
+/* =========================
+   Auth (Login / Register)
+   ========================= */
+.auth-page { margin-top: 2rem; }
+.auth-page h1 { margin-bottom: 0.5rem; }
+
+.auth-intro {
+  color: var(--muted);
+  margin-bottom: 2rem;
 }
 
-.footer-links a:hover {
-    text-decoration: underline;
+.auth-layout {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.auth-card {
+  flex: 1;
+  background-color: #ffffff;
+  border-radius: var(--radius-24);
+  padding: 2rem 2.5rem;
+  box-shadow: var(--shadow-card);
+}
+
+.auth-card h2 { margin-bottom: 0.3rem; }
+
+.auth-card-desc {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 1.5rem;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+.form-row label span { color: #d30000; }
+
+.form-row input,
+.form-row select {
+  padding: 0.6rem 0.8rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid #d0d0d0;
+  font-size: 15px;
+  outline: none;
+}
+
+.form-row input:focus,
+.form-row select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(0, 149, 182, 0.15);
+}
+
+.error-message {
+  font-size: 12px;
+  color: #d30000;
+  min-height: 14px;
+}
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.link-secondary { font-size: 14px; color: var(--primary); }
+
+.field-label { font-weight: 600; font-size: 14px; }
+
+.options-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  font-size: 14px;
+}
+
+.checkbox-row label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 14px;
+}
+
+.checkbox-row input[type="checkbox"] { margin-top: 3px; }
+
+.role-fields h3 {
+  font-size: 16px;
+  margin-top: 1.2rem;
+  margin-bottom: 0.6rem;
 }
 
 /* =========================
-   רספונסיביות בסיסית
+   Price Slider (Bubble)
    ========================= */
+.price-slider-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 25px;
+  direction: ltr;
+}
+
+.price-bubble {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  background: var(--primary);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  pointer-events: none;
+  transition: left 0.1s linear;
+}
+
+.price-slider-wrapper input[type="range"] {
+  width: 100%;
+  cursor: pointer;
+}
+
+/* =========================
+   Teacher - Multiple Subjects
+   ========================= */
+.subjects-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.subject-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.subject-row input[type="text"] { flex: 2; }
+.subject-row input[type="number"] { flex: 1; }
+
+.add-subject-btn {
+  margin-top: 0.5rem;
+  align-self: flex-start;
+  padding: 0.35rem 0.9rem;
+  border-radius: var(--radius-pill);
+  border: 1px dashed var(--primary);
+  background-color: #ffffff;
+  color: var(--primary);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.add-subject-btn:hover {
+  background-color: var(--primary);
+  color: #ffffff;
+}
+
+/* =========================
+   Teachers Page - Filters
+   ========================= */
+.teachers-filter-section { margin-top: 3rem; }
+
+.teachers-filter {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 1.5rem;
+  align-items: flex-end;
+}
+
+.teachers-filter .form-row { margin-bottom: 0; }
+
+.teachers-filter .filter-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 0.3rem;
+}
+
+.teachers-filter label { font-size: 14px; }
+
+.teachers-filter input[type="text"],
+.teachers-filter input[list],
+.teachers-filter input[type="range"] {
+  padding: 1rem 0.7rem;
+  font-size: 14px;
+}
+
+.teachers-filter .price-slider-wrapper { padding-top: 20px; }
+
+/* =========================
+   Teachers Page - Cards
+   ========================= */
+.teachers-list-section { margin-top: 1.5rem; }
+
+.teachers-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.2rem;
+  margin-top: 1rem;
+}
+
+.teacher-card {
+  background: #ffffff;
+  border-radius: var(--radius-24);
+  padding: 1.4rem 1.6rem;
+  box-shadow: var(--shadow-card);
+  border: var(--border-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.teacher-card h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #000;
+}
+
+.teacher-meta,
+.teacher-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 14px;
+  color: #444;
+}
+
+.teacher-meta strong,
+.teacher-details strong { color: var(--primary); }
+
+.teacher-actions {
+  margin-top: 0.3rem;
+  display: flex;
+  gap: 0.7rem;
+}
+
+.teacher-actions .btn-primary,
+.teacher-actions .btn-secondary {
+  flex: 1;
+  padding: 0.65rem 1rem;
+  font-size: 14px;
+}
+
+/* =========================
+   Booking Page
+   ========================= */
+.page-header {
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.page-header p { color: var(--muted); }
+
+.booking-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.booking-card {
+  background-color: #ffffff;
+  border-radius: var(--radius-24);
+  padding: 1.8rem 2.2rem;
+  box-shadow: var(--shadow-card);
+}
+
+.booking-teacher-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.booking-teacher-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.booking-teacher-name {
+  font-size: 20px;
+  color: #000;
+  margin-bottom: 0.2rem;
+}
+
+.booking-teacher-meta-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.booking-separator { color: #aaa; }
+
+.booking-teacher-extra {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.8rem;
+  align-items: center;
+}
+
+.booking-lesson-modes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.lesson-mode-tag {
+  padding: 0.25rem 0.7rem;
+  border-radius: var(--radius-pill);
+  background-color: var(--secondary);
+  font-size: 13px;
+}
+
+.booking-teacher-price {
+  font-size: 14px;
+  color: #333;
+}
+
+.booking-main-columns {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1.6fr;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.booking-calendar-card h2,
+.booking-times-card h2,
+.booking-summary-card h2 { margin-bottom: 0.8rem; }
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.8rem;
+}
+
+.calendar-current-month { font-weight: 600; }
+
+.calendar-nav-btn {
+  border: none;
+  background: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-pill);
+}
+
+.calendar-nav-btn:hover { background-color: #f0f0f0; }
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.3rem;
+  text-align: center;
+  font-size: 14px;
+}
+
+.calendar-day-name { font-weight: 600; color: var(--muted); }
+
+.calendar-day {
+  padding: 0.5rem 0;
+  border-radius: 14px;
+  border: none;
+  background: #f6f6f6;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.calendar-day--empty { background: transparent; cursor: default; }
+
+.calendar-day--today {
+  border: 1px solid var(--primary);
+  font-weight: 600;
+}
+
+.calendar-day--selected {
+  background-color: var(--primary);
+  color: #ffffff;
+}
+
+.calendar-day--disabled {
+  background-color: #e0e0e0;
+  color: #9b9b9b;
+  cursor: default;
+}
+
+.booking-times-hint {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 0.7rem;
+}
+
+.time-slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.time-slot {
+  padding: 0.35rem 0.9rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--primary);
+  background-color: #ffffff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.time-slot:hover { background-color: var(--secondary); }
+
+.time-slot--selected {
+  background-color: var(--primary);
+  color: #ffffff;
+}
+
+.booking-summary-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.booking-summary-row {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 14px;
+}
+
+.summary-label {
+  min-width: 90px;
+  font-weight: 600;
+  color: #444;
+}
+
+.summary-value { color: #333; }
+
+.summary-radio {
+  margin-inline-end: 0.7rem;
+  font-size: 14px;
+}
+
+.booking-summary-actions {
+  margin-top: 1.3rem;
+  display: flex;
+  gap: 0.7rem;
+}
+
+/* =========================
+   Profile Page
+   ========================= */
+.profile-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 2.5fr;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.profile-card {
+  background-color: #ffffff;
+  border-radius: var(--radius-24);
+  padding: 1.7rem 2rem;
+  box-shadow: var(--shadow-card);
+}
+
+.profile-sidebar h2 { margin-bottom: 1rem; }
+
+.profile-user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.profile-user-row {
+  display: flex;
+  gap: 0.4rem;
+  font-size: 14px;
+}
+
+.profile-label {
+  min-width: 60px;
+  font-weight: 600;
+  color: #444;
+}
+
+.profile-value { color: #333; }
+
+.profile-user-role { margin-top: 0.7rem; }
+
+.role-pill {
+  display: inline-block;
+  padding: 0.25rem 0.8rem;
+  border-radius: var(--radius-pill);
+  background-color: var(--secondary);
+  font-size: 13px;
+}
+
+.profile-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.profile-section-header h2 { margin-bottom: 0.2rem; }
+
+.profile-section-subtitle {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+/* Favorites */
+.favorites-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.favorite-teacher-card {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1rem;
+  border-radius: var(--radius-18);
+  border: var(--border-soft);
+  background-color: #fafafa;
+}
+
+.favorite-main h3 {
+  margin-bottom: 0.2rem;
+  font-size: 16px;
+  color: #000;
+}
+
+.favorite-meta { font-size: 14px; color: var(--muted); }
+.favorite-mode { font-size: 13px; color: #777; }
+
+.favorite-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  align-items: flex-end;
+}
+
+.empty-state {
+  font-size: 14px;
+  color: #777;
+  margin-top: 0.5rem;
+}
+
+/* Tables */
+.table-wrapper { width: 100%; overflow-x: auto; }
+
+.lessons-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.lessons-table th,
+.lessons-table td {
+  padding: 0.6rem 0.7rem;
+  text-align: right;
+  border-bottom: 1px solid #eee4;
+}
+
+.lessons-table th {
+  background-color: #f3f3f3;
+  font-weight: 600;
+}
+
+/* Upcoming lessons */
+.upcoming-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.upcoming-lesson {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1rem;
+  border-radius: var(--radius-18);
+  border: var(--border-soft);
+  background-color: #fafafa;
+}
+
+.upcoming-main h3 {
+  font-size: 16px;
+  margin-bottom: 0.2rem;
+}
+
+.upcoming-meta { font-size: 14px; color: var(--muted); }
+
+.upcoming-actions {
+  display: flex;
+  align-items: center;
+}
+
+/* =========================
+   Media Queries (Merged)
+   ========================= */
+@media (max-width: 1000px) {
+  .booking-main-columns { grid-template-columns: 1fr 1fr; }
+}
+
 @media (max-width: 900px) {
-    .hero {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 2.5rem 2rem;
-    }
+  .top-bar { padding-inline: 1.5rem; }
+  main { padding-inline: 1.5rem; }
 
-    .hero-image {
-        width: 100%;
-    }
+  .hero {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2.5rem 2rem;
+  }
+  .hero-image { width: 100%; }
 
-    .how-it-works .steps {
-        flex-direction: column;
-    }
+  .how-it-works .steps { flex-direction: column; }
+  .benefits-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
-    .benefits-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+  .auth-layout { flex-direction: column; }
 
-    .top-bar {
-        padding-inline: 1.5rem;
-    }
+  .teachers-list { grid-template-columns: 1fr; }
 
-    main {
-        padding-inline: 1.5rem;
-    }
+  .profile-layout { grid-template-columns: 1fr; }
+
+  .favorite-teacher-card,
+  .upcoming-lesson {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .favorite-actions,
+  .upcoming-actions { flex-direction: row; }
+}
+
+@media (max-width: 750px) {
+  .booking-main-columns { grid-template-columns: 1fr; }
+}
+.nav-toggle {
+  display: none; /* מוסתר בדסקטופ */
+  border: 2px solid var(--primary);
+  background: #fff;
+  color: var(--primary);
+  border-radius: var(--radius-pill);
+  padding: 0.35rem 0.9rem;
+  font-size: 20px;
+  cursor: pointer;
+  line-height: 1;
 }
 
 @media (max-width: 600px) {
+  /* מה שהיה לך קודם */
   .benefits-grid { grid-template-columns: 1fr; }
   .logo-img { height: 80px; }
 
@@ -423,739 +987,41 @@ footer {
     flex-direction: column;
     align-items: flex-start;
   }
-}
 
+  /* ===== הוספת המבורגר למובייל ===== */
+  .nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-/* ===== עמוד התחברות / הרשמה ===== */
+  header nav {
+    width: 100%;
+    display: none;          /* סגור כברירת מחדל */
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: 0.6rem;
+  }
 
-.auth-page {
-    margin-top: 2rem;
-}
+  header nav.is-open {
+    display: flex;          /* נפתח בלחיצה */
+  }
 
-.auth-page h1 {
-    margin-bottom: 0.5rem;
-}
-
-.auth-intro {
-    color: #555;
-    margin-bottom: 2rem;
-}
-
-.auth-layout {
-    display: flex;
-    gap: 2rem;
+  .main-nav,
+  .auth-nav {
+    flex-direction: column;
     align-items: flex-start;
-}
-
-/* הקוביות הלבנות */
-.auth-card {
-    flex: 1;
-    background-color: #ffffff;
-    border-radius: 24px;
-    padding: 2rem 2.5rem;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
-}
-
-.auth-card h2 {
-    margin-bottom: 0.3rem;
-}
-
-.auth-card-desc {
-    color: #666;
-    font-size: 14px;
-    margin-bottom: 1.5rem;
-}
-
-/* שורות בטופס */
-.form-row {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-    margin-bottom: 1rem;
-}
-
-.form-row label span {
-    color: #d30000;
-}
-
-/* שדות קלט ו־select */
-.form-row input,
-.form-row select {
-    padding: 0.6rem 0.8rem;
-    border-radius: 999px;
-    border: 1px solid #d0d0d0;
-    font-size: 15px;
-    outline: none;
-}
-
-.form-row input:focus,
-.form-row select:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 2px rgba(0, 149, 182, 0.15);
-}
-
-/* הודעות שגיאה – לעתיד (JS) */
-.error-message {
-    font-size: 12px;
-    color: #d30000;
-    min-height: 14px;
-}
-
-/* שורות עם כפתורים / קישורים */
-.form-actions {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 0.5rem;
-}
-
-.link-secondary {
-    font-size: 14px;
-    color: var(--primary);
-}
-
-/* רדיו ותיבות סימון */
-.field-label {
-    font-weight: 600;
-    font-size: 14px;
-}
-
-.options-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    font-size: 14px;
-}
-
-.checkbox-row label {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.5rem;
-    font-size: 14px;
-}
-
-.checkbox-row input[type="checkbox"] {
-    margin-top: 3px;
-}
-
-/* כותרות משנה לחלקי הרשמה */
-.role-fields h3 {
-    font-size: 16px;
-    margin-top: 1.2rem;
-    margin-bottom: 0.6rem;
-}
-
-/* רספונסיביות בסיסית לעמוד ההתחברות */
-@media (max-width: 900px) {
-    .auth-layout {
-        flex-direction: column;
-    }
-}
-
-/* ===== סרגל מחיר מקסימלי ===== */
-
-/* עטיפת הסליידר */
-.price-slider-wrapper {
-    position: relative;
+    gap: 0.6rem;
     width: 100%;
-    padding-top: 25px;
-}
+  }
 
-/* בלון המחיר מעל הכדור */
-.price-bubble {
-    position: absolute;
-    top: 0;
-    transform: translateX(-50%);
-    background: var(--primary);
-    color: white;
-    padding: 4px 10px;
-    border-radius: 12px;
-    font-size: 14px;
-    font-weight: 600;
-    pointer-events: none;
-    transition: left 0.1s linear;
-}
-
-/* הסליידר עצמו */
-.price-slider-wrapper input[type="range"] {
+  .main-nav a,
+  .auth-nav a {
     width: 100%;
-    cursor: pointer;
+    display: block;
+  }
 }
 
-.price-slider-wrapper {
-    position: relative;
-    width: 100%;
-    padding-top: 25px;
-    direction: ltr;
-    /* <<< הפתרון שמתקן את התנועה !!! */
-}
-
-.price-bubble {
-    position: absolute;
-    top: 0;
-    transform: translateX(-50%);
-    background: var(--primary);
-    color: white;
-    padding: 4px 10px;
-    border-radius: 12px;
-    font-size: 14px;
-    font-weight: 600;
-    pointer-events: none;
-    transition: left 0.1s linear;
-}
-
-/* ===== תחומי הוראה מרובים למורה ===== */
-
-.subjects-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.subject-row {
-    display: flex;
-    gap: 0.5rem;
-}
-
-.subject-row input[type="text"] {
-    flex: 2;
-}
-
-.subject-row input[type="number"] {
-    flex: 1;
-}
-
-/* כפתור "הוסף מקצוע" קטן ועדין */
-.add-subject-btn {
-    margin-top: 0.5rem;
-    align-self: flex-start;
-    padding: 0.35rem 0.9rem;
-    border-radius: 999px;
-    border: 1px dashed var(--primary);
-    background-color: #ffffff;
-    color: var(--primary);
-    font-size: 14px;
-    cursor: pointer;
-}
-
-.add-subject-btn:hover {
-    background-color: var(--primary);
-    color: #ffffff;
-}
-
-/* =========================
-   עמוד חיפוש מורים – טופס סינון קומפקטי
-   ========================= */
-
-.teachers-filter-section {
-    margin-top: 3rem;
-}
-
-/* גריד: 2 עמודות – שורה 1: מקצוע + עיר, שורה 2: טווח + שם, שורה 3: כפתורים */
-.teachers-filter {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem 1.5rem;
-    /* שורה / עמודה */
-    align-items: flex-end;
-}
-
-/* שורות טופס צפופות יותר בתוך הסינון */
-.teachers-filter .form-row {
-    margin-bottom: 0;
-}
-
-/* מקצוע (שדה ראשון) – עמודה 1 בשורה הראשונה */
-.teachers-filter .form-row:nth-child(1) {
-    grid-column: 1 / 2;
-}
-
-/* עיר (שדה שני) – עמודה 2 בשורה הראשונה */
-.teachers-filter .form-row:nth-child(2) {
-    grid-column: 2 / 3;
-}
-
-/* טווח מחירים (שדה שלישי) – עמודה 1 בשורה השנייה */
-.teachers-filter .form-row:nth-child(3) {
-    grid-column: 1 / 2;
-}
-
-/* חיפוש לפי שם (שדה רביעי) – עמודה 2 בשורה השנייה */
-.teachers-filter .form-row:nth-child(4) {
-    grid-column: 2 / 3;
-}
-
-/* שורת הכפתורים – תתפרס על כל הרוחב מתחת */
-.teachers-filter .filter-actions {
-    grid-column: 1 / -1;
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    margin-top: 0.3rem;
-}
-
-/* תוויות קטנות יותר */
-.teachers-filter label {
-    font-size: 14px;
-}
-
-/* שדות קלט קטנים יותר */
-.teachers-filter input[type="text"],
-.teachers-filter input[list],
-.teachers-filter input[type="range"] {
-    padding: 1rem 0.7rem;
-    font-size: 14px;
-}
-
-/* הסליידר בתוך התא שלו */
-.teachers-filter .price-slider-wrapper {
-    padding-top: 20px;
-}
-
-/* =========================
-   עמוד הזמנת שיעור
-   ========================= */
-
-.page-header {
-    margin-top: 2rem;
-    margin-bottom: 1.5rem;
-}
-
-.page-header p {
-    color: #555;
-}
-
-/* פריסה כללית */
-.booking-layout {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
-/* כרטיס כללי */
-.booking-card {
-    background-color: #ffffff;
-    border-radius: 24px;
-    padding: 1.8rem 2.2rem;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
-}
-
-/* קוביית המורה */
-.booking-teacher-card {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.booking-teacher-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.booking-teacher-name {
-    font-size: 20px;
-    color: #000;
-    margin-bottom: 0.2rem;
-}
-
-.booking-teacher-meta-line {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    font-size: 14px;
-    color: #555;
-}
-
-.booking-separator {
-    color: #aaa;
-}
-
-.booking-teacher-extra {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 0.8rem;
-    align-items: center;
-}
-
-.booking-lesson-modes {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-}
-
-.lesson-mode-tag {
-    padding: 0.25rem 0.7rem;
-    border-radius: 999px;
-    background-color: var(--secondary);
-    font-size: 13px;
-}
-
-.booking-teacher-price {
-    font-size: 14px;
-    color: #333;
-}
-
-/* עמודות: יומן + שעות + סיכום */
-.booking-main-columns {
-    display: grid;
-    grid-template-columns: 2fr 2fr 1.6fr;
-    gap: 1.5rem;
-    align-items: flex-start;
-}
-
-/* יומן תאריכים */
-.booking-calendar-card h2,
-.booking-times-card h2,
-.booking-summary-card h2 {
-    margin-bottom: 0.8rem;
-}
-
-/* כותרת יומן */
-.calendar-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 0.8rem;
-}
-
-.calendar-current-month {
-    font-weight: 600;
-}
-
-.calendar-nav-btn {
-    border: none;
-    background: none;
-    font-size: 20px;
-    cursor: pointer;
-    padding: 0.2rem 0.6rem;
-    border-radius: 999px;
-}
-
-.calendar-nav-btn:hover {
-    background-color: #f0f0f0;
-}
-
-/* גריד של ימים */
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, minmax(0, 1fr));
-    gap: 0.3rem;
-    text-align: center;
-    font-size: 14px;
-}
-
-.calendar-day-name {
-    font-weight: 600;
-    color: #555;
-}
-
-/* תא יום רגיל */
-.calendar-day {
-    padding: 0.5rem 0;
-    border-radius: 14px;
-    border: none;
-    background: #f6f6f6;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-/* תאים ריקים (לפני היום הראשון בחודש) */
-.calendar-day--empty {
-    background: transparent;
-    cursor: default;
-}
-
-/* היום */
-.calendar-day--today {
-    border: 1px solid var(--primary);
-    font-weight: 600;
-}
 
-/* יום שנבחר */
-.calendar-day--selected {
-    background-color: var(--primary);
-    color: #ffffff;
-}
-
-/* יום לא זמין */
-.calendar-day--disabled {
-    background-color: #e0e0e0;
-    color: #9b9b9b;
-    cursor: default;
-}
-
-/* רשימת שעות זמינות */
-.booking-times-hint {
-    font-size: 14px;
-    color: #777;
-    margin-bottom: 0.7rem;
-}
-
-.time-slots {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-}
-
-.time-slot {
-    padding: 0.35rem 0.9rem;
-    border-radius: 999px;
-    border: 1px solid var(--primary);
-    background-color: #ffffff;
-    font-size: 14px;
-    cursor: pointer;
-}
-
-.time-slot:hover {
-    background-color: var(--secondary);
-}
-
-.time-slot--selected {
-    background-color: var(--primary);
-    color: #ffffff;
-}
-
-/* סיכום הזמנה */
-.booking-summary-card {
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-}
-
-.booking-summary-row {
-    display: flex;
-    gap: 0.5rem;
-    font-size: 14px;
-}
-
-.summary-label {
-    min-width: 90px;
-    font-weight: 600;
-    color: #444;
-}
-
-.summary-value {
-    color: #333;
-}
-
-.summary-radio {
-    margin-inline-end: 0.7rem;
-    font-size: 14px;
-}
-
-.booking-summary-actions {
-    margin-top: 1.3rem;
-    display: flex;
-    gap: 0.7rem;
-}
-
-/* רספונסיביות לעמוד ההזמנה */
-@media (max-width: 1000px) {
-    .booking-main-columns {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
-@media (max-width: 750px) {
-    .booking-main-columns {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* =========================
-   עמוד פרופיל משתמש
-   ========================= */
-
-.profile-layout {
-    display: grid;
-    grid-template-columns: 1.2fr 2.5fr;
-    gap: 1.5rem;
-    align-items: flex-start;
-}
-
-/* כרטיס כללי בפרופיל */
-.profile-card {
-    background-color: #ffffff;
-    border-radius: 24px;
-    padding: 1.7rem 2rem;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
-}
-
-/* צד ימין – פרטי משתמש */
-.profile-sidebar h2 {
-    margin-bottom: 1rem;
-}
-
-.profile-user-info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.profile-user-row {
-    display: flex;
-    gap: 0.4rem;
-    font-size: 14px;
-}
-
-.profile-label {
-    min-width: 60px;
-    font-weight: 600;
-    color: #444;
-}
-
-.profile-value {
-    color: #333;
-}
 
-.profile-user-role {
-    margin-top: 0.7rem;
-}
-
-.role-pill {
-    display: inline-block;
-    padding: 0.25rem 0.8rem;
-    border-radius: 999px;
-    background-color: var(--secondary);
-    font-size: 13px;
-}
-
-/* צד שמאל – תוכן הפרופיל */
-.profile-main {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-}
-
-.profile-section-header h2 {
-    margin-bottom: 0.2rem;
-}
-
-.profile-section-subtitle {
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 1rem;
-}
-
-/* ===== מועדפים ===== */
-.favorites-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-}
-
-.favorite-teacher-card {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 0.9rem 1rem;
-    border-radius: 18px;
-    border: 1px solid #e1dfd6;
-    background-color: #fafafa;
-}
-
-.favorite-main h3 {
-    margin-bottom: 0.2rem;
-    font-size: 16px;
-    color: #000;
-}
-
-.favorite-meta {
-    font-size: 14px;
-    color: #555;
-}
-
-.favorite-mode {
-    font-size: 13px;
-    color: #777;
-}
-
-.favorite-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    align-items: flex-end;
-}
-
-/* מצב "אין נתונים" */
-.empty-state {
-    font-size: 14px;
-    color: #777;
-    margin-top: 0.5rem;
-}
-
-/* ===== היסטוריית שיעורים ===== */
-.table-wrapper {
-    width: 100%;
-    overflow-x: auto;
-}
-
-.lessons-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
-}
-
-.lessons-table th,
-.lessons-table td {
-    padding: 0.6rem 0.7rem;
-    text-align: right;
-    border-bottom: 1px solid #eee4;
-}
-
-.lessons-table th {
-    background-color: #f3f3f3;
-    font-weight: 600;
-}
-
-/* ===== שיעורים עתידיים ===== */
-.upcoming-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.7rem;
-}
 
-.upcoming-lesson {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 0.9rem 1rem;
-    border-radius: 18px;
-    border: 1px solid #e1dfd6;
-    background-color: #fafafa;
-}
-
-.upcoming-main h3 {
-    font-size: 16px;
-    margin-bottom: 0.2rem;
-}
-
-.upcoming-meta {
-    font-size: 14px;
-    color: #555;
-}
-
-.upcoming-actions {
-    display: flex;
-    align-items: center;
-}
-
-/* רספונסיביות */
-@media (max-width: 900px) {
-    .profile-layout {
-        grid-template-columns: 1fr;
-    }
-
-    .favorite-teacher-card,
-    .upcoming-lesson {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .favorite-actions,
-    .upcoming-actions {
-        flex-direction: row;
-    }
-}

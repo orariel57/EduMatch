@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (noUserCard) noUserCard.style.display = "none";
-  if (layout) layout.style.display = "flex";
+  if (layout) layout.style.display = "grid";
 
   // ===== ברכת שלום =====
   const greetingEl = document.getElementById("profile-greeting");

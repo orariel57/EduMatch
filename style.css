@@ -11,7 +11,6 @@
   --secondary: #b9d9eb;   /* תכלת */
   --background: #F5F5DC;  /* בז' */
 
-  /* UI tokens (שימוש חוזר) */
   --text: #222;
   --muted: #555;
 
@@ -65,16 +64,14 @@ h2 { font-size: 22px; margin-bottom: 1.5rem; color: var(--primary); }
 h3 { font-size: 18px; margin-bottom: 0.6rem; color: var(--primary); }
 
 /* =========================
-   Utility Base Classes (לא חובה לשימוש ב-HTML)
+   Utility Base Classes
    ========================= */
-/* כרטיס בסיסי (שומר על אותם ערכים שהיו אצלך בכרטיסים השונים) */
 .card {
   background-color: #ffffff;
   border-radius: var(--radius-24);
   box-shadow: var(--shadow-card);
 }
 
-/* טאג/צ׳יפ בסיסי */
 .pill {
   display: inline-block;
   border-radius: var(--radius-pill);
@@ -444,74 +441,7 @@ footer {
 }
 
 /* =========================
-   Teacher - Multiple Subjects
-   ========================= */
-.subjects-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.subject-row {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.subject-row input[type="text"] { flex: 2; }
-.subject-row input[type="number"] { flex: 1; }
-
-.add-subject-btn {
-  margin-top: 0.5rem;
-  align-self: flex-start;
-  padding: 0.35rem 0.9rem;
-  border-radius: var(--radius-pill);
-  border: 1px dashed var(--primary);
-  background-color: #ffffff;
-  color: var(--primary);
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.add-subject-btn:hover {
-  background-color: var(--primary);
-  color: #ffffff;
-}
-
-/* =========================
-   Teachers Page - Filters
-   ========================= */
-.teachers-filter-section { margin-top: 3rem; }
-
-.teachers-filter {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem 1.5rem;
-  align-items: flex-end;
-}
-
-.teachers-filter .form-row { margin-bottom: 0; }
-
-.teachers-filter .filter-actions {
-  grid-column: 1 / -1;
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  margin-top: 0.3rem;
-}
-
-.teachers-filter label { font-size: 14px; }
-
-.teachers-filter input[type="text"],
-.teachers-filter input[list],
-.teachers-filter input[type="range"] {
-  padding: 1rem 0.7rem;
-  font-size: 14px;
-}
-
-.teachers-filter .price-slider-wrapper { padding-top: 20px; }
-
-/* =========================
-   Teachers Page - Cards
+   Teachers Page - OLD Grid + Cards (תוצאות)
    ========================= */
 .teachers-list-section { margin-top: 1.5rem; }
 
@@ -564,208 +494,61 @@ footer {
   font-size: 14px;
 }
 
-/* =========================
-   Booking Page
-   ========================= */
-.page-header {
-  margin-top: 2rem;
-  margin-bottom: 1.5rem;
-}
-
-.page-header p { color: var(--muted); }
-
-.booking-layout {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.booking-card {
-  background-color: #ffffff;
-  border-radius: var(--radius-24);
-  padding: 1.8rem 2.2rem;
-  box-shadow: var(--shadow-card);
-}
-
-.booking-teacher-card {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.booking-teacher-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.booking-teacher-name {
-  font-size: 20px;
-  color: #000;
-  margin-bottom: 0.2rem;
-}
-
-.booking-teacher-meta-line {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  font-size: 14px;
-  color: var(--muted);
-}
-
-.booking-separator { color: #aaa; }
-
-.booking-teacher-extra {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 0.8rem;
-  align-items: center;
-}
-
-.booking-lesson-modes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-}
-
-.lesson-mode-tag {
-  padding: 0.25rem 0.7rem;
-  border-radius: var(--radius-pill);
-  background-color: var(--secondary);
-  font-size: 13px;
-}
-
-.booking-teacher-price {
-  font-size: 14px;
-  color: #333;
-}
-
-.booking-main-columns {
-  display: grid;
-  grid-template-columns: 2fr 2fr 1.6fr;
-  gap: 1.5rem;
-  align-items: flex-start;
-}
-
-.booking-calendar-card h2,
-.booking-times-card h2,
-.booking-summary-card h2 { margin-bottom: 0.8rem; }
-
-.calendar-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0.8rem;
-}
-
-.calendar-current-month { font-weight: 600; }
-
-.calendar-nav-btn {
-  border: none;
-  background: none;
-  font-size: 20px;
-  cursor: pointer;
-  padding: 0.2rem 0.6rem;
-  border-radius: var(--radius-pill);
-}
-
-.calendar-nav-btn:hover { background-color: #f0f0f0; }
-
-.calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 0.3rem;
-  text-align: center;
-  font-size: 14px;
-}
-
-.calendar-day-name { font-weight: 600; color: var(--muted); }
-
-.calendar-day {
-  padding: 0.5rem 0;
-  border-radius: 14px;
-  border: none;
-  background: #f6f6f6;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.calendar-day--empty { background: transparent; cursor: default; }
-
-.calendar-day--today {
-  border: 1px solid var(--primary);
-  font-weight: 600;
-}
-
-.calendar-day--selected {
-  background-color: var(--primary);
-  color: #ffffff;
-}
-
-.calendar-day--disabled {
-  background-color: #e0e0e0;
-  color: #9b9b9b;
-  cursor: default;
-}
-
-.booking-times-hint {
+.empty-state {
   font-size: 14px;
   color: #777;
-  margin-bottom: 0.7rem;
+  margin-top: 0.5rem;
 }
 
-.time-slots {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+/* =========================
+   Teachers Page - NEW Layout (Sidebar Right + Results Left)
+   ========================= */
+.teachers-page-layout{
+  display: grid;
+  grid-template-columns: 360px 1fr; /* ימין פילטרים | שמאל תוצאות */
+  gap: 1.6rem;
+  align-items: start;
 }
 
-.time-slot {
-  padding: 0.35rem 0.9rem;
-  border-radius: var(--radius-pill);
-  border: 1px solid var(--primary);
-  background-color: #ffffff;
-  font-size: 14px;
-  cursor: pointer;
+/* פילטרים בצד */
+.teachers-filter-section{
+  margin-top: 0;
 }
 
-.time-slot:hover { background-color: var(--secondary); }
-
-.time-slot--selected {
-  background-color: var(--primary);
-  color: #ffffff;
-}
-
-.booking-summary-card {
+.teachers-sidebar .teachers-filter{
+  background: #ffffff;
+  border-radius: var(--radius-24);
+  padding: 1.6rem;
+  box-shadow: var(--shadow-card);
+  border: var(--border-soft);
   display: flex;
   flex-direction: column;
+}
+
+/* כדי שהכפתורים ייראו טוב בעמודה */
+.teachers-sidebar .filter-actions{
+  display: flex;
   gap: 0.8rem;
+  align-items: center;
+}
+.teachers-sidebar .filter-actions button{
+  flex: 1;
 }
 
-.booking-summary-row {
+/* צד תוצאות */
+.teachers-results{
   display: flex;
-  gap: 0.5rem;
-  font-size: 14px;
+  flex-direction: column;
+  gap: 1.2rem;
 }
 
-.summary-label {
-  min-width: 90px;
-  font-weight: 600;
-  color: #444;
-}
-
-.summary-value { color: #333; }
-
-.summary-radio {
-  margin-inline-end: 0.7rem;
-  font-size: 14px;
-}
-
-.booking-summary-actions {
-  margin-top: 1.3rem;
-  display: flex;
-  gap: 0.7rem;
+/* כרטיס רמז לפני חיפוש */
+.teachers-hint{
+  background-color: #ffffff;
+  border-radius: var(--radius-24);
+  padding: 1.4rem 1.6rem;
+  box-shadow: var(--shadow-card);
+  border: var(--border-soft);
 }
 
 /* =========================
@@ -823,108 +606,14 @@ footer {
   gap: 1.2rem;
 }
 
-.profile-section-header h2 { margin-bottom: 0.2rem; }
-
-.profile-section-subtitle {
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 1rem;
-}
-
-/* Favorites */
-.favorites-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-}
-
-.favorite-teacher-card {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.9rem 1rem;
-  border-radius: var(--radius-18);
-  border: var(--border-soft);
-  background-color: #fafafa;
-}
-
-.favorite-main h3 {
-  margin-bottom: 0.2rem;
-  font-size: 16px;
-  color: #000;
-}
-
-.favorite-meta { font-size: 14px; color: var(--muted); }
-.favorite-mode { font-size: 13px; color: #777; }
-
-.favorite-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  align-items: flex-end;
-}
-
-.empty-state {
-  font-size: 14px;
-  color: #777;
-  margin-top: 0.5rem;
-}
-
 /* Tables */
 .table-wrapper { width: 100%; overflow-x: auto; }
 
-.lessons-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-}
-
-.lessons-table th,
-.lessons-table td {
-  padding: 0.6rem 0.7rem;
-  text-align: right;
-  border-bottom: 1px solid #eee4;
-}
-
-.lessons-table th {
-  background-color: #f3f3f3;
-  font-weight: 600;
-}
-
-/* Upcoming lessons */
-.upcoming-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.7rem;
-}
-
-.upcoming-lesson {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.9rem 1rem;
-  border-radius: var(--radius-18);
-  border: var(--border-soft);
-  background-color: #fafafa;
-}
-
-.upcoming-main h3 {
-  font-size: 16px;
-  margin-bottom: 0.2rem;
-}
-
-.upcoming-meta { font-size: 14px; color: var(--muted); }
-
-.upcoming-actions {
-  display: flex;
-  align-items: center;
-}
-
 /* =========================
-   Media Queries (Merged)
+   Media Queries
    ========================= */
 @media (max-width: 1000px) {
-  .booking-main-columns { grid-template-columns: 1fr 1fr; }
+  /* אם יש לך booking בעתיד - השארתי תשתית */
 }
 
 @media (max-width: 900px) {
@@ -943,25 +632,27 @@ footer {
 
   .auth-layout { flex-direction: column; }
 
+  /* Teachers: כרטיסים עמודה אחת */
   .teachers-list { grid-template-columns: 1fr; }
 
+  /* Profile */
   .profile-layout { grid-template-columns: 1fr; }
 
-  .favorite-teacher-card,
-  .upcoming-lesson {
-    flex-direction: column;
-    align-items: flex-start;
+  /* Teachers layout: יורד לעמודה אחת */
+  .teachers-page-layout{
+    grid-template-columns: 1fr;
   }
-
-  .favorite-actions,
-  .upcoming-actions { flex-direction: row; }
 }
 
 @media (max-width: 750px) {
-  .booking-main-columns { grid-template-columns: 1fr; }
+  /* אם יש לך booking בעתיד - השארתי תשתית */
 }
+
+/* =========================
+   Mobile Nav (Hamburger)
+   ========================= */
 .nav-toggle {
-  display: none; /* מוסתר בדסקטופ */
+  display: none;
   border: 2px solid var(--primary);
   background: #fff;
   color: var(--primary);
@@ -982,14 +673,12 @@ footer {
     gap: 0.75rem;
   }
 
-  /* שורה עליונה: המבורגר מימין, לוגו באמצע */
   .logo-row {
     display: grid;
     grid-template-columns: 44px 1fr 44px;
     align-items: center;
     width: 100%;
     padding: 0.25rem 0;
-
     position: relative;
     z-index: 1000;
   }
@@ -1003,7 +692,6 @@ footer {
     border-radius: 999px;
     font-size: 22px;
     line-height: 1;
-
     position: relative;
     z-index: 2000;
     pointer-events: auto;
@@ -1014,7 +702,6 @@ footer {
     justify-self: center;
     display: inline-flex;
     align-items: center;
-
     position: relative;
     z-index: 1001;
   }
@@ -1024,14 +711,12 @@ footer {
     height: 44px;
   }
 
-  /* תפריט נפתח/נסגר */
   header nav {
     width: 100%;
     display: none;
     flex-direction: column;
     gap: 1rem;
     padding-top: 0.6rem;
-
     position: relative;
     z-index: 1500;
   }
@@ -1057,8 +742,3 @@ footer {
     align-items: flex-start;
   }
 }
-
-
-
-
-

@@ -973,38 +973,58 @@ footer {
 }
 
 @media (max-width: 600px) {
-  /* מה שהיה לך קודם */
   .benefits-grid { grid-template-columns: 1fr; }
   .logo-img { height: 80px; }
 
+  /* במקום שה-top-bar יהפוך לעמודה – נשאיר אותו מסודר */
   .top-bar {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
+    align-items: stretch;
+    gap: 0.75rem;
   }
 
-  .footer-content {
-    flex-direction: column;
-    align-items: flex-start;
+  /* שורה עליונה: המבורגר מימין, לוגו באמצע */
+  .logo-row {
+    display: grid;
+    grid-template-columns: 44px 1fr 44px; /* כפתור | לוגו | ספייסר */
+    align-items: center;
+    width: 100%;
+    padding: 0.25rem 0;
   }
 
-  /* ===== הוספת המבורגר למובייל ===== */
   .nav-toggle {
     display: inline-flex;
+    width: 44px;
+    height: 44px;
     align-items: center;
     justify-content: center;
+    border-radius: 999px;
+    font-size: 22px;
+    line-height: 1;
   }
 
+  .logo-link {
+    justify-self: center;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .logo-spacer {
+    width: 44px;
+    height: 44px;
+  }
+
+  /* תפריט נפתח/נסגר */
   header nav {
     width: 100%;
-    display: none;          /* סגור כברירת מחדל */
+    display: none;
     flex-direction: column;
     gap: 1rem;
     padding-top: 0.6rem;
   }
 
   header nav.is-open {
-    display: flex;          /* נפתח בלחיצה */
+    display: flex;
   }
 
   .main-nav,
@@ -1019,6 +1039,11 @@ footer {
   .auth-nav a {
     width: 100%;
     display: block;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 

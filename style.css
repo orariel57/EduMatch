@@ -1009,6 +1009,8 @@ footer {
     align-items: center;
   }
 
+  header nav { position: relative; z-index: 1500; }
+  
   .logo-spacer {
     width: 44px;
     height: 44px;

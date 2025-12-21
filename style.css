@@ -56,11 +56,14 @@ main {
 
 section { margin-bottom: 3rem; }
 
-/* Typography */
+/* =========================
+   Typography
+   ========================= */
 h1, h2, h3 {
   font-family: 'Poppins', 'Open Sans', sans-serif;
   font-weight: 700;
 }
+
 h1 { font-size: 32px; color: var(--primary); }
 h2 { font-size: 22px; margin-bottom: 1.5rem; color: var(--primary); }
 h3 { font-size: 18px; margin-bottom: 0.6rem; color: var(--primary); }
@@ -227,9 +230,21 @@ nav {
   flex: 1;
   min-height: 220px;
   border-radius: var(--radius-24);
-  border: 3px dashed var(--primary);
+  border: none;
   background: rgba(255, 255, 255, 0.7);
+  height: 320px;        /* תשני ל-280/300/360 לפי טעם */
+  overflow: hidden;     /* חשוב כדי שהתמונה לא תברח מהפינות */
+  
 }
+
+.hero-image img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;    /* ממלא יפה בלי להימתח */
+  display: block;
+  border-radius: inherit;
+}
+
 
 /* =========================
    Home - How it works
@@ -636,45 +651,6 @@ footer {
 .table-wrapper { width: 100%; overflow-x: auto; }
 
 /* =========================
-   Media Queries
-   ========================= */
-@media (max-width: 1000px) {
-  /* אם יש לך booking בעתיד - השארתי תשתית */
-}
-
-@media (max-width: 900px) {
-  .top-bar { padding-inline: 1.5rem; }
-  main { padding-inline: 1.5rem; }
-
-  .hero {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 2.5rem 2rem;
-  }
-  .hero-image { width: 100%; }
-
-  .how-it-works .steps { flex-direction: column; }
-  .benefits-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-
-  .auth-layout { flex-direction: column; }
-
-  /* Teachers: כרטיסים עמודה אחת */
-  .teachers-list { grid-template-columns: 1fr; }
-
-  /* Profile */
-  .profile-layout { grid-template-columns: 1fr; }
-
-  /* Teachers layout: יורד לעמודה אחת */
-  .teachers-page-layout{
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 750px) {
-  /* אם יש לך booking בעתיד - השארתי תשתית */
-}
-
-/* =========================
    Mobile Nav (Hamburger)
    ========================= */
 .nav-toggle {
@@ -689,90 +665,9 @@ footer {
   line-height: 1;
 }
 
-@media (max-width: 600px) {
-  .benefits-grid { grid-template-columns: 1fr; }
-  .logo-img { height: 80px; }
-
-  .top-bar {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.75rem;
-  }
-
-  .logo-row {
-    display: grid;
-    grid-template-columns: 44px 1fr 44px;
-    align-items: center;
-    width: 100%;
-    padding: 0.25rem 0;
-    position: relative;
-    z-index: 1000;
-  }
-
-  .nav-toggle {
-    display: inline-flex;
-    width: 44px;
-    height: 44px;
-    align-items: center;
-    justify-content: center;
-    border-radius: 999px;
-    font-size: 22px;
-    line-height: 1;
-    position: relative;
-    z-index: 2000;
-    pointer-events: auto;
-    touch-action: manipulation;
-  }
-
-  .logo-link {
-    justify-self: center;
-    display: inline-flex;
-    align-items: center;
-    position: relative;
-    z-index: 1001;
-  }
-
-  .logo-spacer {
-    width: 44px;
-    height: 44px;
-  }
-
-  header nav {
-    width: 100%;
-    display: none;
-    flex-direction: column;
-    gap: 1rem;
-    padding-top: 0.6rem;
-    position: relative;
-    z-index: 1500;
-  }
-
-  header nav.is-open { display: flex; }
-
-  .main-nav,
-  .auth-nav {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.6rem;
-    width: 100%;
-  }
-
-  .main-nav a,
-  .auth-nav a {
-    width: 100%;
-    display: block;
-  }
-
-  .footer-content {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-}
-
 /* =========================
    Animations
    ========================= */
-
 /* אנימציה 1- כרטיסיה עולה לאט */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(16px); }
@@ -804,7 +699,6 @@ footer {
    BOOK Page (Calendar + Booking UI) ✅ (מחליף את הבלוק הישן)
    תואם ל-HTML שלך: booking-*, calendar-grid, calendar-day
    ========================= */
-
 .availability-page {
   padding-top: 2rem;
 }
@@ -1086,7 +980,129 @@ footer {
   cursor: not-allowed;
 }
 
-/* ===== Responsive for BOOK ===== */
+/* =========================
+   Media Queries (Global)
+   ========================= */
+@media (max-width: 1000px) {
+  /* אם יש לך booking בעתיד - השארתי תשתית */
+}
+
+@media (max-width: 900px) {
+  .top-bar { padding-inline: 1.5rem; }
+  main { padding-inline: 1.5rem; }
+
+  .hero {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2.5rem 2rem;
+  }
+  .hero-image { width: 100%; height: 260px; }
+
+  .how-it-works .steps { flex-direction: column; }
+  .benefits-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  .auth-layout { flex-direction: column; }
+
+  /* Teachers: כרטיסים עמודה אחת */
+  .teachers-list { grid-template-columns: 1fr; }
+
+  /* Profile */
+  .profile-layout { grid-template-columns: 1fr; }
+
+  /* Teachers layout: יורד לעמודה אחת */
+  .teachers-page-layout{
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 750px) {
+  /* אם יש לך booking בעתיד - השארתי תשתית */
+}
+
+@media (max-width: 600px) {
+  .hero-image { width: 100%; height: 200px; }
+  .benefits-grid { grid-template-columns: 1fr; }
+  .logo-img { height: 80px; }
+
+  .top-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .logo-row {
+    display: grid;
+    grid-template-columns: 44px 1fr 44px;
+    align-items: center;
+    width: 100%;
+    padding: 0.25rem 0;
+    position: relative;
+    z-index: 1000;
+  }
+
+  .nav-toggle {
+    display: inline-flex;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    font-size: 22px;
+    line-height: 1;
+    position: relative;
+    z-index: 2000;
+    pointer-events: auto;
+    touch-action: manipulation;
+  }
+
+  .logo-link {
+    justify-self: center;
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    z-index: 1001;
+  }
+
+  .logo-spacer {
+    width: 44px;
+    height: 44px;
+  }
+
+  header nav {
+    width: 100%;
+    display: none;
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: 0.6rem;
+    position: relative;
+    z-index: 1500;
+  }
+
+  header nav.is-open { display: flex; }
+
+  .main-nav,
+  .auth-nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+    width: 100%;
+  }
+
+  .main-nav a,
+  .auth-nav a {
+    width: 100%;
+    display: block;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* =========================
+   Responsive for BOOK
+   ========================= */
 @media (max-width: 1000px) {
   .availability-page .booking-main-columns {
     grid-template-columns: 1fr 1fr;
@@ -1114,4 +1130,3 @@ footer {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
-

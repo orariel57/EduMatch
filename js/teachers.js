@@ -205,3 +205,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // renderTeachers(DEMO_TEACHERS);
   // resultsSection.style.display = "block";
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const cards = document.querySelectorAll(".teacher-card");
+
+  cards.forEach((card, index) => {
+    card.style.animationDelay = `${index * 0.1}s`;
+  });
+});

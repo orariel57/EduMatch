@@ -767,3 +767,16 @@ footer {
     align-items: flex-start;
   }
 }
+/*אנימציה 1- כרטיסיה עולה לאט */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.teacher-card {
+  opacity: 0;
+  animation: fadeUp 1s ease forwards;
+}
+
+
+

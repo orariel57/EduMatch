@@ -39,34 +39,28 @@
 
   <main>
 
-    <!-- כותרת -->
     <section class="page-header">
       <h1>חיפוש מורים</h1>
       <p>מצאו את המורה המושלם לפי מקצוע, עיר ומחיר.</p>
     </section>
 
-    <!-- ===== פריסת עמוד: פילטרים מימין + תוצאות משמאל ===== -->
     <div class="teachers-page-layout">
 
-      <!-- ===== צד ימין: פילטרים ===== -->
       <aside class="teachers-sidebar">
         <section class="teachers-filter-section">
           <form class="teachers-filter" id="search-form" action="#">
 
-            <!-- מקצוע -->
             <div class="form-row">
               <label for="filter-subject">מקצוע <span>*</span></label>
               <input type="text" id="filter-subject" name="subject" placeholder="לדוגמה: מתמטיקה, אנגלית" required
                 minlength="2">
             </div>
 
-            <!-- עיר -->
             <div class="form-row">
               <label for="filter-city">עיר</label>
               <input list="cities-list" id="filter-city" name="city" placeholder="בחר/י עיר">
             </div>
 
-            <!-- טווח מחירים -->
             <div class="form-row">
               <label for="search-price-range">טווח מחירים (ש"ח)</label>
 
@@ -76,13 +70,11 @@
               </div>
             </div>
 
-            <!-- חיפוש לפי שם -->
             <div class="form-row">
               <label for="filter-name">חיפוש לפי שם</label>
               <input type="text" id="filter-name" name="teacher-name" placeholder="לדוגמה: ישראל ישראלי">
             </div>
 
-            <!-- כפתורים -->
             <div class="form-row filter-actions">
               <button type="submit" class="btn-primary">חפש מורים</button>
               <button type="reset" class="btn-secondary">נקה סינון</button>
@@ -92,14 +84,11 @@
         </section>
       </aside>
 
-      <!-- ===== צד שמאל: תוצאות ===== -->
       <section class="teachers-results">
         <section class="teachers-list-section" id="results-section" style="display:none;">
           <h2>תוצאות חיפוש</h2>
 
-          <div class="teachers-list" id="teachers-list">
-            <!-- כאן ה-JS יכניס כרטיסים של מורים דינמיים -->
-          </div>
+          <div class="teachers-list" id="teachers-list"></div>
 
           <p class="empty-state" id="no-results" style="display:none;">
             לא נמצאו מורים מתאימים לחיפוש שביצעת.
@@ -109,7 +98,6 @@
 
     </div>
 
-    <!-- רשימת ערים -->
     <datalist id="cities-list">
       <option value="אופקים">
       <option value="אור יהודה">
@@ -165,39 +153,6 @@
       </div>
     </div>
   </footer>
-
-  <!-- בועת המחיר (כמו שהיה לך) -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const slider = document.getElementById("search-price-range");
-      const bubble = document.getElementById("search-price-bubble");
-      const form = document.getElementById("search-form");
-
-      const DEFAULT_PRICE = 150;
-
-      function updateBubble() {
-        const val = slider.value;
-        const min = slider.min;
-        const max = slider.max;
-        const percent = ((val - min) / (max - min)) * 100;
-
-        bubble.textContent = val;
-        bubble.style.left = `calc(${percent}%)`;
-      }
-
-      slider.value = DEFAULT_PRICE;
-      updateBubble();
-
-      slider.addEventListener("input", updateBubble);
-
-      form.addEventListener("reset", () => {
-        setTimeout(() => {
-          slider.value = DEFAULT_PRICE;
-          updateBubble();
-        }, 0);
-      });
-    });
-  </script>
 
   <script src="js/teachers.js"></script>
   <script src="./js/nav.js"></script>

@@ -4,7 +4,11 @@
 <head>
   <meta charset="UTF-8">
   <title>EduMatch | התחברות והרשמה</title>
+
+  <!-- התאמה למובייל -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- CSS ראשי -->
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" href="favicon.png">
 </head>
@@ -13,6 +17,7 @@
   <header>
     <div class="top-bar">
       <div class="logo-row">
+        <!-- כפתור תפריט למובייל (עובד עם nav.js) -->
         <button class="nav-toggle" aria-label="פתח תפריט" aria-expanded="false">☰</button>
 
         <a href="index.html" class="logo-link">
@@ -25,12 +30,12 @@
       <nav>
         <ul class="main-nav">
           <li><a href="index.html">דף הבית</a></li>
-          <li><a href="teachers.html" class="active">חיפוש מורים</a></li>
+          <li><a href="teachers.html">חיפוש מורים</a></li>
           <li><a href="profile.html">הפרופיל שלי</a></li>
         </ul>
 
         <ul class="auth-nav">
-          <li><a href="login.html">התחברות/הרשמה</a></li>
+          <li><a href="login.html" class="active">התחברות/הרשמה</a></li>
         </ul>
       </nav>
     </div>
@@ -39,6 +44,7 @@
   <main>
     <section class="auth-page" aria-labelledby="auth-page-title">
       <h1 id="auth-page-title">התחברות / הרשמה</h1>
+
       <p class="auth-intro">
         התחברו אם כבר יש לכם משתמש, או הרשמו למערכת כמורה או כתלמיד.
       </p>
@@ -48,7 +54,8 @@
       </p>
 
       <div class="auth-layout">
-        <!-- ===== קוביית התחברות ===== -->
+
+        <!-- טופס התחברות -->
         <form class="auth-card login-card" id="login-form" action="#" method="post" autocomplete="off">
           <h2>התחברות</h2>
           <p class="auth-card-desc">
@@ -74,7 +81,7 @@
           </div>
         </form>
 
-        <!-- ===== טופס הרשמה ===== -->
+        <!-- טופס הרשמה -->
         <form class="auth-card register-card" id="register-form" action="#" method="post" autocomplete="off">
           <h2>הרשמה</h2>
           <p class="auth-card-desc">
@@ -151,15 +158,12 @@
               <input list="cities-list" id="teacher-city" name="teacher-city" placeholder="התחל/י להקליד עיר">
             </div>
 
-            <!-- תחומי הוראה מרובים + מחיר לשעה לכל תחום -->
             <div class="form-row">
               <label>תחומי הוראה ומחיר לשעה</label>
 
               <div id="subjects-container" class="subjects-list">
                 <div class="subject-row">
                   <input type="text" name="teacher-subject-1" placeholder="לדוגמה: מתמטיקה">
-
-                  <!-- מספרים בלבד + מקלדת מספרים -->
                   <input type="number" name="teacher-price-1" min="0" step="1" inputmode="numeric" pattern="[0-9]*"
                     placeholder="מחיר לשעה">
                 </div>
@@ -201,6 +205,7 @@
       </div>
     </section>
 
+    <!-- רשימת ערים -->
     <datalist id="cities-list">
       <option value="אופקים">
       <option value="אור יהודה">
@@ -256,89 +261,7 @@
     </div>
   </footer>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const roleRadios = document.querySelectorAll("input[name='role']");
-      const teacherFields = document.querySelector(".role-teacher");
-      const studentFields = document.querySelector(".role-student");
-
-      function updateRoleFields() {
-        const selected = document.querySelector("input[name='role']:checked")?.value;
-
-        if (selected === 'teacher') {
-          if (teacherFields) teacherFields.style.display = 'block';
-          if (studentFields) studentFields.style.display = 'none';
-        } else {
-          if (teacherFields) teacherFields.style.display = 'none';
-          if (studentFields) studentFields.style.display = 'block';
-        }
-      }
-
-      roleRadios.forEach(radio => {
-        radio.addEventListener('change', updateRoleFields);
-      });
-
-      updateRoleFields();
-
-      // ========= הוספת מקצועות נוספים למורה =========
-      const addBtn = document.getElementById('add-subject-btn');
-      const subjectsContainer = document.getElementById('subjects-container');
-      let subjectIndex = 1;
-
-      if (addBtn && subjectsContainer) {
-        addBtn.addEventListener('click', function () {
-          subjectIndex++;
-
-          const row = document.createElement('div');
-          row.className = 'subject-row';
-
-          row.innerHTML = `
-            <input type="text" name="teacher-subject-${subjectIndex}" placeholder="מקצוע נוסף">
-            <input type="number" name="teacher-price-${subjectIndex}" min="0" step="1" inputmode="numeric" pattern="[0-9]*" placeholder="מחיר לשעה">
-          `;
-
-          subjectsContainer.appendChild(row);
-        });
-      }
-
-      // ========= בונוס: לנעול שדות מספריים לספרות בלבד (מונע e, -, ., וכו') =========
-      const numericNamesStartsWith = ['teacher-price-'];
-      const numericIds = ['teacher-experience', 'lesson-duration'];
-
-      document.addEventListener('input', (e) => {
-        const el = e.target;
-        if (!el) return;
-
-        const isPrice = (typeof el.name === 'string') && numericNamesStartsWith.some(prefix => el.name.startsWith(prefix));
-        const isOtherNumeric = numericIds.includes(el.id);
-
-        if (isPrice || isOtherNumeric) {
-          el.value = String(el.value).replace(/[^\d]/g, '');
-        }
-      });
-
-      // ========= דמו: מניעת שליחה אמיתית =========
-      const loginForm = document.getElementById("login-form");
-      const registerForm = document.getElementById("register-form");
-
-      if (loginForm) {
-        loginForm.addEventListener("submit", function (e) {
-          e.preventDefault();
-          alert("דמו בלבד 🙂 בשלב זה אין חיבור למסד נתונים ולכן לא מתבצע אימות משתמש.\nנעביר אותך לפרופיל דוגמה.");
-          window.location.href = "profile.html";
-        });
-      }
-
-      if (registerForm) {
-        registerForm.addEventListener("submit", function (e) {
-          e.preventDefault();
-          alert("דמו בלבד 🙂 בשלב זה אין שמירה של משתמש חדש כי אין DB.\nנעביר אותך לפרופיל דוגמה.");
-          window.location.href = "profile.html";
-        });
-      }
-    });
-  </script>
-
+  <script src="./js/login.js"></script>
   <script src="./js/nav.js"></script>
 </body>
 

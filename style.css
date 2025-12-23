@@ -3,17 +3,10 @@
    ========================= */
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Poppins:wght@500;600;700&display=swap');
 
-/* =========================
-   Variables
-   ========================= */
 :root {
   --primary: #0095B6;
-  /* כחול עיקרי */
   --secondary: #b9d9eb;
-  /* תכלת */
   --background: #F5F5DC;
-  /* בז' */
-
   --text: #222;
   --muted: #555;
 
@@ -60,7 +53,6 @@ a:hover {
   text-decoration: none;
 }
 
-/* ✅ חשוב: לא משנים לך את זה — אבל לוח השנה יקבל הגנות בהמשך */
 ul {
   list-style: none;
 }
@@ -103,6 +95,19 @@ h3 {
 }
 
 /* =========================
+   Reusable Layout Blocks
+   ========================= */
+.page-header {
+  margin-top: 0.5rem;
+  margin-bottom: 1.6rem;
+}
+
+.page-header p {
+  color: var(--muted);
+  margin-top: 0.35rem;
+}
+
+/* =========================
    Utility Base Classes
    ========================= */
 .card {
@@ -114,6 +119,14 @@ h3 {
 .pill {
   display: inline-block;
   border-radius: var(--radius-pill);
+}
+
+/* כרטיס לבן בסיסי */
+.surface {
+  background: #fff;
+  border-radius: var(--radius-24);
+  box-shadow: var(--shadow-card);
+  border: var(--border-soft);
 }
 
 /* =========================
@@ -151,7 +164,7 @@ h3 {
   color: #ffffff;
 }
 
-/* כפתור הוספת מקצוע – זהה לשאר הכפתורים באתר */
+/* כפתור הוספת מקצוע – שומר על העיצוב של האתר */
 .add-subject-btn {
   background-color: var(--primary);
   color: #fff;
@@ -230,6 +243,12 @@ nav {
   color: var(--primary);
 }
 
+
+.main-nav a.active {
+  color: var(--primary);
+  font-weight: 700;
+}
+
 .auth-nav a {
   font-size: 16px;
   padding: 0.5rem 1.1rem;
@@ -287,21 +306,16 @@ nav {
   border: none;
   background: rgba(255, 255, 255, 0.7);
   height: 320px;
-  /* תשני ל-280/300/360 לפי טעם */
   overflow: hidden;
-  /* חשוב כדי שהתמונה לא תברח מהפינות */
-
 }
 
 .hero-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* ממלא יפה בלי להימתח */
   display: block;
   border-radius: inherit;
 }
-
 
 /* =========================
    Home - How it works
@@ -433,45 +447,8 @@ footer {
 }
 
 /* =========================
-   Auth (Login / Register)
+   Forms (Shared)
    ========================= */
-.auth-page {
-  margin-top: 2rem;
-}
-
-.auth-page h1 {
-  margin-bottom: 0.5rem;
-}
-
-.auth-intro {
-  color: var(--muted);
-  margin-bottom: 2rem;
-}
-
-.auth-layout {
-  display: flex;
-  gap: 2rem;
-  align-items: flex-start;
-}
-
-.auth-card {
-  flex: 1;
-  background-color: #ffffff;
-  border-radius: var(--radius-24);
-  padding: 2rem 2.5rem;
-  box-shadow: var(--shadow-card);
-}
-
-.auth-card h2 {
-  margin-bottom: 0.3rem;
-}
-
-.auth-card-desc {
-  color: #666;
-  font-size: 14px;
-  margin-bottom: 1.5rem;
-}
-
 .form-row {
   display: flex;
   flex-direction: column;
@@ -511,6 +488,12 @@ footer {
   margin-top: 0.5rem;
 }
 
+.filter-actions {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+}
+
 .link-secondary {
   font-size: 14px;
   color: var(--primary);
@@ -546,6 +529,46 @@ footer {
 }
 
 /* =========================
+   Auth (Login / Register)
+   ========================= */
+.auth-page {
+  margin-top: 2rem;
+}
+
+.auth-page h1 {
+  margin-bottom: 0.5rem;
+}
+
+.auth-intro {
+  color: var(--muted);
+  margin-bottom: 2rem;
+}
+
+.auth-layout {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.auth-card {
+  flex: 1;
+  background-color: #ffffff;
+  border-radius: var(--radius-24);
+  padding: 2rem 2.5rem;
+  box-shadow: var(--shadow-card);
+}
+
+.auth-card h2 {
+  margin-bottom: 0.3rem;
+}
+
+.auth-card-desc {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 1.5rem;
+}
+
+/* =========================
    Price Slider (Bubble)
    ========================= */
 .price-slider-wrapper {
@@ -567,6 +590,8 @@ footer {
   font-weight: 600;
   pointer-events: none;
   transition: left 0.1s linear;
+  white-space: nowrap;
+  /* שלא יישבר */
 }
 
 .price-slider-wrapper input[type="range"] {
@@ -575,7 +600,42 @@ footer {
 }
 
 /* =========================
-   Teachers Page - OLD Grid + Cards (תוצאות)
+   Teachers Page - NEW Layout (Sidebar Right + Results Left)
+   ========================= */
+.teachers-page-layout {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  /* ימין פילטרים ושמאל תוצאות */
+  gap: 1.6rem;
+  align-items: start;
+}
+
+.teachers-filter-section {
+  margin-top: 0;
+}
+
+.teachers-sidebar .teachers-filter {
+  background: #ffffff;
+  border-radius: var(--radius-24);
+  padding: 1.6rem;
+  box-shadow: var(--shadow-card);
+  border: var(--border-soft);
+  display: flex;
+  flex-direction: column;
+}
+
+.teachers-sidebar .filter-actions button {
+  flex: 1;
+}
+
+.teachers-results {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* =========================
+   Teachers Page - Cards (Results)
    ========================= */
 .teachers-list-section {
   margin-top: 1.5rem;
@@ -597,6 +657,7 @@ footer {
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
+  opacity: 1;
 }
 
 .teacher-card h3 {
@@ -636,59 +697,6 @@ footer {
   font-size: 14px;
   color: #777;
   margin-top: 0.5rem;
-}
-
-/* =========================
-   Teachers Page - NEW Layout (Sidebar Right + Results Left)
-   ========================= */
-.teachers-page-layout {
-  display: grid;
-  grid-template-columns: 360px 1fr;
-  /* ימין פילטרים | שמאל תוצאות */
-  gap: 1.6rem;
-  align-items: start;
-}
-
-/* פילטרים בצד */
-.teachers-filter-section {
-  margin-top: 0;
-}
-
-.teachers-sidebar .teachers-filter {
-  background: #ffffff;
-  border-radius: var(--radius-24);
-  padding: 1.6rem;
-  box-shadow: var(--shadow-card);
-  border: var(--border-soft);
-  display: flex;
-  flex-direction: column;
-}
-
-/* כדי שהכפתורים ייראו טוב בעמודה */
-.teachers-sidebar .filter-actions {
-  display: flex;
-  gap: 0.8rem;
-  align-items: center;
-}
-
-.teachers-sidebar .filter-actions button {
-  flex: 1;
-}
-
-/* צד תוצאות */
-.teachers-results {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-}
-
-/* כרטיס רמז לפני חיפוש */
-.teachers-hint {
-  background-color: #ffffff;
-  border-radius: var(--radius-24);
-  padding: 1.4rem 1.6rem;
-  box-shadow: var(--shadow-card);
-  border: var(--border-soft);
 }
 
 /* =========================
@@ -776,7 +784,6 @@ footer {
 /* =========================
    Animations
    ========================= */
-/* אנימציה 1- כרטיסיה עולה לאט */
 @keyframes fadeUp {
   from {
     opacity: 0;
@@ -789,7 +796,6 @@ footer {
   }
 }
 
-/* ✅ שינוי קטן: שלא יישארו כרטיסים בלתי נראים אם משהו משתבש */
 .teacher-card {
   animation: fadeUp 1s ease forwards;
 }
@@ -827,14 +833,12 @@ footer {
 }
 
 /* =========================
-   BOOK Page (Calendar + Booking UI) ✅ (מחליף את הבלוק הישן)
-   תואם ל-HTML שלך: booking-*, calendar-grid, calendar-day
+   BOOK Page (Calendar + Booking UI)
    ========================= */
 .availability-page {
   padding-top: 2rem;
 }
 
-/* כותרת עמוד */
 .availability-page .page-header {
   margin-bottom: 1.5rem;
 }
@@ -844,7 +848,6 @@ footer {
   margin-top: 0.4rem;
 }
 
-/* כרטיס כללי בעמוד */
 .availability-page .booking-card {
   background: #fff;
   border-radius: var(--radius-24);
@@ -854,14 +857,12 @@ footer {
   margin-bottom: 1.2rem;
 }
 
-/* פריסה כללית */
 .availability-page .booking-layout {
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
 }
 
-/* כרטיס פרטי מורה */
 .availability-page .booking-teacher-card h2 {
   margin-bottom: 1rem;
 }
@@ -908,7 +909,6 @@ footer {
   color: var(--primary);
 }
 
-/* תגיות אופן שיעור */
 .availability-page .booking-lesson-modes {
   display: flex;
   flex-wrap: wrap;
@@ -928,7 +928,6 @@ footer {
   color: #0b5d70;
 }
 
-/* שלושת העמודות: יומן / שעות / סיכום */
 .availability-page .booking-main-columns {
   display: grid;
   grid-template-columns: 1.15fr 0.9fr 0.95fr;
@@ -996,7 +995,6 @@ footer {
   padding: 0.25rem 0;
 }
 
-/* ימי החודש */
 .availability-page .calendar-day {
   width: 44px;
   height: 44px;
@@ -1134,9 +1132,6 @@ footer {
 /* =========================
    Media Queries (Global)
    ========================= */
-@media (max-width: 1000px) {
-  /* אם יש לך booking בעתיד - השארתי תשתית */
-}
 
 @media (max-width: 900px) {
   .top-bar {
@@ -1186,9 +1181,6 @@ footer {
   }
 }
 
-@media (max-width: 750px) {
-  /* אם יש לך booking בעתיד - השארתי תשתית */
-}
 
 @media (max-width: 600px) {
   .hero-image {

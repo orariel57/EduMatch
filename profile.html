@@ -51,7 +51,7 @@
 
     <section class="profile-layout" id="profile-layout" style="display:none;">
 
-      <!-- ===== צד ימין ===== -->
+      <!-- צד ימין -->
       <aside class="profile-sidebar profile-card">
         <h2>פרטי משתמש</h2>
 
@@ -85,22 +85,22 @@
           <button type="button" class="btn-secondary" id="edit-profile-btn">ערוך פרטים</button>
         </div>
 
-        <!-- ===== טופס עריכה ===== -->
+        <!-- טופס עריכה -->
         <form id="edit-profile-form" class="profile-card" style="display:none; margin-top:16px;">
           <h3>עריכת פרטים</h3>
 
           <div class="form-row">
-            <label>שם מלא</label>
+            <label for="edit-fullName">שם מלא</label>
             <input type="text" id="edit-fullName" required />
           </div>
 
           <div class="form-row">
-            <label>טלפון</label>
+            <label for="edit-phone">טלפון</label>
             <input type="tel" id="edit-phone" required />
           </div>
 
           <div class="form-row">
-            <label>עיר</label>
+            <label for="edit-city">עיר</label>
             <input type="text" id="edit-city" />
           </div>
 
@@ -108,12 +108,12 @@
           <div id="teacher-edit-fields" style="display:none;">
 
             <div class="form-row">
-              <label>שנות ניסיון</label>
+              <label for="edit-experience">שנות ניסיון</label>
               <input type="number" id="edit-experience" min="0" />
             </div>
 
             <div class="form-row">
-              <label>משך שיעור (בדקות)</label>
+              <label for="edit-duration">משך שיעור (בדקות)</label>
               <input type="number" id="edit-duration" min="0" />
             </div>
 
@@ -123,8 +123,12 @@
             </div>
 
             <div class="form-row" style="display:flex; gap:8px;">
+              <label for="new-subject-name" class="visually-hidden">תחום לימוד</label>
               <input type="text" id="new-subject-name" placeholder="תחום לימוד" />
+
+              <label for="new-subject-price" class="visually-hidden">מחיר לשיעור</label>
               <input type="number" id="new-subject-price" placeholder="₪ לשיעור" min="0" />
+
               <button type="button" class="btn-secondary" id="add-subject-btn">➕</button>
             </div>
 
@@ -145,45 +149,45 @@
                   <tbody>
                     <tr>
                       <td>א'</td>
-                      <td><input type="checkbox" data-day="sun" /></td>
-                      <td><input type="time" data-start="sun" /></td>
-                      <td><input type="time" data-end="sun" /></td>
+                      <td><input type="checkbox" data-day="sun" aria-label="זמין ביום ראשון" /></td>
+                      <td><input type="time" data-start="sun" aria-label="שעת התחלה ביום ראשון" /></td>
+                      <td><input type="time" data-end="sun" aria-label="שעת סיום ביום ראשון" /></td>
                     </tr>
                     <tr>
                       <td>ב'</td>
-                      <td><input type="checkbox" data-day="mon" /></td>
-                      <td><input type="time" data-start="mon" /></td>
-                      <td><input type="time" data-end="mon" /></td>
+                      <td><input type="checkbox" data-day="mon" aria-label="זמין ביום שני" /></td>
+                      <td><input type="time" data-start="mon" aria-label="שעת התחלה ביום שני" /></td>
+                      <td><input type="time" data-end="mon" aria-label="שעת סיום ביום שני" /></td>
                     </tr>
                     <tr>
                       <td>ג'</td>
-                      <td><input type="checkbox" data-day="tue" /></td>
-                      <td><input type="time" data-start="tue" /></td>
-                      <td><input type="time" data-end="tue" /></td>
+                      <td><input type="checkbox" data-day="tue" aria-label="זמין ביום שלישי" /></td>
+                      <td><input type="time" data-start="tue" aria-label="שעת התחלה ביום שלישי" /></td>
+                      <td><input type="time" data-end="tue" aria-label="שעת סיום ביום שלישי" /></td>
                     </tr>
                     <tr>
                       <td>ד'</td>
-                      <td><input type="checkbox" data-day="wed" /></td>
-                      <td><input type="time" data-start="wed" /></td>
-                      <td><input type="time" data-end="wed" /></td>
+                      <td><input type="checkbox" data-day="wed" aria-label="זמין ביום רביעי" /></td>
+                      <td><input type="time" data-start="wed" aria-label="שעת התחלה ביום רביעי" /></td>
+                      <td><input type="time" data-end="wed" aria-label="שעת סיום ביום רביעי" /></td>
                     </tr>
                     <tr>
                       <td>ה'</td>
-                      <td><input type="checkbox" data-day="thu" /></td>
-                      <td><input type="time" data-start="thu" /></td>
-                      <td><input type="time" data-end="thu" /></td>
+                      <td><input type="checkbox" data-day="thu" aria-label="זמין ביום חמישי" /></td>
+                      <td><input type="time" data-start="thu" aria-label="שעת התחלה ביום חמישי" /></td>
+                      <td><input type="time" data-end="thu" aria-label="שעת סיום ביום חמישי" /></td>
                     </tr>
                     <tr>
                       <td>ו'</td>
-                      <td><input type="checkbox" data-day="fri" /></td>
-                      <td><input type="time" data-start="fri" /></td>
-                      <td><input type="time" data-end="fri" /></td>
+                      <td><input type="checkbox" data-day="fri" aria-label="זמין ביום שישי" /></td>
+                      <td><input type="time" data-start="fri" aria-label="שעת התחלה ביום שישי" /></td>
+                      <td><input type="time" data-end="fri" aria-label="שעת סיום ביום שישי" /></td>
                     </tr>
                     <tr>
                       <td>ש'</td>
-                      <td><input type="checkbox" data-day="sat" /></td>
-                      <td><input type="time" data-start="sat" /></td>
-                      <td><input type="time" data-end="sat" /></td>
+                      <td><input type="checkbox" data-day="sat" aria-label="זמין ביום שבת" /></td>
+                      <td><input type="time" data-start="sat" aria-label="שעת התחלה ביום שבת" /></td>
+                      <td><input type="time" data-end="sat" aria-label="שעת סיום ביום שבת" /></td>
                     </tr>
                   </tbody>
                 </table>
@@ -200,7 +204,7 @@
         </form>
       </aside>
 
-      <!-- ===== צד שמאל ===== -->
+      <!-- צד שמאל -->
       <section class="profile-main">
 
         <section class="profile-card" id="favorites-section">

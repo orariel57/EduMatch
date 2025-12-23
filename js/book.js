@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    //מאפשר לבחור אופן שיעור
+    // Allows selecting lesson mode
     function buildModeRadios(lessonMode) {
         const box = document.getElementById("summary-mode-box");
         if (!box) return;
@@ -53,13 +53,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // בדיקה האם למורה יש בכלל זמינות כלשהי
+    // Checks whether the teacher has any availability at all
     function hasAnyAvailability(av) {
         if (!av) return false;
         return Object.values(av).some((v) => v && v.enabled);
     }
 
-    //מטפל בשעות 
+    // Handles time
     function timeToMinutes(t) {
         const [h, m] = (t || "00:00").split(":").map(Number);
         return h * 60 + (m || 0);
@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
     }
 
-    // בניית סלוטים לשעות לפי זמינות של יום ומשך שיעור
+    // Builds time slots based on day availability and lesson duration
     function buildSlotsForDay(availabilityDay, durationMinutes) {
         if (!availabilityDay?.enabled) return [];
         if (!availabilityDay.start || !availabilityDay.end) return [];
@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return slots;
     }
 
-    // 2 דוגמאות למורים שהזינו זמינות 
+    // 2 example teachers who entered availability
     const DEMO_TEACHERS = [
         {
             fullName: "דנה לוי",
@@ -169,7 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const confirmBtn = document.getElementById("confirm-booking");
 
     // =========================
-    // 1) טעינת מורה מה-URL
+    // 1) Load teacher from URL
     // =========================
 
 
@@ -183,22 +183,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const teacherWeeklyAvailability = teacher?.availabilityWeekly || {};
 
-    // אם אין מורה בכלל
+    // If there is no teacher at all
     if (!teacher) {
         if (errorEl) errorEl.style.display = "block";
         return;
     }
 
-    // אם יש מורה אבל אין זמינות
+    // If there is a teacher but no availability
     if (!hasAnyAvailability(teacherWeeklyAvailability)) {
         if (noAvailEl) noAvailEl.style.display = "block";
         return;
     }
 
-    // מצב תקין: מציגים את ההזמנה
+    // Valid state: show booking layout
     if (layoutEl) layoutEl.style.display = "block";
 
-    // בחירת מקצוע להצגה
+    // Select subject to display
     const subjects = teacher.subjects || [];
     let chosen = null;
 
@@ -212,14 +212,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const duration = Number(teacher.duration || 60);
 
-    // הצגת פרטי מורה במסך
+    // Display teacher details on screen
     if (teacherNameEl) teacherNameEl.textContent = teacher.fullName || "—";
     if (teacherCityEl) teacherCityEl.textContent = teacher.city || "לא צוין";
     if (teacherSubjectEl) teacherSubjectEl.textContent = chosen.subject || "לא צוין";
     if (teacherPriceEl) teacherPriceEl.textContent = `${chosen.price ?? "—"} ש"ח`;
     if (durationLabelEl) durationLabelEl.textContent = `${duration} דקות`;
 
-    // הצגת פרטים בסיכום
+    // Display details in summary
     if (summaryDurationEl) summaryDurationEl.textContent = `${duration} דקות`;
     if (summaryPriceEl) summaryPriceEl.textContent = `${chosen.price ?? "—"} ש"ח`;
 
@@ -245,10 +245,10 @@ document.addEventListener("DOMContentLoaded", () => {
         summaryModeBox.addEventListener("change", updateModeChosenLine);
     }
 
-    // התחלת היומן
+    // Initialize calendar
     initCalendar();
 
-    // מאתחל חודש נוכחי + מאזינים למעבר חודשים
+    // Initialize current month + listeners for month navigation
     function initCalendar() {
         const today = new Date();
         currentYear = today.getFullYear();
@@ -260,7 +260,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("next-month")?.addEventListener("click", () => changeMonth(1));
     }
 
-    // מעבר חודש: מאפס בחירות ומרנדר מחדש
+    // Change month: reset selections and re-render
     function changeMonth(offset) {
         currentMonth += offset;
         if (currentMonth < 0) { currentMonth = 11; currentYear--; }
@@ -278,7 +278,7 @@ document.addEventListener("DOMContentLoaded", () => {
         renderCalendar(currentYear, currentMonth);
     }
 
-    // בדיקה אם המורה זמין ביום מסוים
+    // Check if teacher is available on a specific day
     function isTeacherAvailableOnDate(dateObj) {
         const key = dayKeyByGetDay[dateObj.getDay()];
         const dayAvail = teacherWeeklyAvailability?.[key];
@@ -292,11 +292,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const firstDayOfMonth = new Date(year, month, 1);
         const daysInMonth = new Date(year, month + 1, 0).getDate();
-        const startDayIndex = firstDayOfMonth.getDay(); // 0=א'
+        const startDayIndex = firstDayOfMonth.getDay(); // 0=Sun
 
         calendarMonthLabel.textContent = `${monthNamesHebrew[month]} ${year}`;
 
-        // ריבועים ריקים עד תחילת החודש
+        // Empty squares until month start
         for (let i = 0; i < startDayIndex; i++) {
             const blankCell = document.createElement("div");
             blankCell.className = "calendar-day calendar-day--empty";
@@ -316,7 +316,7 @@ document.addEventListener("DOMContentLoaded", () => {
             dayCell.classList.add("calendar-day");
             dayCell.textContent = day;
 
-            // סימון "היום"
+            // Mark "today"
             if (isSameMonthAsToday && day === today.getDate()) {
                 dayCell.classList.add("calendar-day--today");
             }
@@ -336,7 +336,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 dayCell.addEventListener("click", () => onDateSelected(year, month, day));
             }
 
-            // אם כבר נבחר תאריך – מסמנים אותו
+            // If a date is already selected – mark it
             if (
                 selectedDate &&
                 selectedDate.getFullYear() === year &&
@@ -350,7 +350,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // בחירת יום: מסמנים אותו וטוענים שעות
+    // Day selection: mark it and load times
     function onDateSelected(year, month, day) {
         selectedDate = new Date(year, month, day);
         selectedTime = null;
@@ -371,7 +371,7 @@ document.addEventListener("DOMContentLoaded", () => {
         updateConfirmButtonState();
     }
 
-    // טוען שעות זמינות לפי היום שנבחר
+    // Load available times for selected day
     function loadTimeSlotsForDate(dateObj) {
         if (!timeSlotsContainer || !timesHintEl) return;
 
@@ -400,7 +400,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // בחירת שעה: מסמנים אותה ומאפשרים אישור
+    // Time selection: mark it and enable confirmation
     function onTimeSelected(timeStr) {
         selectedTime = timeStr;
 
@@ -415,20 +415,20 @@ document.addEventListener("DOMContentLoaded", () => {
         updateConfirmButtonState();
     }
 
-    // עדכון טקסטים בסיכום כאשר מאפסים בחירה
+    // Update summary texts when resetting selection
     function updateSummary() {
         if (!selectedDate && summaryDateEl) summaryDateEl.textContent = "לא נבחר";
         if (!selectedTime && summaryTimeEl) summaryTimeEl.textContent = "לא נבחר";
     }
 
-    // כפתור אישור פעיל רק אם נבחר תאריך + שעה
+    // Confirmation button enabled only if date + time are selected
     function updateConfirmButtonState() {
         if (!confirmBtn) return;
         confirmBtn.disabled = !(selectedDate && selectedTime);
     }
 
-    // אישור הזמנה
-    // מציג הודעת אישור בעת הזמנה
+    // Booking confirmation
+    // Shows confirmation message on booking
     confirmBtn?.addEventListener("click", () => {
         if (!selectedDate || !selectedTime) return;
 

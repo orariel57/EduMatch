@@ -6,30 +6,30 @@ document.addEventListener("DOMContentLoaded", () => {
   const listEl = document.getElementById("teachers-list");
   const noResultsEl = document.getElementById("no-results");
 
-  // אלמנטים של סליידר מחיר + בועת מחיר
+  // Price slider elements + price bubble
   const slider = document.getElementById("search-price-range");
   const bubble = document.getElementById("search-price-bubble");
 
   if (!form || !resultsSection || !listEl || !noResultsEl) return;
 
-  // נתוני דמו של מורים
+  // Demo teachers data
   const DEMO_TEACHERS = getDemoTeachers();
 
-  // אתחול בועת מחיר + האזנה לשינויים בסליידר
+  // Initialize price bubble + listen to slider changes
   initPriceBubble(slider, bubble, form, 150);
 
-  // חיבור אירועי הטופס (חיפוש / ניקוי)
+  // Bind form events (search / reset)
   bindFormEvents(form, resultsSection, listEl, noResultsEl, DEMO_TEACHERS);
 });
 
 
-// מנרמל טקסט להשוואות: מוריד רווחים וממיר לאותיות קטנות
+// Normalizes text for comparisons: trims spaces and converts to lowercase
 function normalize(str) {
   return (str || "").trim().toLowerCase();
 }
 
 
-// דוגמאות למורים
+// Teacher examples
 function getDemoTeachers() {
   return [
     {
@@ -83,31 +83,31 @@ function getDemoTeachers() {
 
 function bindFormEvents(form, resultsSection, listEl, noResultsEl, allTeachers) {
   form.addEventListener("submit", (e) => {
-    // מונע שליחה אמיתית של הטופס (אין שרת בשלב הדמו)
+    // Prevent actual form submission (no server in demo stage)
     e.preventDefault();
 
-    // קורא פילטרים מהטופס
+    // Read filters from form
     const filters = readFiltersFromForm();
 
-    // מסנן מורים לפי הפילטרים
+    // Filter teachers by the filters
     const results = filterTeachers(allTeachers, filters);
 
-    // מציג את אזור התוצאות
+    // Show results section
     showResults(resultsSection);
 
-    // אם אין תוצאות 
+    // If there are no results 
     if (results.length === 0) {
       showNoResults(listEl, noResultsEl);
       return;
     }
 
-    // יש תוצאות -> מסתיר הודעת "אין תוצאות" ומרנדר כרטיסים
+    // Results exist -> hide "no results" message and render cards
     hideNoResults(noResultsEl);
     renderTeachers(results, listEl, { subject: filters.subject });
   });
 
   form.addEventListener("reset", () => {
-    // בניקוי: מסתירים את תוצאות החיפוש ומנקים רשימות/הודעות
+    // On reset: hide search results and clear lists/messages
     hideResults(resultsSection);
     clearList(listEl);
     hideNoResults(noResultsEl);
@@ -115,7 +115,7 @@ function bindFormEvents(form, resultsSection, listEl, noResultsEl, allTeachers) 
 }
 
 
-// קורא את ערכי הטופס ומחזיר אובייקט פילטרים
+// Reads form values and returns a filters object
 function readFiltersFromForm() {
   const subject = normalize(document.getElementById("filter-subject")?.value);
   const city = normalize(document.getElementById("filter-city")?.value);
@@ -133,16 +133,16 @@ function readFiltersFromForm() {
 }
 
 
-// מסנן מורים לפי: שם / עיר / מקצוע / מחיר
-// • מקצוע+מחיר: אותו מקצוע צריך גם לעמוד במחיר
+// Filters teachers by: name / city / subject / price
+// • Subject+price: the same subject must also match the price
 function filterTeachers(allTeachers, filters) {
   return allTeachers.filter((t) => {
-    // • סינון לפי שם
+    // • Filter by name
     if (filters.name) {
       if (!normalize(t.fullName).includes(filters.name)) return false;
     }
 
-    //  סינון לפי עיר 
+    //  Filter by city 
     if (filters.city) {
       if (normalize(t.city) !== filters.city) return false;
     }
@@ -151,7 +151,7 @@ function filterTeachers(allTeachers, filters) {
     const hasSubjectFilter = !!filters.subject;
     const hasPriceFilter = typeof filters.maxPrice === "number";
 
-    // סינון לפי מקצוע / מחיר (או שניהם)
+    // Filter by subject / price (or both)
     if (hasSubjectFilter || hasPriceFilter) {
       const ok = subjects.some((s) => {
         const subjectOk = !hasSubjectFilter ? true : normalize(s.subject).includes(filters.subject);
@@ -172,17 +172,17 @@ function renderTeachers(teachers, listEl, renderOptions = {}) {
   clearList(listEl);
 
   teachers.forEach((t) => {
-    // בוחר איזה מקצוע להציג בכרטיס)
+    // Choose which subject to display on the card)
     const chosenSubject = chooseSubjectForCard(t, renderOptions.subject);
 
     const card = buildTeacherCard(t, chosenSubject);
 
-    // כפתור "מועדפים" (דמו בלבד)
+    // "Favorites" button (demo only)
     card.querySelector(".add-fav-btn")?.addEventListener("click", () => {
       alert("המורה נוסף למועדפים! (דמו)");
     });
 
-    // כפתור בדוק זמינות- מעבר לעמוד book
+    // Check availability button - navigate to book page
     card.querySelector(".check-availability-btn")?.addEventListener("click", () => {
       window.location.href = buildBookUrl(t.email, chosenSubject.subject);
     });
@@ -192,7 +192,7 @@ function renderTeachers(teachers, listEl, renderOptions = {}) {
 }
 
 
-// בוחר מקצוע לתצוגה בכרטיס
+// Choose subject to display on card
 function chooseSubjectForCard(teacher, normalizedSubjectFilter) {
   const subjects = teacher.subjects || [];
   let chosen = null;
@@ -206,7 +206,7 @@ function chooseSubjectForCard(teacher, normalizedSubjectFilter) {
 }
 
 
-// בונה כרטיס למורה
+// Build a teacher card
 function buildTeacherCard(teacher, chosenSubject) {
   const card = document.createElement("article");
   card.className = "teacher-card";
@@ -239,7 +239,7 @@ function buildTeacherCard(teacher, chosenSubject) {
 }
 
 
-// מחזיר תווית בעברית לאופן שיעור
+// Returns Hebrew label for lesson mode
 function getLessonModeLabel(mode) {
   return mode === "online" ? "אונליין" : mode === "in-person" ? "פרונטלי" : "שניהם";
 }
@@ -250,39 +250,39 @@ function buildBookUrl(email, subject) {
 }
 
 
-// מציג את אזור התוצאות
+// Show the results section
 function showResults(resultsSection) {
   resultsSection.style.display = "block";
 }
 
 
-// מסתיר את אזור התוצאות
+// Hide the results section
 function hideResults(resultsSection) {
   resultsSection.style.display = "none";
 }
 
 
-// מציג הודעת "אין תוצאות" ומנקה רשימה
+// Show "no results" message and clear list
 function showNoResults(listEl, noResultsEl) {
   clearList(listEl);
   noResultsEl.style.display = "block";
 }
 
 
-// מסתיר הודעת "אין תוצאות"
+// Hide "no results" message
 function hideNoResults(noResultsEl) {
   noResultsEl.style.display = "none";
 }
 
 
-// מנקה את רשימת הכרטיסים
+// Clear the cards list
 function clearList(listEl) {
   listEl.innerHTML = "";
 }
-// מודול: בועת מחיר של הסליידר
+// Module: slider price bubble
 
-// מציב בועה מעל הסליידר שמראה את הערך הנבחר
-// מאפס לערך ברירת מחדל בלחיצה על ניקוי טופס
+// Positions a bubble above the slider showing the selected value
+// Resets to a default value when the form is reset
 function initPriceBubble(slider, bubble, form, defaultValue = 150) {
   if (!slider || !bubble || !form) return;
 
@@ -296,14 +296,14 @@ function initPriceBubble(slider, bubble, form, defaultValue = 150) {
     bubble.style.left = `calc(${percent}%)`;
   }
 
-  // אתחול ערך ברירת מחדל
+  // Initialize default value
   slider.value = String(defaultValue);
   updateBubble();
 
-  // עדכון בזמן גרירה
+  // Update while dragging
   slider.addEventListener("input", updateBubble);
 
-  //מחזירים לברירת המחדל ומעדכנים בועה לאחר ניקוי טופס
+  // Reset to default and update bubble after form reset
   form.addEventListener("reset", () => {
     setTimeout(() => {
       slider.value = String(defaultValue);

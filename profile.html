@@ -51,7 +51,7 @@
 
     <section class="profile-layout" id="profile-layout" style="display:none;">
 
-      <!-- צד ימין -->
+      <!-- Right side -->
       <aside class="profile-sidebar profile-card">
         <h2>פרטי משתמש</h2>
 
@@ -85,7 +85,7 @@
           <button type="button" class="btn-secondary" id="edit-profile-btn">ערוך פרטים</button>
         </div>
 
-        <!-- טופס עריכה -->
+        <!-- Edit form -->
         <form id="edit-profile-form" class="profile-card" style="display:none; margin-top:16px;">
           <h3>עריכת פרטים</h3>
 
@@ -104,7 +104,7 @@
             <input type="text" id="edit-city" />
           </div>
 
-          <!-- ===== שדות מורה בלבד ===== -->
+          <!-- ===== Teacher-only fields ===== -->
           <div id="teacher-edit-fields" style="display:none;">
 
             <div class="form-row">
@@ -123,16 +123,16 @@
             </div>
 
             <div class="form-row" style="display:flex; gap:8px;">
-              <label for="new-subject-name" class="visually-hidden">תחום לימוד</label>
+              <label for="new-subject-name" class="visually-hidden">Study subject</label>
               <input type="text" id="new-subject-name" placeholder="תחום לימוד" />
 
-              <label for="new-subject-price" class="visually-hidden">מחיר לשיעור</label>
+              <label for="new-subject-price" class="visually-hidden">Price per lesson</label>
               <input type="number" id="new-subject-price" placeholder="₪ לשיעור" min="0" />
 
               <button type="button" class="btn-secondary" id="add-subject-btn">➕</button>
             </div>
 
-            <!-- ===== זמינות שבועית ===== -->
+            <!-- ===== Weekly availability ===== -->
             <div class="form-row" style="margin-top:20px;">
               <label>זמינות שבועית</label>
 
@@ -149,45 +149,45 @@
                   <tbody>
                     <tr>
                       <td>א'</td>
-                      <td><input type="checkbox" data-day="sun" aria-label="זמין ביום ראשון" /></td>
-                      <td><input type="time" data-start="sun" aria-label="שעת התחלה ביום ראשון" /></td>
-                      <td><input type="time" data-end="sun" aria-label="שעת סיום ביום ראשון" /></td>
+                      <td><input type="checkbox" data-day="sun" aria-label="Available on Sunday" /></td>
+                      <td><input type="time" data-start="sun" aria-label="Start time on Sunday" /></td>
+                      <td><input type="time" data-end="sun" aria-label="End time on Sunday" /></td>
                     </tr>
                     <tr>
                       <td>ב'</td>
-                      <td><input type="checkbox" data-day="mon" aria-label="זמין ביום שני" /></td>
-                      <td><input type="time" data-start="mon" aria-label="שעת התחלה ביום שני" /></td>
-                      <td><input type="time" data-end="mon" aria-label="שעת סיום ביום שני" /></td>
+                      <td><input type="checkbox" data-day="mon" aria-label="Available on Monday" /></td>
+                      <td><input type="time" data-start="mon" aria-label="Start time on Monday" /></td>
+                      <td><input type="time" data-end="mon" aria-label="End time on Monday" /></td>
                     </tr>
                     <tr>
                       <td>ג'</td>
-                      <td><input type="checkbox" data-day="tue" aria-label="זמין ביום שלישי" /></td>
-                      <td><input type="time" data-start="tue" aria-label="שעת התחלה ביום שלישי" /></td>
-                      <td><input type="time" data-end="tue" aria-label="שעת סיום ביום שלישי" /></td>
+                      <td><input type="checkbox" data-day="tue" aria-label="Available on Tuesday" /></td>
+                      <td><input type="time" data-start="tue" aria-label="Start time on Tuesday" /></td>
+                      <td><input type="time" data-end="tue" aria-label="End time on Tuesday" /></td>
                     </tr>
                     <tr>
                       <td>ד'</td>
-                      <td><input type="checkbox" data-day="wed" aria-label="זמין ביום רביעי" /></td>
-                      <td><input type="time" data-start="wed" aria-label="שעת התחלה ביום רביעי" /></td>
-                      <td><input type="time" data-end="wed" aria-label="שעת סיום ביום רביעי" /></td>
+                      <td><input type="checkbox" data-day="wed" aria-label="Available on Wednesday" /></td>
+                      <td><input type="time" data-start="wed" aria-label="Start time on Wednesday" /></td>
+                      <td><input type="time" data-end="wed" aria-label="End time on Wednesday" /></td>
                     </tr>
                     <tr>
                       <td>ה'</td>
-                      <td><input type="checkbox" data-day="thu" aria-label="זמין ביום חמישי" /></td>
-                      <td><input type="time" data-start="thu" aria-label="שעת התחלה ביום חמישי" /></td>
-                      <td><input type="time" data-end="thu" aria-label="שעת סיום ביום חמישי" /></td>
+                      <td><input type="checkbox" data-day="thu" aria-label="Available on Thursday" /></td>
+                      <td><input type="time" data-start="thu" aria-label="Start time on Thursday" /></td>
+                      <td><input type="time" data-end="thu" aria-label="End time on Thursday" /></td>
                     </tr>
                     <tr>
                       <td>ו'</td>
-                      <td><input type="checkbox" data-day="fri" aria-label="זמין ביום שישי" /></td>
-                      <td><input type="time" data-start="fri" aria-label="שעת התחלה ביום שישי" /></td>
-                      <td><input type="time" data-end="fri" aria-label="שעת סיום ביום שישי" /></td>
+                      <td><input type="checkbox" data-day="fri" aria-label="Available on Friday" /></td>
+                      <td><input type="time" data-start="fri" aria-label="Start time on Friday" /></td>
+                      <td><input type="time" data-end="fri" aria-label="End time on Friday" /></td>
                     </tr>
                     <tr>
                       <td>ש'</td>
-                      <td><input type="checkbox" data-day="sat" aria-label="זמין ביום שבת" /></td>
-                      <td><input type="time" data-start="sat" aria-label="שעת התחלה ביום שבת" /></td>
-                      <td><input type="time" data-end="sat" aria-label="שעת סיום ביום שבת" /></td>
+                      <td><input type="checkbox" data-day="sat" aria-label="Available on Saturday" /></td>
+                      <td><input type="time" data-start="sat" aria-label="Start time on Saturday" /></td>
+                      <td><input type="time" data-end="sat" aria-label="End time on Saturday" /></td>
                     </tr>
                   </tbody>
                 </table>
@@ -204,7 +204,7 @@
         </form>
       </aside>
 
-      <!-- צד שמאל -->
+      <!-- Left side -->
       <section class="profile-main">
 
         <section class="profile-card" id="favorites-section">

@@ -121,7 +121,7 @@ h3 {
   border-radius: var(--radius-pill);
 }
 
-/* כרטיס לבן בסיסי */
+/* Basic white card */
 .surface {
   background: #fff;
   border-radius: var(--radius-24);
@@ -164,7 +164,7 @@ h3 {
   color: #ffffff;
 }
 
-/* כפתור הוספת מקצוע – שומר על העיצוב של האתר */
+/* Add subject button – preserves the site's design */
 .add-subject-btn {
   background-color: var(--primary);
   color: #fff;

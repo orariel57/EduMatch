@@ -5,10 +5,10 @@
   <meta charset="UTF-8">
   <title>EduMatch | התחברות והרשמה</title>
 
-  <!-- התאמה למובייל -->
+  <!-- Mobile responsiveness -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- CSS ראשי -->
+  <!-- Main CSS -->
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" href="favicon.png">
 </head>
@@ -17,7 +17,7 @@
   <header>
     <div class="top-bar">
       <div class="logo-row">
-        <!-- כפתור תפריט למובייל (עובד עם nav.js) -->
+        <!-- Mobile menu button (works with nav.js) -->
         <button class="nav-toggle" aria-label="פתח תפריט" aria-expanded="false">☰</button>
 
         <a href="index.html" class="logo-link">
@@ -50,12 +50,12 @@
       </p>
 
       <p class="auth-intro" style="opacity:.85;">
-        * דמו סטטי בלבד: בשלב זה אין חיבור למסד נתונים ולכן אין שמירה/אימות משתמשים.
+        * Static demo only: at this stage there is no database connection, so there is no user saving/verification.
       </p>
 
       <div class="auth-layout">
 
-        <!-- טופס התחברות -->
+        <!-- Login form -->
         <form class="auth-card login-card" id="login-form" action="#" method="post" autocomplete="off">
           <h2>התחברות</h2>
           <p class="auth-card-desc">
@@ -81,7 +81,7 @@
           </div>
         </form>
 
-        <!-- טופס הרשמה -->
+        <!-- Registration form -->
         <form class="auth-card register-card" id="register-form" action="#" method="post" autocomplete="off">
           <h2>הרשמה</h2>
           <p class="auth-card-desc">
@@ -115,7 +115,7 @@
             <p class="error-message"></p>
           </div>
 
-          <!-- בחירת תפקיד -->
+          <!-- Role selection -->
           <div class="form-row">
             <span class="field-label">תפקיד במערכת:</span>
             <div class="options-row">
@@ -130,7 +130,7 @@
             </div>
           </div>
 
-          <!-- מצב מועדף לשיעור -->
+          <!-- Preferred lesson mode -->
           <div class="form-row">
             <span class="field-label">מצב מועדף לשיעור:</span>
             <div class="options-row">
@@ -149,7 +149,7 @@
             </div>
           </div>
 
-          <!-- פרטים למורה -->
+          <!-- Teacher details -->
           <div class="role-fields role-teacher" style="display:none;">
             <h3>פרטים למורה</h3>
 
@@ -187,7 +187,7 @@
             </div>
           </div>
 
-          <!-- תנאי שימוש -->
+          <!-- Terms of use -->
           <div class="form-row checkbox-row">
             <label>
               <input type="checkbox" name="terms" required>
@@ -205,7 +205,7 @@
       </div>
     </section>
 
-    <!-- רשימת ערים -->
+    <!-- Cities list -->
     <datalist id="cities-list">
       <option value="אופקים">
       <option value="אור יהודה">

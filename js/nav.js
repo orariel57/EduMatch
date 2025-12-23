@@ -1,14 +1,14 @@
 //nav.js
-// תפריט המבורגר
-// איפוס מצב התפריט בחזרה לדסקטופ
+// Hamburger menu
+// Reset menu state back to desktop
 
 document.addEventListener("DOMContentLoaded", () => {
   initMobileNavigation();
 });
 
-// מאתחל את כל לוגיקת הניווט
+// Initializes all navigation logic
 function initMobileNavigation() {
-  const toggle = document.querySelector(".nav-toggle"); // כפתור תפריט (☰)
+  const toggle = document.querySelector(".nav-toggle"); // Menu button (☰)
   const nav = document.querySelector("header nav");
 
   if (!toggle || !nav) return;
@@ -17,10 +17,10 @@ function initMobileNavigation() {
   bindResizeReset(toggle, nav);
 }
 
-// מטפל בלחיצה על כפתור התפריט (פתיחה / סגירה)
+// Handles click on the menu button (open / close)
 function bindToggleClick(toggle, nav) {
   toggle.addEventListener("click", () => {
-    const isOpen = nav.classList.toggle("is-open"); // הוספת / הסרת מחלקה
+    const isOpen = nav.classList.toggle("is-open"); // Add / remove class
 
     toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
 
@@ -28,7 +28,7 @@ function bindToggleClick(toggle, nav) {
   });
 }
 
-// סוגר את התפריט אוטומטית כאשר עוברים חזרה למסך רחב (דסקטופ)
+// Closes the menu automatically when switching back to a wide screen (desktop)
 function bindResizeReset(toggle, nav) {
   window.addEventListener("resize", () => {
     if (window.innerWidth > 600) {

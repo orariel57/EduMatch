@@ -1,9 +1,9 @@
 // js/login.js
 document.addEventListener("DOMContentLoaded", () => {
-    // הצגה/הסתרה של שדות לפי תפקיד (תלמיד/מורה)
+    // Show/hide fields based on role (student/teacher)
     const roleRadios = document.querySelectorAll("input[name='role']");
     const teacherFields = document.querySelector(".role-teacher");
-    const studentFields = document.querySelector(".role-student"); // כרגע לא קיים ב-HTML, אבל נשאר ליכולת הרחבה
+    const studentFields = document.querySelector(".role-student"); // Currently not present in HTML, but kept for future extensibility
 
     function updateRoleFields() {
         const selected = document.querySelector("input[name='role']:checked")?.value;
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateRoleFields();
 
 
-    // הוספת מקצועות נוספים (רק למורה)
+    // Add additional subjects (teacher only)
     const addBtn = document.getElementById("add-subject-btn");
     const subjectsContainer = document.getElementById("subjects-container");
     let subjectIndex = 1;
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // נעילת שדות מספריים לספרות בלבד
+    // Restrict numeric fields to digits only
     const numericNamesStartsWith = ["teacher-price-"];
     const numericIds = ["teacher-experience", "lesson-duration"];
 
@@ -62,11 +62,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // דמו: מניעת שליחה אמיתית של הטפסים
+    // Demo: prevent actual form submission
     const loginForm = document.getElementById("login-form");
     const registerForm = document.getElementById("register-form");
 
-    // ===== אנימציית שגיאה (Shake) לשדות לא תקינים =====
+    // ===== Error animation (Shake) for invalid fields =====
     function triggerInputErrorAnimation(inputEl) {
         if (!inputEl) return;
 
@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 450);
     }
 
-    // מריצים "shake" על כל השדות הלא תקינים בטופס
+    // Run "shake" on all invalid fields in the form
     function shakeInvalidFields(formEl) {
         if (!formEl) return;
 
@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (loginForm) {
-        // אם יש שדות לא תקינים- נריץ shake
+        // If there are invalid fields – run shake
         loginForm.addEventListener("submit", (e) => {
             if (!loginForm.checkValidity()) {
                 e.preventDefault();
@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
             window.location.href = "profile.html";
         });
 
-        //גם אם הדפדפן מציג הודעת ולידציה נריץ shake
+        // Even if the browser shows a validation message, run shake
         loginForm.addEventListener("invalid", (e) => {
             e.preventDefault();
             triggerInputErrorAnimation(e.target);
@@ -123,7 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
             window.location.href = "profile.html";
         });
 
-        // גם אם הדפדפן מציג הודעת ולידציה (בלי submit תקין) – נריץ shake
+        // Even if the browser shows a validation message (without valid submit) – run shake
         registerForm.addEventListener("invalid", (e) => {
             e.preventDefault();
             triggerInputErrorAnimation(e.target);

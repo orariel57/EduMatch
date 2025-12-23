@@ -1,15 +1,15 @@
 // js/profile.js
-// מציג פרופיל מורה/תלמיד ומאפשר "עריכה" לתצוגה בלבד.
+// Displays a teacher/student profile and allows "editing" for display purposes only.
 
 document.addEventListener("DOMContentLoaded", () => {
   const noUserCard = document.getElementById("no-user-card");
   const layout = document.getElementById("profile-layout");
 
-  // דמו: בחירת תפקיד
-  // לשינוי מהיר של הדמו: "teacher" / "student"
+  // Demo: choose role
+  // For quick demo change: "teacher" / "student"
   const DEMO_ROLE = "teacher";
 
-  // פרופיל דמו של מורה
+  // Demo teacher profile
   const DEMO_USER_TEACHER = {
     role: "teacher",
     fullName: "דנה לוי",
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   };
 
-  // פרופיל דמו של תלמיד
+  // Demo student profile
   const DEMO_USER_STUDENT = {
     role: "student",
     fullName: "נועה כהן",
@@ -43,12 +43,12 @@ document.addEventListener("DOMContentLoaded", () => {
     city: "תל אביב-יפו",
   };
 
-  //  יצירת "משתמש מחובר" בדמו 
-  // אם רוצים להדגים מצב "לא מחובר:
+  //  Create a "logged-in user" in demo 
+  // If you want to demo a "not logged in" state:
   // const user = null;
   const user = getDemoUser(DEMO_ROLE, DEMO_USER_TEACHER, DEMO_USER_STUDENT);
 
-  // אלמנטים להצגת פרטי פרופיל 
+  // Elements for displaying profile details 
   const ui = {
     greetingEl: document.getElementById("profile-greeting"),
     nameEl: document.getElementById("profile-name"),
@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
     favoritesSection: document.getElementById("favorites-section"),
   };
 
-  //  אלמנטים לעריכה 
+  //  Elements for editing 
   const edit = {
     editBtn: document.getElementById("edit-profile-btn"),
     editForm: document.getElementById("edit-profile-form"),
@@ -83,24 +83,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   if (!user) {
-    // מציג הודעה "אין משתמש" ומסתיר את כל הפרופיל
+    // Show "no user" message and hide the entire profile
     showNoUserState(noUserCard, layout);
     return;
   }
 
-  // מציג פרופיל + מסתיר הודעת "אין משתמש"
+  // Show profile + hide "no user" message
   showUserState(noUserCard, layout);
 
-  // כותב ברכת שלום לפי שם פרטי
+  // Write greeting based on first name
   renderGreeting(ui.greetingEl, user);
 
-  // מציג נתונים בסיסיים בפרופיל (שם/מייל/עיר)
+  // Display basic profile data (name/email/city)
   renderBasicProfile(ui, user);
 
-  // מציג תפקיד ותוכן מתאים (מורה/תלמיד)
+  // Display role and matching content (teacher/student)
   renderRoleSpecificProfile(ui, user);
 
-  // מחבר אירועים של עריכה (פתיחה/סגירה/שמירה/הוספת מקצוע)
+  // Bind edit events (open/close/save/add subject)
   bindEditEvents(user, ui, edit, dayKeys);
 });
 
@@ -109,33 +109,33 @@ function getDemoUser(role, teacher, student) {
   return role === "teacher" ? teacher : student;
 }
 
-// מצב "אין משתמש" -> מציג כרטיס מתאים ומסתיר פרופיל
+// "No user" state -> shows the proper card and hides profile
 function showNoUserState(noUserCard, layout) {
   if (noUserCard) noUserCard.style.display = "block";
   if (layout) layout.style.display = "none";
 }
 
-// מצב "יש משתמש" -> מסתיר כרטיס "אין משתמש" ומציג פרופיל
+// "User exists" state -> hides "no user" card and shows profile
 function showUserState(noUserCard, layout) {
   if (noUserCard) noUserCard.style.display = "none";
   if (layout) layout.style.display = "grid";
 }
 
-//  כותב "שלום + {שם}," לפי מילה ראשונה של fullName
+//  Writes "Hello + {name}," based on the first word of fullName
 function renderGreeting(greetingEl, user) {
   if (!greetingEl || !user?.fullName) return;
   const firstName = user.fullName.split(" ")[0];
   greetingEl.textContent = `שלום ${firstName},`;
 }
 
-// מציג שם/מייל/עיר בפרופיל
+// Displays name/email/city in the profile
 function renderBasicProfile(ui, user) {
   if (ui.nameEl) ui.nameEl.textContent = user.fullName || "—";
   if (ui.emailEl) ui.emailEl.textContent = user.email || "—";
   if (ui.cityEl) ui.cityEl.textContent = user.city || "—";
 }
 
-// מציג תוכן שונה למורה מול תלמיד
+// Displays different content for teacher vs student
 function renderRoleSpecificProfile(ui, user) {
   if (user.role === "teacher") {
     if (ui.rolePill) ui.rolePill.textContent = "מורה";
@@ -156,7 +156,7 @@ function renderRoleSpecificProfile(ui, user) {
   }
 }
 
-// מחבר את כל אירועי העריכה: פתיחה/סגירה/הוספת מקצוע/שמירה
+// Binds all edit events: open/close/add subject/save
 function bindEditEvents(user, ui, edit, dayKeys) {
   if (edit.editBtn) edit.editBtn.addEventListener("click", () => openEditForm(user, edit, dayKeys));
   if (edit.cancelBtn) edit.cancelBtn.addEventListener("click", () => closeEditForm(edit));
@@ -177,7 +177,7 @@ function bindEditEvents(user, ui, edit, dayKeys) {
   }
 }
 
-// פותח את טופס העריכה וממלא אותו בערכי המשתמש
+// Opens the edit form and populates it with the user's values
 function openEditForm(user, edit, dayKeys) {
   if (!edit.editForm) return;
 
@@ -199,13 +199,13 @@ function openEditForm(user, edit, dayKeys) {
   edit.editForm.style.display = "block";
 }
 
-// סוגר את טופס העריכה (בלי לשמור)
+// Closes the edit form (without saving)
 function closeEditForm(edit) {
   if (!edit.editForm) return;
   edit.editForm.style.display = "none";
 }
 
-// מוסיף מקצוע חדש 
+// Adds a new subject 
 function addSubject(user, edit) {
   const subject = (edit.newSubjectName?.value || "").trim();
   const price = Number(edit.newSubjectPrice?.value || 0);
@@ -226,7 +226,7 @@ function addSubject(user, edit) {
   if (edit.newSubjectPrice) edit.newSubjectPrice.value = "";
 }
 
-// עריכת מקצועות
+// Edit subjects
 function renderSubjects(user, edit) {
   if (!edit.subjectsList || user.role !== "teacher") return;
 
@@ -252,7 +252,7 @@ function renderSubjects(user, edit) {
   });
 }
 
-// קורא זמינות שבועית מהטופס
+// Reads weekly availability from the form
 function getWeeklyAvailabilityFromForm(dayKeys) {
   const weekly = {};
   dayKeys.forEach((day) => {
@@ -274,7 +274,7 @@ function getWeeklyAvailabilityFromForm(dayKeys) {
   return weekly;
 }
 
-// טוען זמינות שבועית לתוך הטופס
+// Loads weekly availability into the form
 function setWeeklyAvailabilityToForm(weekly, dayKeys) {
   const data = weekly || {};
   dayKeys.forEach((day) => {
@@ -290,7 +290,7 @@ function setWeeklyAvailabilityToForm(weekly, dayKeys) {
   });
 }
 
-// • בדיקת תקינות לזמינות: חובה התחלה+סיום, וסיום אחרי התחלה
+// • Availability validation: start+end required, and end after start
 function validateWeeklyAvailability(weekly) {
   for (const [day, obj] of Object.entries(weekly || {})) {
     if (!obj || obj.enabled === false) continue;
@@ -304,7 +304,7 @@ function validateWeeklyAvailability(weekly) {
   return { ok: true };
 }
 
-// • שומר "עריכה" לתצוגה בלבד + מרענן טקסטים במסך
+// • Saves "edits" for display only + refreshes texts on screen
 function submitEditForm(user, ui, edit, dayKeys) {
   const newFullName = (edit.editFullName?.value || "").trim();
   const newPhone = (edit.editPhone?.value || "").trim();
@@ -315,7 +315,7 @@ function submitEditForm(user, ui, edit, dayKeys) {
     return;
   }
 
-  // עדכון דמו מקומי
+  // Update local demo
   user.fullName = newFullName;
   user.phone = newPhone;
   user.city = newCity;
@@ -341,11 +341,11 @@ function submitEditForm(user, ui, edit, dayKeys) {
     user.availabilityWeekly = weekly;
   }
 
-  // רענון המסך (דמו)
+  // Refresh screen (demo)
   renderBasicProfile(ui, user);
   renderRoleSpecificProfile(ui, user);
   renderGreeting(ui.greetingEl, user);
 
   closeEditForm(edit);
-  alert("דמו בלבד 🙂 הפרטים עודכנו לתצוגה בלבד (אין שמירה כי אין DB).");
+  alert("הפרטים עודכנו בהצלחה! (דמו בלבד)");
 }

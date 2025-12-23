@@ -6,7 +6,7 @@
   <title>EduMatch | התחברות והרשמה</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
-
+  <link rel="icon" type="image/png" href="favicon.png">
 </head>
 
 <body>
@@ -57,16 +57,15 @@
 
           <div class="form-row">
             <label for="login-email">אימייל <span>*</span></label>
-            <input type="email" id="login-email" name="login-email" autocomplete="off"
-              placeholder="example@mail.com" required 
-              pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$">
+            <input type="email" id="login-email" name="login-email" autocomplete="off" placeholder="example@mail.com"
+              required pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$">
             <p class="error-message"></p>
           </div>
 
           <div class="form-row">
             <label for="login-password">סיסמה (מינימום 6 תווים) <span>*</span></label>
-            <input type="password" id="login-password" name="login-password" autocomplete="new-password"
-              minlength="6" required>
+            <input type="password" id="login-password" name="login-password" autocomplete="new-password" minlength="6"
+              required>
             <p class="error-message"></p>
           </div>
 
@@ -91,21 +90,21 @@
           <div class="form-row">
             <label for="register-email">אימייל <span>*</span></label>
             <input type="email" id="register-email" name="register-email" autocomplete="off" required
-               pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$">
+              pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$">
             <p class="error-message"></p>
           </div>
 
           <div class="form-row">
             <label for="register-phone">טלפון נייד <span>*</span></label>
-            <input type="tel" id="register-phone" name="register-phone" required pattern="^05[0-9]{8}$"
-              maxlength="10" inputmode="tel" placeholder="לדוגמה: 0521234567">
+            <input type="tel" id="register-phone" name="register-phone" required pattern="^05[0-9]{8}$" maxlength="10"
+              inputmode="tel" placeholder="לדוגמה: 0521234567">
             <p class="error-message"></p>
           </div>
 
           <div class="form-row">
             <label for="register-password">סיסמה (מינימום 6 תווים) <span>*</span></label>
-            <input type="password" id="register-password" name="register-password"
-              autocomplete="new-password" minlength="6" required>
+            <input type="password" id="register-password" name="register-password" autocomplete="new-password"
+              minlength="6" required>
             <p class="error-message"></p>
           </div>
 
@@ -161,13 +160,8 @@
                   <input type="text" name="teacher-subject-1" placeholder="לדוגמה: מתמטיקה">
 
                   <!-- מספרים בלבד + מקלדת מספרים -->
-                  <input type="number"
-                         name="teacher-price-1"
-                         min="0"
-                         step="1"
-                         inputmode="numeric"
-                         pattern="[0-9]*"
-                         placeholder="מחיר לשעה">
+                  <input type="number" name="teacher-price-1" min="0" step="1" inputmode="numeric" pattern="[0-9]*"
+                    placeholder="מחיר לשעה">
                 </div>
               </div>
 
@@ -178,24 +172,14 @@
 
             <div class="form-row">
               <label for="teacher-experience">שנות ניסיון</label>
-              <input type="number"
-                     id="teacher-experience"
-                     name="teacher-experience"
-                     min="0"
-                     step="1"
-                     inputmode="numeric"
-                     pattern="[0-9]*">
+              <input type="number" id="teacher-experience" name="teacher-experience" min="0" step="1"
+                inputmode="numeric" pattern="[0-9]*">
             </div>
 
             <div class="form-row">
               <label for="lesson-duration">משך שיעור (בדקות)</label>
-              <input type="number"
-                     id="lesson-duration"
-                     name="lesson-duration"
-                     min="0"
-                     step="1"
-                     inputmode="numeric"
-                     pattern="[0-9]*">
+              <input type="number" id="lesson-duration" name="lesson-duration" min="0" step="1" inputmode="numeric"
+                pattern="[0-9]*">
             </div>
           </div>
 
@@ -357,4 +341,5 @@
 
   <script src="./js/nav.js"></script>
 </body>
+
 </html>

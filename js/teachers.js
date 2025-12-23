@@ -81,8 +81,8 @@ document.addEventListener("DOMContentLoaded", () => {
         t.lessonMode === "online"
           ? "אונליין"
           : t.lessonMode === "in-person"
-          ? "פרונטלי"
-          : "שניהם";
+            ? "פרונטלי"
+            : "שניהם";
 
       const durationText = t.duration ? `${t.duration} דק׳` : "לא צוין";
 

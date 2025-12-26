@@ -2,192 +2,160 @@
 <html lang="he" dir="rtl">
 
 <head>
-    <meta charset="UTF-8">
-    <title>EduMatch | חיפוש מורים</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>EduMatch | חיפוש מורים</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="./image/favicon.png">
 </head>
 
 <body>
 
-    <header>
-        <div class="top-bar">
-            <a href="index.html">
-                <img src="./image/logoEduMatch.png" alt="EduMatch" class="logo-img">
-            </a>
+  <header>
+    <div class="top-bar">
+      <div class="logo-row">
+        <button class="nav-toggle" aria-label="פתח תפריט" aria-expanded="false">☰</button>
 
-            <nav>
-                <ul class="main-nav">
-                    <li><a href="index.html">דף הבית</a></li>
-                    <li><a href="teachers.html" class="active">חיפוש מורים</a></li>
-                    <li><a href="profile.html">הפרופיל שלי</a></li>
-                </ul>
+        <a href="index.html" class="logo-link">
+          <img src="./image/logoEduMatch.png" alt="EduMatch" class="logo-img">
+        </a>
 
-                <ul class="auth-nav">
-                    <li><a href="login.html">התחברות/הרשמה</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+        <span class="logo-spacer" aria-hidden="true"></span>
+      </div>
 
-    <main>
+      <nav>
+        <ul class="main-nav">
+          <li><a href="index.html">דף הבית</a></li>
+          <li><a href="teachers.html" class="active">חיפוש מורים</a></li>
+          <li><a href="profile.html">הפרופיל שלי</a></li>
+        </ul>
 
-        <!-- כותרת -->
-        <section class="page-header">
-            <h1>חיפוש מורים</h1>
-            <p>מצאו את המורה המושלם לפי מקצוע, עיר ומחיר.</p>
-        </section>
+        <ul class="auth-nav">
+          <li><a href="login.html">התחברות/הרשמה</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
-        <!-- ===== טופס סינון ===== -->
+  <main>
+
+    <section class="page-header">
+      <h1>חיפוש מורים</h1>
+      <p>מצאו את המורה המושלם לפי מקצוע, עיר ומחיר.</p>
+    </section>
+
+    <div class="teachers-page-layout">
+
+      <aside class="teachers-sidebar">
         <section class="teachers-filter-section">
-            <form class="teachers-filter" id="search-form" action="#">
+          <form class="teachers-filter" id="search-form" action="#">
 
-                <!-- מקצוע -->
-                <div class="form-row">
-                    <label for="filter-subject">מקצוע <span>*</span></label>
-                    <input type="text" id="filter-subject" name="subject" placeholder="לדוגמה: מתמטיקה, אנגלית"
-                        required>
-                </div>
+            <div class="form-row">
+              <label for="filter-subject">מקצוע <span>*</span></label>
+              <input type="text" id="filter-subject" name="subject" placeholder="לדוגמה: מתמטיקה, אנגלית" required
+                minlength="2">
+            </div>
 
-                <!-- עיר -->
-                <div class="form-row">
-                    <label for="filter-city">עיר</label>
-                    <input list="cities-list" id="filter-city" name="city" placeholder="בחר/י עיר">
-                </div>
+            <div class="form-row">
+              <label for="filter-city">עיר</label>
+              <input list="cities-list" id="filter-city" name="city" placeholder="בחר/י עיר">
+            </div>
 
-                <!-- טווח מחירים -->
-                <div class="form-row">
-                    <label for="search-price-range">טווח מחירים (ש"ח)</label>
+            <div class="form-row">
+              <label for="search-price-range">טווח מחירים (ש"ח)</label>
 
-                    <div class="price-slider-wrapper">
-                        <div id="search-price-bubble" class="price-bubble">150</div>
-                        <input type="range" id="search-price-range" name="price-range" min="0" max="350" value="150">
-                    </div>
-                </div>
+              <div class="price-slider-wrapper">
+                <div id="search-price-bubble" class="price-bubble">150</div>
+                <input type="range" id="search-price-range" name="price-range" min="0" max="350" value="150">
+              </div>
+            </div>
 
-                <!-- חיפוש לפי שם -->
-                <div class="form-row">
-                    <label for="filter-name">חיפוש לפי שם</label>
-                    <input type="text" id="filter-name" name="teacher-name" placeholder="לדוגמה: ישראל ישראלי">
-                </div>
+            <div class="form-row">
+              <label for="filter-name">חיפוש לפי שם</label>
+              <input type="text" id="filter-name" name="teacher-name" placeholder="לדוגמה: ישראל ישראלי">
+            </div>
 
-                <!-- כפתורים -->
-                <div class="form-row filter-actions">
-                    <button type="submit" class="btn-primary">חפש מורים</button>
-                    <button type="reset" class="btn-secondary">נקה סינון</button>
-                </div>
+            <div class="form-row filter-actions">
+              <button type="submit" class="btn-primary">חפש מורים</button>
+              <button type="reset" class="btn-secondary">נקה סינון</button>
+            </div>
 
-            </form>
+          </form>
         </section>
+      </aside>
 
-        <!-- ===== תוצאות חיפוש (מוסתרות בהתחלה) ===== -->
+      <section class="teachers-results">
         <section class="teachers-list-section" id="results-section" style="display:none;">
-            <h2>תוצאות חיפוש</h2>
+          <h2>תוצאות חיפוש</h2>
 
-            <div class="teachers-list" id="teachers-list">
-                <!-- כאן ה-JS יכניס כרטיסים של מורים דינמיים -->
-            </div>
+          <div class="teachers-list" id="teachers-list"></div>
 
-            <p class="empty-state" id="no-results" style="display:none;">
-                לא נמצאו מורים מתאימים לחיפוש שביצעת.
-            </p>
+          <p class="empty-state" id="no-results" style="display:none;">
+            לא נמצאו מורים מתאימים לחיפוש שביצעת.
+          </p>
         </section>
+      </section>
 
-        <!-- רשימת ערים -->
-        <datalist id="cities-list">
-            <option value="אופקים">
-            <option value="אור יהודה">
-            <option value="אילת">
-            <option value="אריאל">
-            <option value="אשדוד">
-            <option value="אשקלון">
-            <option value="באר שבע">
-            <option value="בית שמש">
-            <option value="בת ים">
-            <option value="גבעתיים">
-            <option value="גדרה">
-            <option value="הרצליה">
-            <option value="חדרה">
-            <option value="חולון">
-            <option value="חיפה">
-            <option value="טבריה">
-            <option value="יהוד-מונוסון">
-            <option value="ירושלים">
-            <option value="כפר סבא">
-            <option value="כרמיאל">
-            <option value="מודיעין">
-            <option value="נהריה">
-            <option value="נס ציונה">
-            <option value="נתיבות">
-            <option value="נתניה">
-            <option value="עכו">
-            <option value="עפולה">
-            <option value="פתח תקווה">
-            <option value="צפת">
-            <option value="קיסריה">
-            <option value="קריית אונו">
-            <option value="קריית גת">
-            <option value="קריית מוצקין">
-            <option value="קריית שמונה">
-            <option value="ראש העין">
-            <option value="ראשון לציון">
-            <option value="רחובות">
-            <option value="רמת גן">
-            <option value="רעננה">
-            <option value="שדרות">
-            <option value="תל אביב-יפו">
-        </datalist>
+    </div>
 
-    </main>
+    <datalist id="cities-list">
+      <option value="אופקים">
+      <option value="אור יהודה">
+      <option value="אילת">
+      <option value="אריאל">
+      <option value="אשדוד">
+      <option value="אשקלון">
+      <option value="באר שבע">
+      <option value="בית שמש">
+      <option value="בת ים">
+      <option value="גבעתיים">
+      <option value="גדרה">
+      <option value="הרצליה">
+      <option value="חדרה">
+      <option value="חולון">
+      <option value="חיפה">
+      <option value="טבריה">
+      <option value="יהוד-מונוסון">
+      <option value="ירושלים">
+      <option value="כפר סבא">
+      <option value="כרמיאל">
+      <option value="מודיעין">
+      <option value="נהריה">
+      <option value="נס ציונה">
+      <option value="נתיבות">
+      <option value="נתניה">
+      <option value="עכו">
+      <option value="עפולה">
+      <option value="פתח תקווה">
+      <option value="צפת">
+      <option value="קיסריה">
+      <option value="קריית אונו">
+      <option value="קריית גת">
+      <option value="קריית מוצקין">
+      <option value="קריית שמונה">
+      <option value="ראש העין">
+      <option value="ראשון לציון">
+      <option value="רחובות">
+      <option value="רמת גן">
+      <option value="רעננה">
+      <option value="שדרות">
+      <option value="תל אביב-יפו">
+    </datalist>
 
-    <footer>
-        <div class="footer-content">
-            <div class="footer-links">
-                <a href="privacy.html">מדיניות פרטיות</a>
-                <a href="terms.html">תנאי שימוש</a>
-                <p>© 2025 EduMatch כל הזכויות שמורות.</p>
-            </div>
-        </div>
-    </footer>
+  </main>
 
-    <!--  של הבועה===== JS ===== -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-links">
+        <a href="privacy.html">מדיניות פרטיות</a>
+        <a href="terms.html">תנאי שימוש</a>
+        <p>© 2025 EduMatch כל הזכויות שמורות.</p>
+      </div>
+    </div>
+  </footer>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const slider = document.getElementById("search-price-range");
-            const bubble = document.getElementById("search-price-bubble");
-            const form = document.getElementById("search-form");
-
-            const DEFAULT_PRICE = 150;
-
-            function updateBubble() {
-                const val = slider.value;
-                const min = slider.min;
-                const max = slider.max;
-                const percent = ((val - min) / (max - min)) * 100;
-
-                bubble.textContent = val;
-                bubble.style.left = `calc(${percent}%)`;
-            }
-
-            // דיפולט בטעינה
-            slider.value = DEFAULT_PRICE;
-            updateBubble();
-
-            // עדכון בזמן גרירה
-            slider.addEventListener("input", updateBubble);
-
-            // עדכון אחרי "נקה סינון"
-            form.addEventListener("reset", () => {
-                // חשוב: אחרי שהטופס הספיק להתאפס
-                setTimeout(() => {
-                    slider.value = DEFAULT_PRICE; // לוודא גם את הערך
-                    updateBubble();
-                }, 0);
-            });
-        });
-    </script>
-    <script src="js/teachers.js"></script>
+  <script src="js/teachers.js"></script>
+  <script src="./js/nav.js"></script>
 
 </body>
 

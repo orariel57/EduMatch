@@ -2,341 +2,262 @@
 <html lang="he" dir="rtl">
 
 <head>
-    <meta charset="UTF-8">
-    <title>EduMatch | התחברות והרשמה</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>EduMatch | התחברות והרשמה</title>
+
+  <!-- Mobile responsiveness -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="./image/favicon.png">
 </head>
 
-<script src="js/nav.js"></script>
-
 <body>
-    <header>
-        <div class="top-bar">
-            <div class="logo">
-                <a href="index.html">
-                    <img src="./image/logoEduMatch.png" alt="EduMatch" class="logo-img">
-                </a>
-                <button class="nav-toggle" aria-label="פתח תפריט" aria-expanded="false">☰</button>
+  <header>
+    <div class="top-bar">
+      <div class="logo-row">
+        <!-- Mobile menu button (works with nav.js) -->
+        <button class="nav-toggle" aria-label="פתח תפריט" aria-expanded="false">☰</button>
+
+        <a href="index.html" class="logo-link">
+          <img src="./image/logoEduMatch.png" alt="EduMatch" class="logo-img">
+        </a>
+
+        <span class="logo-spacer" aria-hidden="true"></span>
+      </div>
+
+      <nav>
+        <ul class="main-nav">
+          <li><a href="index.html">דף הבית</a></li>
+          <li><a href="teachers.html">חיפוש מורים</a></li>
+          <li><a href="profile.html">הפרופיל שלי</a></li>
+        </ul>
+
+        <ul class="auth-nav">
+          <li><a href="login.html" class="active">התחברות/הרשמה</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="auth-page" aria-labelledby="auth-page-title">
+      <h1 id="auth-page-title">התחברות / הרשמה</h1>
+
+      <p class="auth-intro">
+        התחברו אם כבר יש לכם משתמש, או הרשמו למערכת כמורה או כתלמיד.
+      </p>
+      <div class="auth-layout">
+
+        <!-- Login form -->
+        <form class="auth-card login-card" id="login-form" action="#" method="post" autocomplete="off">
+          <h2>התחברות</h2>
+          <p class="auth-card-desc">
+            משתמשים קיימים יכולים להיכנס כאן עם האימייל והסיסמה שלהם.
+          </p>
+
+          <div class="form-row">
+            <label for="login-email">אימייל <span>*</span></label>
+            <input type="email" id="login-email" name="login-email" autocomplete="off" placeholder="example@mail.com"
+              required pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$">
+            <p class="error-message"></p>
+          </div>
+
+          <div class="form-row">
+            <label for="login-password">סיסמה (מינימום 6 תווים) <span>*</span></label>
+            <input type="password" id="login-password" name="login-password" autocomplete="new-password" minlength="6"
+              required>
+            <p class="error-message"></p>
+          </div>
+
+          <div class="form-row form-actions">
+            <button type="submit" class="btn-primary">התחבר</button>
+          </div>
+        </form>
+
+        <!-- Registration form -->
+        <form class="auth-card register-card" id="register-form" action="#" method="post" autocomplete="off">
+          <h2>הרשמה</h2>
+          <p class="auth-card-desc">
+            משתמשים חדשים יכולים ליצור חשבון חדש כמורה או כתלמיד.
+          </p>
+
+          <div class="form-row">
+            <label for="full-name">שם מלא <span>*</span></label>
+            <input type="text" id="full-name" name="full-name" required>
+            <p class="error-message"></p>
+          </div>
+
+          <div class="form-row">
+            <label for="register-email">אימייל <span>*</span></label>
+            <input type="email" id="register-email" name="register-email" autocomplete="off" required
+              pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$">
+            <p class="error-message"></p>
+          </div>
+
+          <div class="form-row">
+            <label for="register-phone">טלפון נייד <span>*</span></label>
+            <input type="tel" id="register-phone" name="register-phone" required pattern="^05[0-9]{8}$" maxlength="10"
+              inputmode="tel" placeholder="לדוגמה: 0521234567">
+            <p class="error-message"></p>
+          </div>
+
+          <div class="form-row">
+            <label for="register-password">סיסמה (מינימום 6 תווים) <span>*</span></label>
+            <input type="password" id="register-password" name="register-password" autocomplete="new-password"
+              minlength="6" required>
+            <p class="error-message"></p>
+          </div>
+
+          <!-- Role selection -->
+          <div class="form-row">
+            <span class="field-label">תפקיד במערכת:</span>
+            <div class="options-row">
+              <label>
+                <input type="radio" name="role" value="student" checked>
+                תלמיד/ה
+              </label>
+              <label>
+                <input type="radio" name="role" value="teacher">
+                מורה
+              </label>
+            </div>
+          </div>
+
+          <!-- Preferred lesson mode -->
+          <div class="form-row">
+            <span class="field-label">מצב מועדף לשיעור:</span>
+            <div class="options-row">
+              <label>
+                <input type="radio" name="lesson-mode" value="online" checked>
+                מקוון
+              </label>
+              <label>
+                <input type="radio" name="lesson-mode" value="in-person">
+                פרונטלי
+              </label>
+              <label>
+                <input type="radio" name="lesson-mode" value="both">
+                שניהם
+              </label>
+            </div>
+          </div>
+
+          <!-- Teacher details -->
+          <div class="role-fields role-teacher" style="display:none;">
+            <h3>פרטים למורה</h3>
+
+            <div class="form-row">
+              <label for="teacher-city">עיר</label>
+              <input list="cities-list" id="teacher-city" name="teacher-city" placeholder="התחל/י להקליד עיר">
             </div>
 
-            <nav>
-                <ul class="main-nav">
-                    <li><a href="index.html">דף הבית</a></li>
-                    <li><a href="teachers.html">חיפוש מורים</a></li>
-                    <li><a href="profile.html">הפרופיל שלי</a></li>
-                </ul>
+            <div class="form-row">
+              <label>תחומי הוראה ומחיר לשעה</label>
 
-                <ul class="auth-nav">
-                    <li><a href="login.html" class="active">התחברות/הרשמה</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+              <div id="subjects-container" class="subjects-list">
+                <div class="subject-row">
+                  <input type="text" name="teacher-subject-1" placeholder="לדוגמה: מתמטיקה">
+                  <input type="number" name="teacher-price-1" min="0" step="1" inputmode="numeric" pattern="[0-9]*"
+                    placeholder="מחיר לשעה">
+                </div>
+              </div>
 
-    <!-- ===== תוכן ראשי – התחברות + הרשמה ===== -->
-    <main>
-        <section class="auth-page" aria-labelledby="auth-page-title">
-            <h1 id="auth-page-title">התחברות / הרשמה</h1>
-            <p class="auth-intro">
-                התחברו אם כבר יש לכם משתמש, או הרשמו למערכת כמורה או כתלמיד.
-            </p>
-
-            <!-- ✅ הערת דמו (למרצה) -->
-            <p class="auth-intro" style="opacity:.85;">
-                * דמו סטטי בלבד: בשלב זה אין חיבור למסד נתונים ולכן אין שמירה/אימות משתמשים.
-            </p>
-
-            <div class="auth-layout">
-                <!-- ===== קוביית התחברות ===== -->
-                <form class="auth-card login-card" id="login-form" action="#" method="post" autocomplete="off">
-
-                    <h2>התחברות</h2>
-                    <p class="auth-card-desc">
-                        משתמשים קיימים יכולים להיכנס כאן עם האימייל והסיסמה שלהם.
-                    </p>
-
-                    <div class="form-row">
-                        <label for="login-email">אימייל <span>*</span></label>
-                        <input type="email" id="login-email" name="login-email" autocomplete="off"
-                            placeholder="example@mail.com" required pattern=".+@.+">
-                        <p class="error-message"></p>
-                    </div>
-
-                    <div class="form-row">
-                        <label for="login-password">סיסמה (מינימום 6 תווים) <span>*</span></label>
-                        <input type="password" id="login-password" name="login-password" autocomplete="new-password"
-                            minlength="6" required>
-                        <p class="error-message"></p>
-                    </div>
-
-                    <div class="form-row form-actions">
-                        <button type="submit" class="btn-primary">התחבר</button>
-                    </div>
-                </form>
-
-                <!-- ===== טופס הרשמה ===== -->
-                <form class="auth-card register-card" id="register-form" action="#" method="post" autocomplete="off">
-                    <h2>הרשמה</h2>
-                    <p class="auth-card-desc">
-                        משתמשים חדשים יכולים ליצור חשבון חדש כמורה או כתלמיד.
-                    </p>
-
-                    <div class="form-row">
-                        <label for="full-name">שם מלא <span>*</span></label>
-                        <input type="text" id="full-name" name="full-name" required>
-                        <p class="error-message"></p>
-                    </div>
-
-                    <div class="form-row">
-                        <label for="register-email">אימייל <span>*</span></label>
-                        <input type="email" id="register-email" name="register-email" autocomplete="off" required
-                            pattern=".+@.+">
-                        <p class="error-message"></p>
-                    </div>
-
-                    <div class="form-row">
-                        <label for="register-phone">טלפון נייד <span>*</span></label>
-                        <input type="tel" id="register-phone" name="register-phone" required pattern="^05[0-9]{8}$"
-                            maxlength="10" inputmode="tel" placeholder="לדוגמה: 0521234567">
-                        <p class="error-message"></p>
-                    </div>
-
-                    <div class="form-row">
-                        <label for="register-password">סיסמה (מינימום 6 תווים) <span>*</span></label>
-                        <input type="password" id="register-password" name="register-password"
-                            autocomplete="new-password" minlength="6" required>
-                        <p class="error-message"></p>
-                    </div>
-
-                    <!-- בחירת תפקיד -->
-                    <div class="form-row">
-                        <span class="field-label">תפקיד במערכת:</span>
-                        <div class="options-row">
-                            <label>
-                                <input type="radio" name="role" value="student" checked>
-                                תלמיד/ה
-                            </label>
-                            <label>
-                                <input type="radio" name="role" value="teacher">
-                                מורה
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- מצב מועדף לשיעור -->
-                    <div class="form-row">
-                        <span class="field-label">מצב מועדף לשיעור:</span>
-                        <div class="options-row">
-                            <label>
-                                <input type="radio" name="lesson-mode" value="online" checked>
-                                מקוון
-                            </label>
-                            <label>
-                                <input type="radio" name="lesson-mode" value="in-person">
-                                פרונטלי
-                            </label>
-                            <label>
-                                <input type="radio" name="lesson-mode" value="both">
-                                שניהם
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- פרטים למורה -->
-                    <div class="role-fields role-teacher" style="display:none;">
-                        <h3>פרטים למורה</h3>
-
-                        <div class="form-row">
-                            <label for="teacher-city">עיר</label>
-                            <input list="cities-list" id="teacher-city" name="teacher-city"
-                                placeholder="התחל/י להקליד עיר">
-                        </div>
-
-                        <!-- תחומי הוראה מרובים + מחיר לשעה לכל תחום -->
-                        <div class="form-row">
-                            <label>תחומי הוראה ומחיר לשעה</label>
-
-                            <div id="subjects-container" class="subjects-list">
-                                <div class="subject-row">
-                                    <input type="text" name="teacher-subject-1" placeholder="לדוגמה: מתמטיקה">
-                                    <input type="number" name="teacher-price-1" min="0" placeholder="מחיר לשעה">
-                                </div>
-                            </div>
-
-                            <button type="button" id="add-subject-btn" class="add-subject-btn">
-                                הוסף מקצוע
-                            </button>
-                        </div>
-
-                        <div class="form-row">
-                            <label for="teacher-experience">שנות ניסיון</label>
-                            <input type="number" id="teacher-experience" name="teacher-experience" min="0">
-                        </div>
-
-                        <div class="form-row">
-                            <label for="lesson-duration">משך שיעור (בדקות)</label>
-                            <input type="number" id="lesson-duration" name="lesson-duration" min="0">
-                        </div>
-                    </div>
-
-                    <!-- פרטים לתלמיד -->
-                    <div class="role-fields role-student">
-                        <h3>פרטים לתלמיד</h3>
-
-                        <div class="form-row">
-                            <label for="student-city">עיר</label>
-                            <input list="cities-list" id="student-city" name="student-city"
-                                placeholder="התחל/י להקליד עיר">
-                        </div>
-                    </div>
-
-                    <!-- תנאי שימוש -->
-                    <div class="form-row checkbox-row">
-                        <label>
-                            <input type="checkbox" name="terms" required>
-                            אני מאשר/ת את
-                            <a href="terms.html" target="_blank">תנאי השימוש</a>
-                            ו
-                            <a href="privacy.html" target="_blank">מדיניות הפרטיות</a>
-                        </label>
-                    </div>
-
-                    <div class="form-row form-actions">
-                        <button type="submit" class="btn-primary">צור חשבון</button>
-                    </div>
-                </form>
+              <button type="button" id="add-subject-btn" class="add-subject-btn">
+                הוסף מקצוע
+              </button>
             </div>
-        </section>
 
-        <datalist id="cities-list">
-            <option value="אופקים">
-            <option value="אור יהודה">
-            <option value="אילת">
-            <option value="אריאל">
-            <option value="אשדוד">
-            <option value="אשקלון">
-            <option value="באר שבע">
-            <option value="בית שמש">
-            <option value="בת ים">
-            <option value="גבעתיים">
-            <option value="גדרה">
-            <option value="הרצליה">
-            <option value="חדרה">
-            <option value="חולון">
-            <option value="חיפה">
-            <option value="טבריה">
-            <option value="יהוד-מונוסון">
-            <option value="ירושלים">
-            <option value="כפר סבא">
-            <option value="כרמיאל">
-            <option value="מודיעין">
-            <option value="נהריה">
-            <option value="נס ציונה">
-            <option value="נתיבות">
-            <option value="נתניה">
-            <option value="עכו">
-            <option value="עפולה">
-            <option value="פתח תקווה">
-            <option value="צפת">
-            <option value="קיסריה">
-            <option value="קריית אונו">
-            <option value="קריית גת">
-            <option value="קריית מוצקין">
-            <option value="קריית שמונה">
-            <option value="ראש העין">
-            <option value="ראשון לציון">
-            <option value="רחובות">
-            <option value="רמת גן">
-            <option value="רעננה">
-            <option value="שדרות">
-            <option value="תל אביב-יפו">
-        </datalist>
-
-    </main>
-
-    <!-- ===== פוטר (זהה לדף הבית) ===== -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-links">
-                <a href="privacy.html">מדיניות פרטיות</a>
-                <a href="terms.html">תנאי שימוש</a>
-                <p>© 2025 EduMatch כל הזכויות שמורות.</p>
+            <div class="form-row">
+              <label for="teacher-experience">שנות ניסיון</label>
+              <input type="number" id="teacher-experience" name="teacher-experience" min="0" step="1"
+                inputmode="numeric" pattern="[0-9]*">
             </div>
-        </div>
-    </footer>
 
-    <!-- ===== JS: הצגת שדות מורה/תלמיד + הוספת מקצועות + דמו submit ===== -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const roleRadios = document.querySelectorAll("input[name='role']");
-            const teacherFields = document.querySelector(".role-teacher");
-            const studentFields = document.querySelector(".role-student");
+            <div class="form-row">
+              <label for="lesson-duration">משך שיעור (בדקות)</label>
+              <input type="number" id="lesson-duration" name="lesson-duration" min="0" step="1" inputmode="numeric"
+                pattern="[0-9]*">
+            </div>
+          </div>
 
-            function updateRoleFields() {
-                const selected = document.querySelector("input[name='role']:checked")?.value;
-                if (selected === 'teacher') {
-                    teacherFields.style.display = 'block';
-                    studentFields.style.display = 'none';
-                } else {
-                    teacherFields.style.display = 'none';
-                    studentFields.style.display = 'block';
-                }
-            }
+          <!-- Terms of use -->
+          <div class="form-row checkbox-row">
+            <label>
+              <input type="checkbox" name="terms" required>
+              אני מאשר/ת את
+              <a href="terms.html" target="_blank">תנאי השימוש</a>
+              ו
+              <a href="privacy.html" target="_blank">מדיניות הפרטיות</a>
+            </label>
+          </div>
 
-            roleRadios.forEach(radio => {
-                radio.addEventListener('change', updateRoleFields);
-            });
+          <div class="form-row form-actions">
+            <button type="submit" class="btn-primary">צור חשבון</button>
+          </div>
+        </form>
+      </div>
+    </section>
 
-            updateRoleFields();
+    <!-- Cities list -->
+    <datalist id="cities-list">
+      <option value="אופקים">
+      <option value="אור יהודה">
+      <option value="אילת">
+      <option value="אריאל">
+      <option value="אשדוד">
+      <option value="אשקלון">
+      <option value="באר שבע">
+      <option value="בית שמש">
+      <option value="בת ים">
+      <option value="גבעתיים">
+      <option value="גדרה">
+      <option value="הרצליה">
+      <option value="חדרה">
+      <option value="חולון">
+      <option value="חיפה">
+      <option value="טבריה">
+      <option value="יהוד-מונוסון">
+      <option value="ירושלים">
+      <option value="כפר סבא">
+      <option value="כרמיאל">
+      <option value="מודיעין">
+      <option value="נהריה">
+      <option value="נס ציונה">
+      <option value="נתיבות">
+      <option value="נתניה">
+      <option value="עכו">
+      <option value="עפולה">
+      <option value="פתח תקווה">
+      <option value="צפת">
+      <option value="קיסריה">
+      <option value="קריית אונו">
+      <option value="קריית גת">
+      <option value="קריית מוצקין">
+      <option value="קריית שמונה">
+      <option value="ראש העין">
+      <option value="ראשון לציון">
+      <option value="רחובות">
+      <option value="רמת גן">
+      <option value="רעננה">
+      <option value="שדרות">
+      <option value="תל אביב-יפו">
+    </datalist>
+  </main>
 
-            // ========= הוספת מקצועות נוספים למורה =========
-            const addSubjectBtn = document.getElementById('add-subject-btn');
-            const subjectsContainer = document.getElementById('subjects-container');
-            let subjectIndex = 1;
+  <footer>
+    <div class="footer-content">
+      <div class="footer-links">
+        <a href="privacy.html">מדיניות פרטיות</a>
+        <a href="terms.html">תנאי שימוש</a>
+        <p>© 2025 EduMatch כל הזכויות שמורות.</p>
+      </div>
+    </div>
+  </footer>
 
-            if (addSubjectBtn && subjectsContainer) {
-                addSubjectBtn.addEventListener('click', function () {
-                    subjectIndex++;
-
-                    const row = document.createElement('div');
-                    row.className = 'subject-row';
-
-                    row.innerHTML = `
-                        <input type="text" name="teacher-subject-${subjectIndex}" placeholder="מקצוע נוסף">
-                        <input type="number" name="teacher-price-${subjectIndex}" min="0" placeholder="מחיר לשעה">
-                    `;
-
-                    subjectsContainer.appendChild(row);
-                });
-            }
-
-            // ========= דמו: מניעת שליחה אמיתית =========
-            const loginForm = document.getElementById("login-form");
-            const registerForm = document.getElementById("register-form");
-
-            if (loginForm) {
-                loginForm.addEventListener("submit", function (e) {
-                    e.preventDefault();
-                    alert("דמו בלבד 🙂 בשלב זה אין חיבור למסד נתונים ולכן לא מתבצע אימות משתמש.\nנעביר אותך לפרופיל דוגמה.");
-                    window.location.href = "profile.html";
-                });
-            }
-
-            if (registerForm) {
-                registerForm.addEventListener("submit", function (e) {
-                    e.preventDefault();
-                    alert("דמו בלבד 🙂 בשלב זה אין שמירה של משתמש חדש כי אין DB.\nנעביר אותך לפרופיל דוגמה.");
-                    window.location.href = "profile.html";
-                });
-            }
-        });
-    </script>
-
-    <!-- ❌ לא טוענים storage/auth כדי שלא יהיה LocalStorage בכלל -->
-    <!-- <script src="js/storage.js"></script> -->
-    <!-- <script src="js/auth.js"></script> -->
-
+  <script src="./js/login.js"></script>
+  <script src="./js/nav.js"></script>
 </body>
 
 </html>

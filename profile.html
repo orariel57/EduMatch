@@ -2,218 +2,242 @@
 <html lang="he" dir="rtl">
 
 <head>
-    <meta charset="UTF-8">
-    <title>EduMatch | הפרופיל שלי</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>EduMatch | הפרופיל שלי</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="./image/favicon.png">
 </head>
-
-<script src="js/nav.js"></script>
 
 <body>
 
-    <header>
-        <div class="top-bar">
-            <a href="index.html">
-                <img src="./image/logoEduMatch.png" alt="EduMatch" class="logo-img">
-            </a>
-            <button class="nav-toggle" aria-label="פתח תפריט" aria-expanded="false">☰</button>
+  <header>
+    <div class="top-bar">
+      <div class="logo-row">
+        <button class="nav-toggle" aria-label="פתח תפריט" aria-expanded="false">☰</button>
 
-            <nav>
-                <ul class="main-nav">
-                    <li><a href="index.html">דף הבית</a></li>
-                    <li><a href="teachers.html">חיפוש מורים</a></li>
-                    <li><a href="profile.html" class="active">הפרופיל שלי</a></li>
-                </ul>
+        <a href="index.html" class="logo-link">
+          <img src="./image/logoEduMatch.png" alt="EduMatch" class="logo-img" />
+        </a>
 
-                <ul class="auth-nav">
-                    <li><a href="login.html">התחברות/הרשמה</a></li>
-                </ul>
-            </nav>
+        <span class="logo-spacer" aria-hidden="true"></span>
+      </div>
+
+      <nav>
+        <ul class="main-nav">
+          <li><a href="index.html">דף הבית</a></li>
+          <li><a href="teachers.html">חיפוש מורים</a></li>
+          <li><a href="profile.html" class="active">הפרופיל שלי</a></li>
+        </ul>
+
+        <ul class="auth-nav">
+          <li><a href="login.html">התחברות/הרשמה</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="page-header">
+      <h1 id="profile-greeting">שלום</h1>
+    </section>
+
+    <section class="profile-card" id="no-user-card" style="display:none; max-width:900px; margin:0 auto;">
+      <h2>לא נמצאה התחברות</h2>
+      <p>כדי לצפות בפרופיל יש להתחבר למערכת.</p>
+      <a href="login.html" class="btn-primary">להתחברות</a>
+    </section>
+
+    <section class="profile-layout" id="profile-layout" style="display:none;">
+
+      <!-- Right side -->
+      <aside class="profile-sidebar profile-card">
+        <h2>פרטי משתמש</h2>
+
+        <div class="profile-user-info">
+          <div class="profile-user-row">
+            <span class="profile-label">שם:</span>
+            <span id="profile-name">—</span>
+          </div>
+
+          <div class="profile-user-row">
+            <span class="profile-label">אימייל:</span>
+            <span id="profile-email">—</span>
+          </div>
+
+          <div class="profile-user-row">
+            <span class="profile-label">עיר:</span>
+            <span id="profile-city">—</span>
+          </div>
+
+          <div class="profile-user-row">
+            <span class="profile-label">תחום:</span>
+            <span id="profile-field">—</span>
+          </div>
+
+          <div class="profile-user-role">
+            <span class="role-pill" id="profile-role-pill">—</span>
+          </div>
         </div>
-    </header>
 
-    <main>
+        <div class="form-row" style="margin-top:16px;">
+          <button type="button" class="btn-secondary" id="edit-profile-btn">ערוך פרטים</button>
+        </div>
 
-        <section class="page-header">
-            <h1 id="profile-greeting">שלום</h1>
-        </section>
+        <!-- Edit form -->
+        <form id="edit-profile-form" class="profile-card" style="display:none; margin-top:16px;">
+          <h3>עריכת פרטים</h3>
 
-        <section class="profile-card" id="no-user-card" style="display:none; max-width:900px; margin:0 auto;">
-            <h2>לא נמצאה התחברות</h2>
-            <p>כדי לצפות בפרופיל יש להתחבר למערכת.</p>
-            <a href="login.html" class="btn-primary">להתחברות</a>
-        </section>
+          <div class="form-row">
+            <label for="edit-fullName">שם מלא</label>
+            <input type="text" id="edit-fullName" required />
+          </div>
 
-        <section class="profile-layout" id="profile-layout" style="display:none;">
+          <div class="form-row">
+            <label for="edit-phone">טלפון</label>
+            <input type="tel" id="edit-phone" required />
+          </div>
 
-            <!-- ===== צד ימין ===== -->
-            <aside class="profile-sidebar profile-card">
-                <h2>פרטי משתמש</h2>
+          <div class="form-row">
+            <label for="edit-city">עיר</label>
+            <input type="text" id="edit-city" />
+          </div>
 
-                <div class="profile-user-info">
-                    <div class="profile-user-row"><span class="profile-label">שם:</span><span id="profile-name">—</span>
-                    </div>
-                    <div class="profile-user-row"><span class="profile-label">אימייל:</span><span
-                            id="profile-email">—</span></div>
-                    <div class="profile-user-row"><span class="profile-label">עיר:</span><span
-                            id="profile-city">—</span></div>
-                    <div class="profile-user-row"><span class="profile-label">תחום:</span><span
-                            id="profile-field">—</span></div>
-                    <div class="profile-user-role"><span class="role-pill" id="profile-role-pill">—</span></div>
-                </div>
+          <!-- ===== Teacher-only fields ===== -->
+          <div id="teacher-edit-fields" style="display:none;">
 
-                <div class="form-row" style="margin-top:16px;">
-                    <button type="button" class="btn-secondary" id="edit-profile-btn">ערוך פרטים</button>
-                </div>
-
-                <!-- ===== טופס עריכה ===== -->
-                <form id="edit-profile-form" class="profile-card" style="display:none; margin-top:16px;">
-                    <h3>עריכת פרטים</h3>
-
-                    <div class="form-row">
-                        <label>שם מלא</label>
-                        <input type="text" id="edit-fullName" required>
-                    </div>
-
-                    <div class="form-row">
-                        <label>טלפון</label>
-                        <input type="tel" id="edit-phone" required>
-                    </div>
-
-                    <div class="form-row">
-                        <label>עיר</label>
-                        <input type="text" id="edit-city">
-                    </div>
-
-                    <!-- ===== שדות מורה בלבד ===== -->
-                    <div id="teacher-edit-fields" style="display:none;">
-
-                        <div class="form-row">
-                            <label>שנות ניסיון</label>
-                            <input type="number" id="edit-experience" min="0">
-                        </div>
-
-                        <div class="form-row">
-                            <label>משך שיעור (בדקות)</label>
-                            <input type="number" id="edit-duration" min="0">
-                        </div>
-
-                        <!-- תחומי הוראה -->
-                        <div class="form-row">
-                            <label>תחומי הוראה</label>
-                            <div id="subjects-list"></div>
-                        </div>
-
-                        <div class="form-row" style="display:flex; gap:8px;">
-                            <input type="text" id="new-subject-name" placeholder="תחום לימוד">
-                            <input type="number" id="new-subject-price" placeholder="₪ לשיעור" min="0">
-                            <button type="button" class="btn-secondary" id="add-subject-btn">➕</button>
-                        </div>
-
-                        <!-- ===== זמינות שבועית ===== -->
-                        <div class="form-row" style="margin-top:20px;">
-                            <label>זמינות שבועית</label>
-
-                            <table style="width:100%; font-size:14px;">
-                                <thead>
-                                    <tr>
-                                        <th>יום</th>
-                                        <th>זמין</th>
-                                        <th>התחלה</th>
-                                        <th>סיום</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>א'</td>
-                                        <td><input type="checkbox" data-day="sun"></td>
-                                        <td><input type="time" data-start="sun"></td>
-                                        <td><input type="time" data-end="sun"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>ב'</td>
-                                        <td><input type="checkbox" data-day="mon"></td>
-                                        <td><input type="time" data-start="mon"></td>
-                                        <td><input type="time" data-end="mon"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>ג'</td>
-                                        <td><input type="checkbox" data-day="tue"></td>
-                                        <td><input type="time" data-start="tue"></td>
-                                        <td><input type="time" data-end="tue"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>ד'</td>
-                                        <td><input type="checkbox" data-day="wed"></td>
-                                        <td><input type="time" data-start="wed"></td>
-                                        <td><input type="time" data-end="wed"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>ה'</td>
-                                        <td><input type="checkbox" data-day="thu"></td>
-                                        <td><input type="time" data-start="thu"></td>
-                                        <td><input type="time" data-end="thu"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>ו'</td>
-                                        <td><input type="checkbox" data-day="fri"></td>
-                                        <td><input type="time" data-start="fri"></td>
-                                        <td><input type="time" data-end="fri"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>ש'</td>
-                                        <td><input type="checkbox" data-day="sat"></td>
-                                        <td><input type="time" data-start="sat"></td>
-                                        <td><input type="time" data-end="sat"></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                    </div>
-
-                    <div class="form-row filter-actions" style="margin-top:12px;">
-                        <button type="submit" class="btn-primary">שמור</button>
-                        <button type="button" class="btn-secondary" id="cancel-edit-btn">ביטול</button>
-                    </div>
-                </form>
-            </aside>
-
-            <!-- ===== צד שמאל ===== -->
-            <section class="profile-main">
-
-                <section class="profile-card" id="favorites-section">
-                    <h2>המועדפים שלי</h2>
-                    <p class="empty-state">עדיין לא שמרת מורים למועדפים.</p>
-                </section>
-
-                <section class="profile-card">
-                    <h2>היסטוריית שיעורים</h2>
-                    <p class="empty-state">אין שיעורים שהתקיימו.</p>
-                </section>
-
-                <section class="profile-card">
-                    <h2>שיעורים עתידיים</h2>
-                    <p class="empty-state">אין שיעורים עתידיים.</p>
-                </section>
-
-            </section>
-        </section>
-    </main>
-
-    <footer>
-        <div class="footer-content">
-            <div class="footer-links">
-                <a href="privacy.html">מדיניות פרטיות</a>
-                <a href="terms.html">תנאי שימוש</a>
-                <p>© 2025 EduMatch כל הזכויות שמורות.</p>
+            <div class="form-row">
+              <label for="edit-experience">שנות ניסיון</label>
+              <input type="number" id="edit-experience" min="0" />
             </div>
-        </div>
-    </footer>
 
-    <script src="js/profile.js"></script>
+            <div class="form-row">
+              <label for="edit-duration">משך שיעור (בדקות)</label>
+              <input type="number" id="edit-duration" min="0" />
+            </div>
 
+            <div class="form-row">
+              <label>תחומי הוראה</label>
+              <div id="subjects-list"></div>
+            </div>
+
+            <div class="form-row" style="display:flex; gap:8px;">
+              <label for="new-subject-name" class="visually-hidden">Study subject</label>
+              <input type="text" id="new-subject-name" placeholder="תחום לימוד" />
+
+              <label for="new-subject-price" class="visually-hidden">Price per lesson</label>
+              <input type="number" id="new-subject-price" placeholder="₪ לשיעור" min="0" />
+
+              <button type="button" class="btn-secondary" id="add-subject-btn">➕</button>
+            </div>
+
+            <!-- ===== Weekly availability ===== -->
+            <div class="form-row" style="margin-top:20px;">
+              <label>זמינות שבועית</label>
+
+              <div class="table-wrapper">
+                <table class="weekly-table">
+                  <thead>
+                    <tr>
+                      <th>יום</th>
+                      <th>זמין</th>
+                      <th>התחלה</th>
+                      <th>סיום</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>א'</td>
+                      <td><input type="checkbox" data-day="sun" aria-label="Available on Sunday" /></td>
+                      <td><input type="time" data-start="sun" aria-label="Start time on Sunday" /></td>
+                      <td><input type="time" data-end="sun" aria-label="End time on Sunday" /></td>
+                    </tr>
+                    <tr>
+                      <td>ב'</td>
+                      <td><input type="checkbox" data-day="mon" aria-label="Available on Monday" /></td>
+                      <td><input type="time" data-start="mon" aria-label="Start time on Monday" /></td>
+                      <td><input type="time" data-end="mon" aria-label="End time on Monday" /></td>
+                    </tr>
+                    <tr>
+                      <td>ג'</td>
+                      <td><input type="checkbox" data-day="tue" aria-label="Available on Tuesday" /></td>
+                      <td><input type="time" data-start="tue" aria-label="Start time on Tuesday" /></td>
+                      <td><input type="time" data-end="tue" aria-label="End time on Tuesday" /></td>
+                    </tr>
+                    <tr>
+                      <td>ד'</td>
+                      <td><input type="checkbox" data-day="wed" aria-label="Available on Wednesday" /></td>
+                      <td><input type="time" data-start="wed" aria-label="Start time on Wednesday" /></td>
+                      <td><input type="time" data-end="wed" aria-label="End time on Wednesday" /></td>
+                    </tr>
+                    <tr>
+                      <td>ה'</td>
+                      <td><input type="checkbox" data-day="thu" aria-label="Available on Thursday" /></td>
+                      <td><input type="time" data-start="thu" aria-label="Start time on Thursday" /></td>
+                      <td><input type="time" data-end="thu" aria-label="End time on Thursday" /></td>
+                    </tr>
+                    <tr>
+                      <td>ו'</td>
+                      <td><input type="checkbox" data-day="fri" aria-label="Available on Friday" /></td>
+                      <td><input type="time" data-start="fri" aria-label="Start time on Friday" /></td>
+                      <td><input type="time" data-end="fri" aria-label="End time on Friday" /></td>
+                    </tr>
+                    <tr>
+                      <td>ש'</td>
+                      <td><input type="checkbox" data-day="sat" aria-label="Available on Saturday" /></td>
+                      <td><input type="time" data-start="sat" aria-label="Start time on Saturday" /></td>
+                      <td><input type="time" data-end="sat" aria-label="End time on Saturday" /></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div><!-- /teacher-edit-fields -->
+
+          <div class="form-row filter-actions" style="margin-top:12px;">
+            <button type="submit" class="btn-primary">שמור</button>
+            <button type="button" class="btn-secondary" id="cancel-edit-btn">ביטול</button>
+          </div>
+
+        </form>
+      </aside>
+
+      <!-- Left side -->
+      <section class="profile-main">
+
+        <section class="profile-card" id="favorites-section">
+          <h2>המועדפים שלי</h2>
+          <p class="empty-state">עדיין לא שמרת מורים למועדפים.</p>
+        </section>
+
+        <section class="profile-card">
+          <h2>היסטוריית שיעורים</h2>
+          <p class="empty-state">אין שיעורים שהתקיימו.</p>
+        </section>
+
+        <section class="profile-card">
+          <h2>שיעורים עתידיים</h2>
+          <p class="empty-state">אין שיעורים עתידיים.</p>
+        </section>
+
+      </section>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-links">
+        <a href="privacy.html">מדיניות פרטיות</a>
+        <a href="terms.html">תנאי שימוש</a>
+        <p>© 2025 EduMatch כל הזכויות שמורות.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./js/profile.js"></script>
+  <script src="./js/nav.js"></script>
 </body>
 
 </html>

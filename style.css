@@ -1331,3 +1331,192 @@ footer {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+/* =========================
+   Profile Edit Modal (Wizard)
+   ========================= */
+
+body.modal-open {
+  overflow: hidden;
+}
+
+.edit-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  z-index: 5000;
+}
+
+.edit-modal.is-open {
+  display: block;
+}
+
+.edit-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.edit-modal__card {
+  position: relative;
+  width: min(920px, calc(100% - 24px));
+  max-height: calc(100vh - 24px);
+  margin: 12px auto;
+  background: #fff;
+  border-radius: var(--radius-24);
+  box-shadow: var(--shadow-hero);
+  border: var(--border-soft);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.edit-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.2rem;
+  border-bottom: 1px solid #eee;
+}
+
+.edit-modal__close {
+  border: 2px solid var(--primary);
+  background: #fff;
+  color: var(--primary);
+  border-radius: var(--radius-pill);
+  padding: 0.35rem 0.9rem;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.edit-steps {
+  display: flex;
+  gap: 0.6rem;
+  padding: 0.9rem 1.2rem;
+  border-bottom: 1px solid #eee;
+  flex-wrap: wrap;
+}
+
+.edit-step {
+  border: 2px solid var(--primary);
+  background: #fff;
+  color: var(--primary);
+  border-radius: var(--radius-pill);
+  padding: 0.45rem 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.edit-step.is-active {
+  background: var(--primary);
+  color: #fff;
+}
+
+.edit-modal__body {
+  padding: 1.1rem 1.2rem;
+  overflow: auto;
+}
+
+.edit-panel {
+  display: none;
+}
+
+.edit-panel.is-active {
+  display: block;
+}
+
+.edit-hint {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 0.9rem;
+}
+
+.edit-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem 1rem;
+}
+
+.edit-inline-row {
+  display: grid;
+  grid-template-columns: 1fr 160px auto;
+  gap: 0.6rem;
+  align-items: end;
+}
+
+.subject-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.subject-row__text {
+  flex: 1;
+  font-size: 14px;
+  color: #333;
+}
+
+.subject-row__remove {
+  padding: 0.45rem 0.9rem;
+  font-size: 14px;
+}
+
+.edit-modal__footer {
+  padding: 0.9rem 1.2rem;
+  border-top: 1px solid #eee;
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.edit-modal__footer .btn-primary,
+.edit-modal__footer .btn-secondary {
+  padding: 0.65rem 1.2rem;
+}
+
+.weekly-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 520px;
+}
+
+.weekly-table th,
+.weekly-table td {
+  border-bottom: 1px solid #eee;
+  padding: 10px 8px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.weekly-table th {
+  color: var(--primary);
+  font-weight: 800;
+  background: rgba(185, 217, 235, 0.25);
+}
+
+.weekly-table input[type="time"] {
+  padding: 0.45rem 0.6rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid #d0d0d0;
+  font-size: 14px;
+}
+
+@media (max-width: 800px) {
+  .edit-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .edit-inline-row {
+    grid-template-columns: 1fr 1fr auto;
+  }
+}
+
+@media (max-width: 520px) {
+  .edit-modal__footer {
+    flex-wrap: wrap;
+  }
+}

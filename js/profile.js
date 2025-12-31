@@ -1,25 +1,24 @@
 // js/profile.js
-// Displays a teacher/student profile and allows "editing" for display purposes only.
+// Profile page + edit modal wizard (teacher/student demo)
 
 document.addEventListener("DOMContentLoaded", () => {
   const noUserCard = document.getElementById("no-user-card");
   const layout = document.getElementById("profile-layout");
 
-  // ===== Logout button (Demo only) =====
-  // Works only if profile.html contains: id="logout-btn"
+  // ===== Logout button (Demo) =====
   const logoutBtn = document.getElementById("logout-btn");
   if (logoutBtn) {
     logoutBtn.addEventListener("click", () => {
+      sessionStorage.removeItem("edumatchLoggedIn");
       alert("התנתקת מהמערכת (דמו בלבד)");
-      window.location.href = "login.html";
+      window.location.href = "index.html";
     });
   }
 
-  // Demo: choose role
-  // For quick demo change: "teacher" / "student"
-  const DEMO_ROLE = "teacher";
+  // ===== Demo data =====
+  // Quick role change (for your demo):
+  const DEMO_ROLE = "teacher"; // "teacher" / "student"
 
-  // Demo teacher profile
   const DEMO_USER_TEACHER = {
     role: "teacher",
     fullName: "דנה לוי",
@@ -28,7 +27,6 @@ document.addEventListener("DOMContentLoaded", () => {
     city: "באר שבע",
     experience: 3,
     duration: 60,
-    lessonMode: "online",
     subjects: [
       { subject: "מתמטיקה", price: 120 },
       { subject: "אנגלית", price: 110 },
@@ -44,7 +42,6 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   };
 
-  // Demo student profile
   const DEMO_USER_STUDENT = {
     role: "student",
     fullName: "נועה כהן",
@@ -53,12 +50,17 @@ document.addEventListener("DOMContentLoaded", () => {
     city: "תל אביב-יפו",
   };
 
-  //  Create a "logged-in user" in demo
-  // If you want to demo a "not logged in" state:
-  // const user = null;
-  const user = getDemoUser(DEMO_ROLE, DEMO_USER_TEACHER, DEMO_USER_STUDENT);
+  // Logged-in state (your nav.js uses this flag)
+  const isLoggedIn = sessionStorage.getItem("edumatchLoggedIn") === "true";
 
-  // Elements for displaying profile details
+  // If you want to always show the demo even if not logged in, set this true:
+  const FORCE_DEMO = false;
+
+  const user = (isLoggedIn || FORCE_DEMO) ? getDemoUser(DEMO_ROLE, DEMO_USER_TEACHER, DEMO_USER_STUDENT) : null;
+
+  const dayKeys = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+
+  // UI (profile display)
   const ui = {
     greetingEl: document.getElementById("profile-greeting"),
     nameEl: document.getElementById("profile-name"),
@@ -69,17 +71,34 @@ document.addEventListener("DOMContentLoaded", () => {
     favoritesSection: document.getElementById("favorites-section"),
   };
 
-  // Elements for editing
+  // Modal elements
+  const modal = {
+    root: document.getElementById("edit-modal"),
+    stepsWrap: document.getElementById("edit-steps"),
+    stepButtons: Array.from(document.querySelectorAll(".edit-step")),
+    panels: Array.from(document.querySelectorAll(".edit-panel")),
+    closeButtons: Array.from(document.querySelectorAll("[data-close='true']")),
+    cancelBtn: document.getElementById("edit-cancel-btn"),
+    backBtn: document.getElementById("edit-back-btn"),
+    nextBtn: document.getElementById("edit-next-btn"),
+    saveBtn: document.getElementById("edit-save-btn"),
+    alertBox: document.getElementById("edit-alert"),
+
+    // Teacher step buttons (for hiding)
+    step2Btn: document.getElementById("step-teacher-2"),
+    step3Btn: document.getElementById("step-teacher-3"),
+  };
+
+  // Edit inputs (same ids as before)
   const edit = {
     editBtn: document.getElementById("edit-profile-btn"),
-    editForm: document.getElementById("edit-profile-form"),
-    cancelBtn: document.getElementById("cancel-edit-btn"),
 
     editFullName: document.getElementById("edit-fullName"),
     editPhone: document.getElementById("edit-phone"),
     editCity: document.getElementById("edit-city"),
 
-    teacherFieldsBox: document.getElementById("teacher-edit-fields"),
+    teacherExpRow: document.getElementById("teacher-exp-row"),
+    teacherDurRow: document.getElementById("teacher-dur-row"),
     editExperience: document.getElementById("edit-experience"),
     editDuration: document.getElementById("edit-duration"),
 
@@ -87,63 +106,96 @@ document.addEventListener("DOMContentLoaded", () => {
     newSubjectName: document.getElementById("new-subject-name"),
     newSubjectPrice: document.getElementById("new-subject-price"),
     addSubjectBtn: document.getElementById("add-subject-btn"),
+
+    errFullName: document.getElementById("err-fullName"),
+    errPhone: document.getElementById("err-phone"),
+    errCity: document.getElementById("err-city"),
+    errExperience: document.getElementById("err-experience"),
+    errDuration: document.getElementById("err-duration"),
   };
 
-  const dayKeys = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
-
   if (!user) {
-    // Show "no user" message and hide the entire profile
     showNoUserState(noUserCard, layout);
     return;
   }
 
-  // Show profile + hide "no user" message
   showUserState(noUserCard, layout);
-
-  // Write greeting based on first name
   renderGreeting(ui.greetingEl, user);
-
-  // Display basic profile data (name/email/city)
   renderBasicProfile(ui, user);
-
-  // Display role and matching content (teacher/student)
   renderRoleSpecificProfile(ui, user);
 
-  // Bind edit events (open/close/save/add subject)
-  bindEditEvents(user, ui, edit, dayKeys);
+  // ===== Bind "Edit" => open modal wizard =====
+  if (edit.editBtn) {
+    edit.editBtn.addEventListener("click", () => {
+      prepareWizardForUser(user, modal, edit);
+      fillFormFromUser(user, edit, dayKeys);
+      openModal(modal);
+      goToStep(modal, user, 1);
+    });
+  }
+
+  // Close / cancel
+  modal.closeButtons.forEach((btn) => btn.addEventListener("click", () => closeModal(modal)));
+  if (modal.cancelBtn) modal.cancelBtn.addEventListener("click", () => closeModal(modal));
+
+  // Back / Next / Save
+  if (modal.backBtn) modal.backBtn.addEventListener("click", () => stepBack(modal, user));
+  if (modal.nextBtn) modal.nextBtn.addEventListener("click", () => stepNext(modal, user, edit, dayKeys));
+  if (modal.saveBtn) modal.saveBtn.addEventListener("click", () => saveWizard(user, ui, modal, edit, dayKeys));
+
+  // Step clicks
+  modal.stepButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const step = Number(btn.dataset.step || "1");
+      // Only allow teacher to click steps 2-3
+      if (user.role !== "teacher" && step !== 1) return;
+      goToStep(modal, user, step);
+    });
+  });
+
+  // Add subject
+  if (edit.addSubjectBtn) {
+    edit.addSubjectBtn.addEventListener("click", () => {
+      if (user.role !== "teacher") return;
+      addSubject(user, edit);
+      renderSubjects(user, edit);
+    });
+  }
+
+  // Close modal on ESC
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modal.root && modal.root.classList.contains("is-open")) {
+      closeModal(modal);
+    }
+  });
 });
 
 function getDemoUser(role, teacher, student) {
   return role === "teacher" ? teacher : student;
 }
 
-// "No user" state -> shows the proper card and hides profile
 function showNoUserState(noUserCard, layout) {
   if (noUserCard) noUserCard.style.display = "block";
   if (layout) layout.style.display = "none";
 }
 
-// "User exists" state -> hides "no user" card and shows profile
 function showUserState(noUserCard, layout) {
   if (noUserCard) noUserCard.style.display = "none";
   if (layout) layout.style.display = "grid";
 }
 
-// Writes "Hello + {name}," based on the first word of fullName
 function renderGreeting(greetingEl, user) {
   if (!greetingEl || !user?.fullName) return;
   const firstName = user.fullName.split(" ")[0];
   greetingEl.textContent = `שלום ${firstName},`;
 }
 
-// Displays name/email/city in the profile
 function renderBasicProfile(ui, user) {
   if (ui.nameEl) ui.nameEl.textContent = user.fullName || "—";
   if (ui.emailEl) ui.emailEl.textContent = user.email || "—";
   if (ui.cityEl) ui.cityEl.textContent = user.city || "—";
 }
 
-// Displays different content for teacher vs student
 function renderRoleSpecificProfile(ui, user) {
   if (user.role === "teacher") {
     if (ui.rolePill) ui.rolePill.textContent = "מורה";
@@ -164,56 +216,183 @@ function renderRoleSpecificProfile(ui, user) {
   }
 }
 
-// Binds all edit events: open/close/add subject/save
-function bindEditEvents(user, ui, edit, dayKeys) {
-  if (edit.editBtn) edit.editBtn.addEventListener("click", () => openEditForm(user, edit, dayKeys));
-  if (edit.cancelBtn) edit.cancelBtn.addEventListener("click", () => closeEditForm(edit));
+/* =========================
+   Modal + Wizard
+   ========================= */
 
-  if (edit.addSubjectBtn) {
-    edit.addSubjectBtn.addEventListener("click", () => {
-      if (user.role !== "teacher") return;
-      addSubject(user, edit);
-      renderSubjects(user, edit);
-    });
+function openModal(modal) {
+  if (!modal.root) return;
+  modal.root.classList.add("is-open");
+  modal.root.setAttribute("aria-hidden", "false");
+  document.body.classList.add("modal-open");
+}
+
+function closeModal(modal) {
+  if (!modal.root) return;
+  modal.root.classList.remove("is-open");
+  modal.root.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("modal-open");
+  clearAlert(modal);
+}
+
+function prepareWizardForUser(user, modal, edit) {
+  // Teacher-only UI show/hide
+  const teacherOnly = user.role === "teacher";
+
+  if (edit.teacherExpRow) edit.teacherExpRow.style.display = teacherOnly ? "block" : "none";
+  if (edit.teacherDurRow) edit.teacherDurRow.style.display = teacherOnly ? "block" : "none";
+
+  if (modal.step2Btn) modal.step2Btn.style.display = teacherOnly ? "inline-flex" : "none";
+  if (modal.step3Btn) modal.step3Btn.style.display = teacherOnly ? "inline-flex" : "none";
+}
+
+function goToStep(modal, user, step) {
+  const maxStep = user.role === "teacher" ? 3 : 1;
+  const safeStep = Math.max(1, Math.min(step, maxStep));
+
+  modal.stepButtons.forEach((b) => b.classList.toggle("is-active", Number(b.dataset.step) === safeStep));
+  modal.panels.forEach((p) => p.classList.toggle("is-active", Number(p.dataset.panel) === safeStep));
+
+  // Footer buttons
+  if (modal.backBtn) modal.backBtn.disabled = safeStep === 1;
+
+  if (user.role !== "teacher") {
+    if (modal.nextBtn) modal.nextBtn.style.display = "none";
+    if (modal.saveBtn) modal.saveBtn.style.display = "inline-block";
+    return;
   }
 
-  if (edit.editForm) {
-    edit.editForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      submitEditForm(user, ui, edit, dayKeys);
-    });
+  if (safeStep < 3) {
+    if (modal.nextBtn) modal.nextBtn.style.display = "inline-block";
+    if (modal.saveBtn) modal.saveBtn.style.display = "none";
+  } else {
+    if (modal.nextBtn) modal.nextBtn.style.display = "none";
+    if (modal.saveBtn) modal.saveBtn.style.display = "inline-block";
   }
 }
 
-// Opens the edit form and populates it with the user's values
-function openEditForm(user, edit, dayKeys) {
-  if (!edit.editForm) return;
+function getCurrentStep(modal) {
+  const activeBtn = modal.stepButtons.find((b) => b.classList.contains("is-active"));
+  return Number(activeBtn?.dataset.step || "1");
+}
+
+function stepBack(modal, user) {
+  const current = getCurrentStep(modal);
+  goToStep(modal, user, current - 1);
+}
+
+function stepNext(modal, user, edit, dayKeys) {
+  const current = getCurrentStep(modal);
+
+  // Validate step 1 before moving forward
+  if (current === 1) {
+    const ok = validateStep1(edit, user, modal);
+    if (!ok) return;
+  }
+
+  // Step 2: no hard validation required, go next
+  goToStep(modal, user, current + 1);
+}
+
+/* =========================
+   Fill / Save
+   ========================= */
+
+function fillFormFromUser(user, edit, dayKeys) {
+  clearInlineErrors(edit);
 
   if (edit.editFullName) edit.editFullName.value = user.fullName || "";
   if (edit.editPhone) edit.editPhone.value = user.phone || "";
   if (edit.editCity) edit.editCity.value = user.city || "";
 
   if (user.role === "teacher") {
-    if (edit.teacherFieldsBox) edit.teacherFieldsBox.style.display = "block";
     if (edit.editExperience) edit.editExperience.value = user.experience ?? 0;
     if (edit.editDuration) edit.editDuration.value = user.duration ?? 60;
 
     renderSubjects(user, edit);
     setWeeklyAvailabilityToForm(user.availabilityWeekly, dayKeys);
-  } else {
-    if (edit.teacherFieldsBox) edit.teacherFieldsBox.style.display = "none";
+  }
+}
+
+function saveWizard(user, ui, modal, edit, dayKeys) {
+  clearAlert(modal);
+  clearInlineErrors(edit);
+
+  // Validate step 1 (always)
+  const ok = validateStep1(edit, user, modal);
+  if (!ok) {
+    goToStep(modal, user, 1);
+    return;
   }
 
-  edit.editForm.style.display = "block";
+  // Teacher: validate weekly availability
+  if (user.role === "teacher") {
+    const weekly = getWeeklyAvailabilityFromForm(dayKeys);
+    const weeklyValidation = validateWeeklyAvailability(weekly);
+    if (!weeklyValidation.ok) {
+      showAlert(modal, weeklyValidation.message);
+      goToStep(modal, user, 3);
+      return;
+    }
+    user.availabilityWeekly = weekly;
+
+    const exp = Number(edit.editExperience?.value || 0);
+    const dur = Number(edit.editDuration?.value || 60);
+    user.experience = exp;
+    user.duration = dur;
+  }
+
+  // Save basics
+  user.fullName = (edit.editFullName?.value || "").trim();
+  user.phone = (edit.editPhone?.value || "").trim();
+  user.city = (edit.editCity?.value || "").trim();
+
+  // Refresh display
+  renderBasicProfile(ui, user);
+  renderRoleSpecificProfile(ui, user);
+  renderGreeting(ui.greetingEl, user);
+
+  closeModal(modal);
+  alert("הפרטים עודכנו בהצלחה! (דמו בלבד)");
 }
 
-// Closes the edit form (without saving)
-function closeEditForm(edit) {
-  if (!edit.editForm) return;
-  edit.editForm.style.display = "none";
+function validateStep1(edit, user, modal) {
+  const errors = [];
+
+  const fullName = (edit.editFullName?.value || "").trim();
+  const phone = (edit.editPhone?.value || "").trim();
+  const city = (edit.editCity?.value || "").trim();
+
+  if (!fullName) {
+    errors.push("שם מלא הוא שדה חובה.");
+    if (edit.errFullName) edit.errFullName.textContent = "יש להזין שם מלא";
+  }
+  if (!phone) {
+    errors.push("טלפון הוא שדה חובה.");
+    if (edit.errPhone) edit.errPhone.textContent = "יש להזין טלפון";
+  }
+
+  // Teacher additional checks
+  if (user.role === "teacher") {
+    const dur = Number(edit.editDuration?.value || 0);
+    if (!Number.isFinite(dur) || dur <= 0) {
+      errors.push("משך שיעור חייב להיות גדול מ-0.");
+      if (edit.errDuration) edit.errDuration.textContent = "משך שיעור חייב להיות גדול מ-0";
+    }
+  }
+
+  if (errors.length > 0) {
+    showAlert(modal, errors);
+    return false;
+  }
+
+  return true;
 }
 
-// Adds a new subject
+/* =========================
+   Subjects
+   ========================= */
+
 function addSubject(user, edit) {
   const subject = (edit.newSubjectName?.value || "").trim();
   const price = Number(edit.newSubjectPrice?.value || 0);
@@ -234,7 +413,6 @@ function addSubject(user, edit) {
   if (edit.newSubjectPrice) edit.newSubjectPrice.value = "";
 }
 
-// Edit subjects
 function renderSubjects(user, edit) {
   if (!edit.subjectsList || user.role !== "teacher") return;
 
@@ -242,13 +420,11 @@ function renderSubjects(user, edit) {
 
   (user.subjects || []).forEach((s, index) => {
     const row = document.createElement("div");
-    row.style.display = "flex";
-    row.style.gap = "8px";
-    row.style.marginBottom = "6px";
+    row.className = "subject-row";
 
     row.innerHTML = `
-      <span style="flex:1">${s.subject} – ${s.price}₪</span>
-      <button type="button" class="btn-secondary">❌</button>
+      <span class="subject-row__text">${s.subject} – ${s.price}₪</span>
+      <button type="button" class="btn-secondary subject-row__remove">❌</button>
     `;
 
     row.querySelector("button").addEventListener("click", () => {
@@ -260,7 +436,10 @@ function renderSubjects(user, edit) {
   });
 }
 
-// Reads weekly availability from the form
+/* =========================
+   Weekly availability
+   ========================= */
+
 function getWeeklyAvailabilityFromForm(dayKeys) {
   const weekly = {};
   dayKeys.forEach((day) => {
@@ -282,7 +461,6 @@ function getWeeklyAvailabilityFromForm(dayKeys) {
   return weekly;
 }
 
-// Loads weekly availability into the form
 function setWeeklyAvailabilityToForm(weekly, dayKeys) {
   const data = weekly || {};
   dayKeys.forEach((day) => {
@@ -298,7 +476,6 @@ function setWeeklyAvailabilityToForm(weekly, dayKeys) {
   });
 }
 
-// Availability validation: start+end required, and end after start
 function validateWeeklyAvailability(weekly) {
   for (const [day, obj] of Object.entries(weekly || {})) {
     if (!obj || obj.enabled === false) continue;
@@ -312,48 +489,33 @@ function validateWeeklyAvailability(weekly) {
   return { ok: true };
 }
 
-// Saves "edits" for display only + refreshes texts on screen
-function submitEditForm(user, ui, edit, dayKeys) {
-  const newFullName = (edit.editFullName?.value || "").trim();
-  const newPhone = (edit.editPhone?.value || "").trim();
-  const newCity = (edit.editCity?.value || "").trim();
+/* =========================
+   Alert + inline errors
+   ========================= */
 
-  if (!newFullName || !newPhone) {
-    alert("שם וטלפון הם שדות חובה.");
-    return;
-  }
+function showAlert(modal, messages) {
+  if (!modal.alertBox) return;
+  const list = Array.isArray(messages) ? messages : [messages];
 
-  // Update local demo
-  user.fullName = newFullName;
-  user.phone = newPhone;
-  user.city = newCity;
+  modal.alertBox.style.display = "block";
+  modal.alertBox.innerHTML = `
+    <strong>יש לתקן את השדות הבאים:</strong>
+    <ul>
+      ${list.map((m) => `<li>${m}</li>`).join("")}
+    </ul>
+  `;
+}
 
-  if (user.role === "teacher") {
-    const exp = Number(edit.editExperience?.value || 0);
-    const dur = Number(edit.editDuration?.value || 60);
+function clearAlert(modal) {
+  if (!modal.alertBox) return;
+  modal.alertBox.style.display = "none";
+  modal.alertBox.innerHTML = "";
+}
 
-    if (dur <= 0) {
-      alert("משך שיעור חייב להיות גדול מ-0.");
-      return;
-    }
-
-    const weekly = getWeeklyAvailabilityFromForm(dayKeys);
-    const weeklyValidation = validateWeeklyAvailability(weekly);
-    if (!weeklyValidation.ok) {
-      alert(weeklyValidation.message);
-      return;
-    }
-
-    user.experience = exp;
-    user.duration = dur;
-    user.availabilityWeekly = weekly;
-  }
-
-  // Refresh screen (demo)
-  renderBasicProfile(ui, user);
-  renderRoleSpecificProfile(ui, user);
-  renderGreeting(ui.greetingEl, user);
-
-  closeEditForm(edit);
-  alert("הפרטים עודכנו בהצלחה! (דמו בלבד)");
+function clearInlineErrors(edit) {
+  if (edit.errFullName) edit.errFullName.textContent = "";
+  if (edit.errPhone) edit.errPhone.textContent = "";
+  if (edit.errCity) edit.errCity.textContent = "";
+  if (edit.errExperience) edit.errExperience.textContent = "";
+  if (edit.errDuration) edit.errDuration.textContent = "";
 }

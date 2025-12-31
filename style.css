@@ -550,6 +550,23 @@ footer {
   align-items: flex-start;
 }
 
+/* Auth layout - single column pages (login/register) */
+.auth-layout--single {
+  justify-content: center;
+}
+
+.auth-layout--single .auth-card {
+  max-width: 520px;
+}
+
+/* "No account? Create one" line */
+.auth-switch {
+  margin-top: 1rem;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+
 .auth-card {
   flex: 1;
   background-color: #ffffff;

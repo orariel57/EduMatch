@@ -38,7 +38,9 @@
   box-sizing: border-box;
 }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   direction: rtl;
@@ -49,10 +51,18 @@ body {
   font-size: 16px;
 }
 
-a { text-decoration: none; color: inherit; }
-a:hover { text-decoration: none; }
+a {
+  text-decoration: none;
+  color: inherit;
+}
 
-ul { list-style: none; }
+a:hover {
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
 
 main {
   max-width: 1200px;
@@ -60,17 +70,24 @@ main {
   padding: 2.5rem 2rem 3rem;
 }
 
-section { margin-bottom: 3rem; }
+section {
+  margin-bottom: 3rem;
+}
 
 /* =========================
    Typography
    ========================= */
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-family: 'Poppins', 'Open Sans', sans-serif;
   font-weight: 700;
 }
 
-h1 { font-size: 32px; color: var(--primary); }
+h1 {
+  font-size: 32px;
+  color: var(--primary);
+}
 
 h2 {
   font-size: 22px;
@@ -111,7 +128,6 @@ h3 {
   border-radius: var(--radius-pill);
 }
 
-/* Basic white card */
 .surface {
   background: #fff;
   border-radius: var(--radius-24);
@@ -139,7 +155,9 @@ h3 {
   border: 2px solid var(--primary);
 }
 
-.btn-primary:hover { opacity: 0.92; }
+.btn-primary:hover {
+  opacity: 0.92;
+}
 
 .btn-secondary {
   background-color: #ffffff;
@@ -152,7 +170,7 @@ h3 {
   color: #ffffff;
 }
 
-/* Add subject button – preserves the site's design */
+/* Add subject button */
 .add-subject-btn {
   background-color: var(--primary);
   color: #fff;
@@ -227,7 +245,9 @@ nav {
   color: #333;
 }
 
-.main-nav a:hover { color: var(--primary); }
+.main-nav a:hover {
+  color: var(--primary);
+}
 
 .main-nav a.active {
   color: var(--primary);
@@ -278,9 +298,13 @@ nav {
   box-shadow: var(--shadow-hero);
 }
 
-.hero-content { flex: 1.2; }
+.hero-content {
+  flex: 1.2;
+}
 
-.hero-content h1 { margin-bottom: 1rem; }
+.hero-content h1 {
+  margin-bottom: 1rem;
+}
 
 .hero-content p {
   font-size: 16px;
@@ -316,7 +340,9 @@ nav {
 /* =========================
    Home - How it works
    ========================= */
-.how-it-works { text-align: right; }
+.how-it-works {
+  text-align: right;
+}
 
 .how-it-works .steps {
   display: flex;
@@ -367,9 +393,13 @@ nav {
 /* =========================
    Home - Why EduMatch
    ========================= */
-.why-edumatch { text-align: right; }
+.why-edumatch {
+  text-align: right;
+}
 
-#why-edumatch-title { margin-bottom: 0.7rem; }
+#why-edumatch-title {
+  margin-bottom: 0.7rem;
+}
 
 #why-edumatch-subtitle {
   font-size: 16px;
@@ -392,7 +422,9 @@ nav {
   border: var(--border-soft);
 }
 
-.benefit h3 { color: #000; }
+.benefit h3 {
+  color: #000;
+}
 
 .benefit p {
   font-size: 16px;
@@ -430,7 +462,9 @@ footer {
   text-decoration: none;
 }
 
-.footer-links a:hover { text-decoration: underline; }
+.footer-links a:hover {
+  text-decoration: underline;
+}
 
 /* =========================
    Forms (Shared)
@@ -442,7 +476,21 @@ footer {
   margin-bottom: 1rem;
 }
 
-.form-row label span { color: #d30000; }
+/* ⭐ תיקון יישור עקומות בטפסים:
+   - גורם ללייבלים להיות בגובה אחיד
+   - מחזיק אינפוטים באותו גובה
+   - מונע "קפיצות" בגלל כותרות ארוכות */
+.form-row label {
+  font-weight: 600;
+  font-size: 14px;
+  min-height: 18px;
+  /* קריטי ליישור שורות */
+  line-height: 1.2;
+}
+
+.form-row label span {
+  color: #d30000;
+}
 
 .form-row input,
 .form-row select {
@@ -451,6 +499,8 @@ footer {
   border: 1px solid #d0d0d0;
   font-size: 15px;
   outline: none;
+  height: 44px;
+  /* קריטי ליישור */
 }
 
 .form-row input:focus,
@@ -481,10 +531,12 @@ footer {
 
 .form-alert ul {
   margin: 6px 0 0;
-  padding-right: 18px; /* RTL */
+  padding-right: 18px;
 }
 
-.form-alert li { margin: 4px 0; }
+.form-alert li {
+  margin: 4px 0;
+}
 
 .form-actions {
   display: flex;
@@ -523,7 +575,9 @@ footer {
   font-size: 14px;
 }
 
-.checkbox-row input[type="checkbox"] { margin-top: 3px; }
+.checkbox-row input[type="checkbox"] {
+  margin-top: 3px;
+}
 
 .role-fields h3 {
   font-size: 16px;
@@ -534,8 +588,13 @@ footer {
 /* =========================
    Auth (Login / Register)
    ========================= */
-.auth-page { margin-top: 2rem; }
-.auth-page h1 { margin-bottom: 0.5rem; }
+.auth-page {
+  margin-top: 2rem;
+}
+
+.auth-page h1 {
+  margin-bottom: 0.5rem;
+}
 
 .auth-intro {
   color: var(--muted);
@@ -548,11 +607,14 @@ footer {
   align-items: flex-start;
 }
 
-/* Auth layout - single column pages (login/register) */
-.auth-layout--single { justify-content: center; }
-.auth-layout--single .auth-card { max-width: 520px; }
+.auth-layout--single {
+  justify-content: center;
+}
 
-/* "No account? Create one" line */
+.auth-layout--single .auth-card {
+  max-width: 520px;
+}
+
 .auth-switch {
   margin-top: 1rem;
   font-size: 14px;
@@ -567,7 +629,9 @@ footer {
   box-shadow: var(--shadow-card);
 }
 
-.auth-card h2 { margin-bottom: 0.3rem; }
+.auth-card h2 {
+  margin-bottom: 0.3rem;
+}
 
 .auth-card-desc {
   color: #666;
@@ -597,7 +661,7 @@ footer {
   font-weight: 600;
   pointer-events: none;
   transition: left 0.1s linear;
-  white-space: nowrap; /* שלא יישבר */
+  white-space: nowrap;
 }
 
 .price-slider-wrapper input[type="range"] {
@@ -606,16 +670,18 @@ footer {
 }
 
 /* =========================
-   Teachers Page - NEW Layout (Sidebar Right + Results Left)
+   Teachers Page - Layout (Sidebar Right + Results Left)
    ========================= */
 .teachers-page-layout {
   display: grid;
-  grid-template-columns: 360px 1fr; /* ימין פילטרים ושמאל תוצאות */
+  grid-template-columns: 360px 1fr;
   gap: 1.6rem;
   align-items: start;
 }
 
-.teachers-filter-section { margin-top: 0; }
+.teachers-filter-section {
+  margin-top: 0;
+}
 
 .teachers-sidebar .teachers-filter {
   background: #ffffff;
@@ -627,7 +693,9 @@ footer {
   flex-direction: column;
 }
 
-.teachers-sidebar .filter-actions button { flex: 1; }
+.teachers-sidebar .filter-actions button {
+  flex: 1;
+}
 
 .teachers-results {
   display: flex;
@@ -638,7 +706,9 @@ footer {
 /* =========================
    Teachers Page - Cards (Results)
    ========================= */
-.teachers-list-section { margin-top: 1.5rem; }
+.teachers-list-section {
+  margin-top: 1.5rem;
+}
 
 .teachers-list {
   display: grid;
@@ -675,7 +745,9 @@ footer {
 }
 
 .teacher-meta strong,
-.teacher-details strong { color: var(--primary); }
+.teacher-details strong {
+  color: var(--primary);
+}
 
 .teacher-actions {
   margin-top: 0.3rem;
@@ -713,7 +785,9 @@ footer {
   box-shadow: var(--shadow-card);
 }
 
-.profile-sidebar h2 { margin-bottom: 1rem; }
+.profile-sidebar h2 {
+  margin-bottom: 1rem;
+}
 
 .profile-user-info {
   display: flex;
@@ -733,9 +807,13 @@ footer {
   color: #444;
 }
 
-.profile-value { color: #333; }
+.profile-value {
+  color: #333;
+}
 
-.profile-user-role { margin-top: 0.7rem; }
+.profile-user-role {
+  margin-top: 0.7rem;
+}
 
 .role-pill {
   display: inline-block;
@@ -761,8 +839,15 @@ footer {
    Animations
    ========================= */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .teacher-card {
@@ -773,11 +858,27 @@ footer {
    Auth - Shake Error Animation
    ========================= */
 @keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  20% { transform: translateX(-4px); }
-  40% { transform: translateX(4px); }
-  60% { transform: translateX(-3px); }
-  80% { transform: translateX(3px); }
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  20% {
+    transform: translateX(-4px);
+  }
+
+  40% {
+    transform: translateX(4px);
+  }
+
+  60% {
+    transform: translateX(-3px);
+  }
+
+  80% {
+    transform: translateX(3px);
+  }
 }
 
 .input-error {
@@ -788,9 +889,13 @@ footer {
 /* =========================
    BOOK Page (Calendar + Booking UI)
    ========================= */
-.availability-page { padding-top: 2rem; }
+.availability-page {
+  padding-top: 2rem;
+}
 
-.availability-page .page-header { margin-bottom: 1.5rem; }
+.availability-page .page-header {
+  margin-bottom: 1.5rem;
+}
 
 .availability-page .page-header p {
   color: var(--muted);
@@ -812,7 +917,9 @@ footer {
   gap: 1.2rem;
 }
 
-.availability-page .booking-teacher-card h2 { margin-bottom: 1rem; }
+.availability-page .booking-teacher-card h2 {
+  margin-bottom: 1rem;
+}
 
 .availability-page .booking-teacher-header {
   display: flex;
@@ -837,7 +944,9 @@ footer {
   margin-top: 0.3rem;
 }
 
-.availability-page .booking-separator { opacity: 0.6; }
+.availability-page .booking-separator {
+  opacity: 0.6;
+}
 
 .availability-page .booking-teacher-extra {
   margin-top: 1rem;
@@ -850,7 +959,9 @@ footer {
   color: #333;
 }
 
-.availability-page .booking-teacher-price strong { color: var(--primary); }
+.availability-page .booking-teacher-price strong {
+  color: var(--primary);
+}
 
 .availability-page .booking-lesson-modes {
   display: flex;
@@ -878,8 +989,10 @@ footer {
   align-items: start;
 }
 
-/* ===== Calendar ===== */
-.availability-page .booking-calendar-card { overflow: hidden; }
+/* Calendar */
+.availability-page .booking-calendar-card {
+  overflow: hidden;
+}
 
 .availability-page .calendar-header {
   display: flex;
@@ -924,7 +1037,9 @@ footer {
   gap: 8px;
 }
 
-.availability-page .calendar-grid-names { margin-bottom: 0.6rem; }
+.availability-page .calendar-grid-names {
+  margin-bottom: 0.6rem;
+}
 
 .availability-page .calendar-day-name {
   text-align: center;
@@ -945,8 +1060,8 @@ footer {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.12s ease, box-shadow 0.15s ease, border-color 0.15s ease, background 0.15s ease;
   justify-self: center;
+  transition: transform 0.12s ease, box-shadow 0.15s ease, border-color 0.15s ease, background 0.15s ease;
 }
 
 .availability-page .calendar-day:hover {
@@ -981,7 +1096,7 @@ footer {
   box-shadow: 0 10px 20px rgba(0, 149, 182, 0.20);
 }
 
-/* ===== Times ===== */
+/* Times */
 .availability-page .booking-times-hint {
   font-size: 14px;
   color: var(--muted);
@@ -1017,7 +1132,7 @@ footer {
   box-shadow: 0 10px 20px rgba(0, 149, 182, 0.12);
 }
 
-/* ===== Summary ===== */
+/* Summary */
 .availability-page .booking-summary-row {
   display: flex;
   align-items: flex-start;
@@ -1027,7 +1142,9 @@ footer {
   border-bottom: 1px solid #f1f1f1;
 }
 
-.availability-page .booking-summary-row:last-of-type { border-bottom: none; }
+.availability-page .booking-summary-row:last-of-type {
+  border-bottom: none;
+}
 
 .availability-page .summary-label {
   color: #444;
@@ -1050,7 +1167,9 @@ footer {
   margin-top: 0.35rem;
 }
 
-.availability-page .summary-radio input { accent-color: var(--primary); }
+.availability-page .summary-radio input {
+  accent-color: var(--primary);
+}
 
 .availability-page .booking-summary-actions {
   margin-top: 1.1rem;
@@ -1067,7 +1186,9 @@ footer {
 /* =========================
    Profile Edit Modal (Wizard)
    ========================= */
-body.modal-open { overflow: hidden; }
+body.modal-open {
+  overflow: hidden;
+}
 
 .edit-modal {
   position: fixed;
@@ -1076,7 +1197,9 @@ body.modal-open { overflow: hidden; }
   z-index: 5000;
 }
 
-.edit-modal.is-open { display: block; }
+.edit-modal.is-open {
+  display: block;
+}
 
 .edit-modal__backdrop {
   position: absolute;
@@ -1087,7 +1210,6 @@ body.modal-open { overflow: hidden; }
 .edit-modal__card {
   position: relative;
   width: min(920px, calc(100% - 24px));
-  max-height: calc(100vh - 24px);
   margin: 12px auto;
   background: #fff;
   border-radius: var(--radius-24);
@@ -1096,8 +1218,6 @@ body.modal-open { overflow: hidden; }
   display: flex;
   flex-direction: column;
   overflow: hidden;
-
-  /* Prefer "small viewport height" on mobile to avoid Safari address bar issues */
   max-height: calc(100svh - 24px);
 }
 
@@ -1147,13 +1267,16 @@ body.modal-open { overflow: hidden; }
 .edit-modal__body {
   padding: 1.1rem 1.2rem;
   overflow: auto;
-
-  /* Better momentum scrolling on iOS inside modal */
   -webkit-overflow-scrolling: touch;
 }
 
-.edit-panel { display: none; }
-.edit-panel.is-active { display: block; }
+.edit-panel {
+  display: none;
+}
+
+.edit-panel.is-active {
+  display: block;
+}
 
 .edit-hint {
   font-size: 14px;
@@ -1161,10 +1284,23 @@ body.modal-open { overflow: hidden; }
   margin-bottom: 0.9rem;
 }
 
+/* ⭐ זה הגריד של השדות במודאל — זה מה שמיישר לך את "שנות ניסיון" ו"תחום לימוד" */
 .edit-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.9rem 1rem;
+  align-items: start;
+}
+
+/* מונע מצב ששדה לוקח רוחב "מוזר" בתוך grid */
+.edit-grid .form-row {
+  margin-bottom: 0;
+  min-width: 0;
+}
+
+/* אם יש לך שדות שאת רוצה על כל השורה — תני להם class="form-row full" */
+.edit-grid .form-row.full {
+  grid-column: 1 / -1;
 }
 
 .edit-inline-row {
@@ -1250,8 +1386,13 @@ body.modal-open { overflow: hidden; }
 
 /* Global */
 @media (max-width: 900px) {
-  .top-bar { padding-inline: 1.5rem; }
-  main { padding-inline: 1.5rem; }
+  .top-bar {
+    padding-inline: 1.5rem;
+  }
+
+  main {
+    padding-inline: 1.5rem;
+  }
 
   .hero {
     flex-direction: column;
@@ -1264,31 +1405,47 @@ body.modal-open { overflow: hidden; }
     height: 260px;
   }
 
-  .how-it-works .steps { flex-direction: column; }
+  .how-it-works .steps {
+    flex-direction: column;
+  }
 
-  .benefits-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .benefits-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 
-  .auth-layout { flex-direction: column; }
+  .auth-layout {
+    flex-direction: column;
+  }
 
-  /* Teachers: כרטיסים עמודה אחת */
-  .teachers-list { grid-template-columns: 1fr; }
+  .teachers-list {
+    grid-template-columns: 1fr;
+  }
 
-  /* Profile */
-  .profile-layout { grid-template-columns: 1fr; }
+  .profile-layout {
+    grid-template-columns: 1fr;
+  }
 
-  /* Teachers layout: יורד לעמודה אחת */
-  .teachers-page-layout { grid-template-columns: 1fr; }
+  .teachers-page-layout {
+    grid-template-columns: 1fr;
+  }
 }
 
-/* Profile edit modal */
+/* Modal */
 @media (max-width: 800px) {
-  .edit-grid { grid-template-columns: 1fr; }
-  .edit-inline-row { grid-template-columns: 1fr 1fr auto; }
+  .edit-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .edit-inline-row {
+    grid-template-columns: 1fr 1fr auto;
+  }
 }
 
 /* BOOK responsive */
 @media (max-width: 700px) {
-  .availability-page .booking-main-columns { grid-template-columns: 1fr; }
+  .availability-page .booking-main-columns {
+    grid-template-columns: 1fr;
+  }
 
   .availability-page .calendar-day {
     width: 42px;
@@ -1307,9 +1464,13 @@ body.modal-open { overflow: hidden; }
     height: 200px;
   }
 
-  .benefits-grid { grid-template-columns: 1fr; }
+  .benefits-grid {
+    grid-template-columns: 1fr;
+  }
 
-  .logo-img { height: 80px; }
+  .logo-img {
+    height: 80px;
+  }
 
   .top-bar {
     flex-direction: column;
@@ -1365,7 +1526,9 @@ body.modal-open { overflow: hidden; }
     z-index: 1500;
   }
 
-  header nav.is-open { display: flex; }
+  header nav.is-open {
+    display: flex;
+  }
 
   .main-nav,
   .auth-nav {
@@ -1394,10 +1557,8 @@ body.modal-open { overflow: hidden; }
   }
 }
 
-/* Modal: iPhone / mobile fix (merged into same breakpoint) */
+/* Modal mobile / iPhone */
 @media (max-width: 520px) {
-  .edit-modal__footer { flex-wrap: wrap; }
-
   .edit-modal__card {
     width: calc(100% - 16px);
     margin: calc(8px + var(--safe-top)) auto calc(8px + var(--safe-bottom));
@@ -1413,14 +1574,12 @@ body.modal-open { overflow: hidden; }
     padding-right: 12px;
   }
 
-  /* Make the "add subject" row stack instead of forcing 3 columns */
   .edit-inline-row {
     grid-template-columns: 1fr;
     gap: 10px;
     align-items: stretch;
   }
 
-  /* Buttons in footer: full width so nothing overflows */
   .edit-modal__footer {
     flex-wrap: wrap;
     gap: 10px;
@@ -1431,13 +1590,70 @@ body.modal-open { overflow: hidden; }
     width: 100%;
   }
 
-  /* Weekly table: keep wide but enable horizontal scroll inside wrapper */
   .table-wrapper {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
 
   .weekly-table {
-    min-width: 520px; /* stays, but will scroll horizontally */
+    min-width: 520px;
+  }
+}
+
+/* Step 2 - Add subject layout (2 rows, clean alignment) */
+.subject-add-grid {
+  display: grid;
+  grid-template-columns: 120px 1fr 64px;
+  /* label | input | button */
+  grid-template-rows: auto auto;
+  gap: 10px 12px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.subject-label {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.subject-input {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid #d0d0d0;
+  font-size: 15px;
+  outline: none;
+}
+
+.subject-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(0, 149, 182, 0.15);
+}
+
+.subject-add-btn {
+  grid-column: 3;
+  grid-row: 1 / span 2;
+  /* button spans both rows */
+  height: 100%;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Mobile: stack nicely */
+@media (max-width: 520px) {
+  .subject-add-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .subject-add-btn {
+    grid-column: auto;
+    grid-row: auto;
+    width: 100%;
+    min-height: 44px;
   }
 }

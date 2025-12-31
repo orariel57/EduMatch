@@ -171,27 +171,28 @@
 
           <!-- STEP 2 (Teacher Only) -->
           <section class="edit-panel" data-panel="2">
-            <p class="edit-hint">הוסיפי תחומי הוראה ומחיר לכל תחום. אפשר למחוק עם ❌.</p>
+            <p class="edit-hint">הוסף תחומי הוראה ומחיר לכל תחום. ניתן למחוק עם ❌.</p>
 
             <div class="form-row">
               <label>תחומי הוראה</label>
               <div id="subjects-list"></div>
             </div>
 
-            <div class="form-row edit-inline-row">
-              <label for="new-subject-name" class="visually-hidden">תחום לימוד</label>
-              <input type="text" id="new-subject-name" placeholder="תחום לימוד" />
+            <div class="subject-add-grid">
+              <label for="new-subject-name" class="subject-label">תחום לימוד</label>
+              <input type="text" id="new-subject-name" class="subject-input" placeholder="לדוגמה: מתמטיקה" />
 
-              <label for="new-subject-price" class="visually-hidden">₪ לשיעור</label>
-              <input type="number" id="new-subject-price" placeholder="₪ לשיעור" min="0" />
+              <label for="new-subject-price" class="subject-label">₪ לשיעור</label>
+              <input type="number" id="new-subject-price" class="subject-input" placeholder="לדוגמה: 120" min="0" />
 
-              <button type="button" class="btn-secondary" id="add-subject-btn">➕</button>
+              <button type="button" class="btn-secondary subject-add-btn" id="add-subject-btn">➕</button>
             </div>
+
           </section>
 
           <!-- STEP 3 (Teacher Only) -->
           <section class="edit-panel" data-panel="3">
-            <p class="edit-hint">הגדירי זמינות שבועית. (רק כאן מוצגת הטבלה כדי לא להעמיס)</p>
+            <p class="edit-hint">הגדר זמינות שבועית. </p>
 
             <div class="table-wrapper">
               <table class="weekly-table">
@@ -264,9 +265,9 @@
                 </div>
 
                 <div class="form-row">
-                  <label for="ex-type">סוג חריג</label>
+                  <label for="ex-type">סוג חריגה</label>
                   <select id="ex-type">
-                    <option value="off">לא זמינה</option>
+                    <option value="off">לא זמין</option>
                     <option value="custom">שעות מיוחדות</option>
                   </select>
                 </div>

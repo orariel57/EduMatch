@@ -249,6 +249,48 @@
                 </tbody>
               </table>
             </div>
+            <hr style="margin:18px 0; border:none; border-top:1px solid #eee;" />
+
+            <h3 style="margin-bottom:8px;">חריגים לפי תאריך</h3>
+            <p class="edit-hint" style="margin-top:0;">
+              כאן אפשר לסמן תאריך שבו את לא זמינה בכלל, או להגדיר שעות שונות רק לתאריך הזה.
+            </p>
+
+            <div class="exceptions-card" style="margin-top:10px;">
+              <div class="exceptions-form">
+                <div class="form-row">
+                  <label for="ex-date">תאריך</label>
+                  <input type="date" id="ex-date" />
+                </div>
+
+                <div class="form-row">
+                  <label for="ex-type">סוג חריג</label>
+                  <select id="ex-type">
+                    <option value="off">לא זמינה</option>
+                    <option value="custom">שעות מיוחדות</option>
+                  </select>
+                </div>
+
+                <div class="form-row">
+                  <label for="ex-start">התחלה</label>
+                  <input type="time" id="ex-start" disabled />
+                </div>
+
+                <div class="form-row">
+                  <label for="ex-end">סיום</label>
+                  <input type="time" id="ex-end" disabled />
+                </div>
+
+                <div class="form-row" style="align-self:end;">
+                  <button type="button" class="btn-secondary" id="ex-add-btn">➕ הוסף</button>
+                </div>
+              </div>
+
+              <div class="form-alert" id="ex-alert" style="display:none;"></div>
+
+              <div id="exceptions-list" style="margin-top:12px;"></div>
+            </div>
+
           </section>
         </div>
 

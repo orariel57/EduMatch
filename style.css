@@ -3,6 +3,9 @@
    ========================= */
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Poppins:wght@500;600;700&display=swap');
 
+/* =========================
+   Variables
+   ========================= */
 :root {
   --primary: #0095B6;
   --secondary: #b9d9eb;
@@ -20,6 +23,10 @@
   --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.05);
   --shadow-card: 0 10px 25px rgba(0, 0, 0, 0.06);
   --shadow-hero: 0 10px 30px rgba(0, 0, 0, 0.08);
+
+  /* iOS safe areas (notch) */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 /* =========================
@@ -31,9 +38,7 @@
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
   direction: rtl;
@@ -44,18 +49,10 @@ body {
   font-size: 16px;
 }
 
-a {
-  text-decoration: none;
-  color: inherit;
-}
+a { text-decoration: none; color: inherit; }
+a:hover { text-decoration: none; }
 
-a:hover {
-  text-decoration: none;
-}
-
-ul {
-  list-style: none;
-}
+ul { list-style: none; }
 
 main {
   max-width: 1200px;
@@ -63,24 +60,17 @@ main {
   padding: 2.5rem 2rem 3rem;
 }
 
-section {
-  margin-bottom: 3rem;
-}
+section { margin-bottom: 3rem; }
 
 /* =========================
    Typography
    ========================= */
-h1,
-h2,
-h3 {
+h1, h2, h3 {
   font-family: 'Poppins', 'Open Sans', sans-serif;
   font-weight: 700;
 }
 
-h1 {
-  font-size: 32px;
-  color: var(--primary);
-}
+h1 { font-size: 32px; color: var(--primary); }
 
 h2 {
   font-size: 22px;
@@ -149,9 +139,7 @@ h3 {
   border: 2px solid var(--primary);
 }
 
-.btn-primary:hover {
-  opacity: 0.92;
-}
+.btn-primary:hover { opacity: 0.92; }
 
 .btn-secondary {
   background-color: #ffffff;
@@ -239,10 +227,7 @@ nav {
   color: #333;
 }
 
-.main-nav a:hover {
-  color: var(--primary);
-}
-
+.main-nav a:hover { color: var(--primary); }
 
 .main-nav a.active {
   color: var(--primary);
@@ -264,6 +249,21 @@ nav {
 }
 
 /* =========================
+   Mobile Nav (Hamburger)
+   ========================= */
+.nav-toggle {
+  display: none;
+  border: 2px solid var(--primary);
+  background: #fff;
+  color: var(--primary);
+  border-radius: var(--radius-pill);
+  padding: 0.35rem 0.9rem;
+  font-size: 20px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+/* =========================
    Home - Hero
    ========================= */
 .hero {
@@ -278,13 +278,9 @@ nav {
   box-shadow: var(--shadow-hero);
 }
 
-.hero-content {
-  flex: 1.2;
-}
+.hero-content { flex: 1.2; }
 
-.hero-content h1 {
-  margin-bottom: 1rem;
-}
+.hero-content h1 { margin-bottom: 1rem; }
 
 .hero-content p {
   font-size: 16px;
@@ -320,9 +316,7 @@ nav {
 /* =========================
    Home - How it works
    ========================= */
-.how-it-works {
-  text-align: right;
-}
+.how-it-works { text-align: right; }
 
 .how-it-works .steps {
   display: flex;
@@ -373,13 +367,9 @@ nav {
 /* =========================
    Home - Why EduMatch
    ========================= */
-.why-edumatch {
-  text-align: right;
-}
+.why-edumatch { text-align: right; }
 
-#why-edumatch-title {
-  margin-bottom: 0.7rem;
-}
+#why-edumatch-title { margin-bottom: 0.7rem; }
 
 #why-edumatch-subtitle {
   font-size: 16px;
@@ -402,9 +392,7 @@ nav {
   border: var(--border-soft);
 }
 
-.benefit h3 {
-  color: #000;
-}
+.benefit h3 { color: #000; }
 
 .benefit p {
   font-size: 16px;
@@ -442,9 +430,7 @@ footer {
   text-decoration: none;
 }
 
-.footer-links a:hover {
-  text-decoration: underline;
-}
+.footer-links a:hover { text-decoration: underline; }
 
 /* =========================
    Forms (Shared)
@@ -456,9 +442,7 @@ footer {
   margin-bottom: 1rem;
 }
 
-.form-row label span {
-  color: #d30000;
-}
+.form-row label span { color: #d30000; }
 
 .form-row input,
 .form-row select {
@@ -500,9 +484,7 @@ footer {
   padding-right: 18px; /* RTL */
 }
 
-.form-alert li {
-  margin: 4px 0;
-}
+.form-alert li { margin: 4px 0; }
 
 .form-actions {
   display: flex;
@@ -541,9 +523,7 @@ footer {
   font-size: 14px;
 }
 
-.checkbox-row input[type="checkbox"] {
-  margin-top: 3px;
-}
+.checkbox-row input[type="checkbox"] { margin-top: 3px; }
 
 .role-fields h3 {
   font-size: 16px;
@@ -554,13 +534,8 @@ footer {
 /* =========================
    Auth (Login / Register)
    ========================= */
-.auth-page {
-  margin-top: 2rem;
-}
-
-.auth-page h1 {
-  margin-bottom: 0.5rem;
-}
+.auth-page { margin-top: 2rem; }
+.auth-page h1 { margin-bottom: 0.5rem; }
 
 .auth-intro {
   color: var(--muted);
@@ -574,13 +549,8 @@ footer {
 }
 
 /* Auth layout - single column pages (login/register) */
-.auth-layout--single {
-  justify-content: center;
-}
-
-.auth-layout--single .auth-card {
-  max-width: 520px;
-}
+.auth-layout--single { justify-content: center; }
+.auth-layout--single .auth-card { max-width: 520px; }
 
 /* "No account? Create one" line */
 .auth-switch {
@@ -588,7 +558,6 @@ footer {
   font-size: 14px;
   color: var(--muted);
 }
-
 
 .auth-card {
   flex: 1;
@@ -598,9 +567,7 @@ footer {
   box-shadow: var(--shadow-card);
 }
 
-.auth-card h2 {
-  margin-bottom: 0.3rem;
-}
+.auth-card h2 { margin-bottom: 0.3rem; }
 
 .auth-card-desc {
   color: #666;
@@ -630,8 +597,7 @@ footer {
   font-weight: 600;
   pointer-events: none;
   transition: left 0.1s linear;
-  white-space: nowrap;
-  /* שלא יישבר */
+  white-space: nowrap; /* שלא יישבר */
 }
 
 .price-slider-wrapper input[type="range"] {
@@ -644,15 +610,12 @@ footer {
    ========================= */
 .teachers-page-layout {
   display: grid;
-  grid-template-columns: 360px 1fr;
-  /* ימין פילטרים ושמאל תוצאות */
+  grid-template-columns: 360px 1fr; /* ימין פילטרים ושמאל תוצאות */
   gap: 1.6rem;
   align-items: start;
 }
 
-.teachers-filter-section {
-  margin-top: 0;
-}
+.teachers-filter-section { margin-top: 0; }
 
 .teachers-sidebar .teachers-filter {
   background: #ffffff;
@@ -664,9 +627,7 @@ footer {
   flex-direction: column;
 }
 
-.teachers-sidebar .filter-actions button {
-  flex: 1;
-}
+.teachers-sidebar .filter-actions button { flex: 1; }
 
 .teachers-results {
   display: flex;
@@ -677,9 +638,7 @@ footer {
 /* =========================
    Teachers Page - Cards (Results)
    ========================= */
-.teachers-list-section {
-  margin-top: 1.5rem;
-}
+.teachers-list-section { margin-top: 1.5rem; }
 
 .teachers-list {
   display: grid;
@@ -716,9 +675,7 @@ footer {
 }
 
 .teacher-meta strong,
-.teacher-details strong {
-  color: var(--primary);
-}
+.teacher-details strong { color: var(--primary); }
 
 .teacher-actions {
   margin-top: 0.3rem;
@@ -756,9 +713,7 @@ footer {
   box-shadow: var(--shadow-card);
 }
 
-.profile-sidebar h2 {
-  margin-bottom: 1rem;
-}
+.profile-sidebar h2 { margin-bottom: 1rem; }
 
 .profile-user-info {
   display: flex;
@@ -778,13 +733,9 @@ footer {
   color: #444;
 }
 
-.profile-value {
-  color: #333;
-}
+.profile-value { color: #333; }
 
-.profile-user-role {
-  margin-top: 0.7rem;
-}
+.profile-user-role { margin-top: 0.7rem; }
 
 .role-pill {
   display: inline-block;
@@ -807,33 +758,11 @@ footer {
 }
 
 /* =========================
-   Mobile Nav (Hamburger)
-   ========================= */
-.nav-toggle {
-  display: none;
-  border: 2px solid var(--primary);
-  background: #fff;
-  color: var(--primary);
-  border-radius: var(--radius-pill);
-  padding: 0.35rem 0.9rem;
-  font-size: 20px;
-  cursor: pointer;
-  line-height: 1;
-}
-
-/* =========================
    Animations
    ========================= */
 @keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .teacher-card {
@@ -859,13 +788,9 @@ footer {
 /* =========================
    BOOK Page (Calendar + Booking UI)
    ========================= */
-.availability-page {
-  padding-top: 2rem;
-}
+.availability-page { padding-top: 2rem; }
 
-.availability-page .page-header {
-  margin-bottom: 1.5rem;
-}
+.availability-page .page-header { margin-bottom: 1.5rem; }
 
 .availability-page .page-header p {
   color: var(--muted);
@@ -887,9 +812,7 @@ footer {
   gap: 1.2rem;
 }
 
-.availability-page .booking-teacher-card h2 {
-  margin-bottom: 1rem;
-}
+.availability-page .booking-teacher-card h2 { margin-bottom: 1rem; }
 
 .availability-page .booking-teacher-header {
   display: flex;
@@ -914,9 +837,7 @@ footer {
   margin-top: 0.3rem;
 }
 
-.availability-page .booking-separator {
-  opacity: 0.6;
-}
+.availability-page .booking-separator { opacity: 0.6; }
 
 .availability-page .booking-teacher-extra {
   margin-top: 1rem;
@@ -929,9 +850,7 @@ footer {
   color: #333;
 }
 
-.availability-page .booking-teacher-price strong {
-  color: var(--primary);
-}
+.availability-page .booking-teacher-price strong { color: var(--primary); }
 
 .availability-page .booking-lesson-modes {
   display: flex;
@@ -960,9 +879,7 @@ footer {
 }
 
 /* ===== Calendar ===== */
-.availability-page .booking-calendar-card {
-  overflow: hidden;
-}
+.availability-page .booking-calendar-card { overflow: hidden; }
 
 .availability-page .calendar-header {
   display: flex;
@@ -1007,9 +924,7 @@ footer {
   gap: 8px;
 }
 
-.availability-page .calendar-grid-names {
-  margin-bottom: 0.6rem;
-}
+.availability-page .calendar-grid-names { margin-bottom: 0.6rem; }
 
 .availability-page .calendar-day-name {
   text-align: center;
@@ -1112,9 +1027,7 @@ footer {
   border-bottom: 1px solid #f1f1f1;
 }
 
-.availability-page .booking-summary-row:last-of-type {
-  border-bottom: none;
-}
+.availability-page .booking-summary-row:last-of-type { border-bottom: none; }
 
 .availability-page .summary-label {
   color: #444;
@@ -1137,9 +1050,7 @@ footer {
   margin-top: 0.35rem;
 }
 
-.availability-page .summary-radio input {
-  accent-color: var(--primary);
-}
+.availability-page .summary-radio input { accent-color: var(--primary); }
 
 .availability-page .booking-summary-actions {
   margin-top: 1.1rem;
@@ -1154,191 +1065,9 @@ footer {
 }
 
 /* =========================
-   Media Queries (Global)
-   ========================= */
-
-@media (max-width: 900px) {
-  .top-bar {
-    padding-inline: 1.5rem;
-  }
-
-  main {
-    padding-inline: 1.5rem;
-  }
-
-  .hero {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 2.5rem 2rem;
-  }
-
-  .hero-image {
-    width: 100%;
-    height: 260px;
-  }
-
-  .how-it-works .steps {
-    flex-direction: column;
-  }
-
-  .benefits-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .auth-layout {
-    flex-direction: column;
-  }
-
-  /* Teachers: כרטיסים עמודה אחת */
-  .teachers-list {
-    grid-template-columns: 1fr;
-  }
-
-  /* Profile */
-  .profile-layout {
-    grid-template-columns: 1fr;
-  }
-
-  /* Teachers layout: יורד לעמודה אחת */
-  .teachers-page-layout {
-    grid-template-columns: 1fr;
-  }
-}
-
-
-@media (max-width: 600px) {
-  .hero-image {
-    width: 100%;
-    height: 200px;
-  }
-
-  .benefits-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .logo-img {
-    height: 80px;
-  }
-
-  .top-bar {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.75rem;
-  }
-
-  .logo-row {
-    display: grid;
-    grid-template-columns: 44px 1fr 44px;
-    align-items: center;
-    width: 100%;
-    padding: 0.25rem 0;
-    position: relative;
-    z-index: 1000;
-  }
-
-  .nav-toggle {
-    display: inline-flex;
-    width: 44px;
-    height: 44px;
-    align-items: center;
-    justify-content: center;
-    border-radius: 999px;
-    font-size: 22px;
-    line-height: 1;
-    position: relative;
-    z-index: 2000;
-    pointer-events: auto;
-    touch-action: manipulation;
-  }
-
-  .logo-link {
-    justify-self: center;
-    display: inline-flex;
-    align-items: center;
-    position: relative;
-    z-index: 1001;
-  }
-
-  .logo-spacer {
-    width: 44px;
-    height: 44px;
-  }
-
-  header nav {
-    width: 100%;
-    display: none;
-    flex-direction: column;
-    gap: 1rem;
-    padding-top: 0.6rem;
-    position: relative;
-    z-index: 1500;
-  }
-
-  header nav.is-open {
-    display: flex;
-  }
-
-  .main-nav,
-  .auth-nav {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.6rem;
-    width: 100%;
-  }
-
-  .main-nav a,
-  .auth-nav a {
-    width: 100%;
-    display: block;
-  }
-
-  .footer-content {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-}
-
-/* =========================
-   Responsive for BOOK
-   ========================= */
-@media (max-width: 1000px) {
-  .availability-page .booking-main-columns {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .availability-page .booking-summary-card {
-    grid-column: 1 / -1;
-  }
-}
-
-@media (max-width: 700px) {
-  .availability-page .booking-main-columns {
-    grid-template-columns: 1fr;
-  }
-
-  .availability-page .calendar-day {
-    width: 42px;
-    height: 42px;
-  }
-
-  .availability-page .time-slots {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 420px) {
-  .availability-page .time-slots {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-/* =========================
    Profile Edit Modal (Wizard)
    ========================= */
-
-body.modal-open {
-  overflow: hidden;
-}
+body.modal-open { overflow: hidden; }
 
 .edit-modal {
   position: fixed;
@@ -1347,9 +1076,7 @@ body.modal-open {
   z-index: 5000;
 }
 
-.edit-modal.is-open {
-  display: block;
-}
+.edit-modal.is-open { display: block; }
 
 .edit-modal__backdrop {
   position: absolute;
@@ -1369,6 +1096,9 @@ body.modal-open {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+
+  /* Prefer "small viewport height" on mobile to avoid Safari address bar issues */
+  max-height: calc(100svh - 24px);
 }
 
 .edit-modal__header {
@@ -1417,15 +1147,13 @@ body.modal-open {
 .edit-modal__body {
   padding: 1.1rem 1.2rem;
   overflow: auto;
+
+  /* Better momentum scrolling on iOS inside modal */
+  -webkit-overflow-scrolling: touch;
 }
 
-.edit-panel {
-  display: none;
-}
-
-.edit-panel.is-active {
-  display: block;
-}
+.edit-panel { display: none; }
+.edit-panel.is-active { display: block; }
 
 .edit-hint {
   font-size: 14px;
@@ -1505,44 +1233,171 @@ body.modal-open {
   font-size: 14px;
 }
 
-@media (max-width: 800px) {
-  .edit-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .edit-inline-row {
-    grid-template-columns: 1fr 1fr auto;
-  }
-}
-
-@media (max-width: 520px) {
-  .edit-modal__footer {
-    flex-wrap: wrap;
-  }
-}
-
 /* =========================
-   iPhone / Mobile Fix for Profile Edit Modal (ADD ONLY)
+   Media Queries (Unified)
    ========================= */
 
-/* iOS safe areas (notch) */
-:root {
-  --safe-top: env(safe-area-inset-top, 0px);
-  --safe-bottom: env(safe-area-inset-bottom, 0px);
+/* BOOK responsive */
+@media (max-width: 1000px) {
+  .availability-page .booking-main-columns {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .availability-page .booking-summary-card {
+    grid-column: 1 / -1;
+  }
 }
 
-/* Prefer "small viewport height" on mobile to avoid Safari address bar issues */
-.edit-modal__card {
-  max-height: calc(100svh - 24px);
+/* Global */
+@media (max-width: 900px) {
+  .top-bar { padding-inline: 1.5rem; }
+  main { padding-inline: 1.5rem; }
+
+  .hero {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2.5rem 2rem;
+  }
+
+  .hero-image {
+    width: 100%;
+    height: 260px;
+  }
+
+  .how-it-works .steps { flex-direction: column; }
+
+  .benefits-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  .auth-layout { flex-direction: column; }
+
+  /* Teachers: כרטיסים עמודה אחת */
+  .teachers-list { grid-template-columns: 1fr; }
+
+  /* Profile */
+  .profile-layout { grid-template-columns: 1fr; }
+
+  /* Teachers layout: יורד לעמודה אחת */
+  .teachers-page-layout { grid-template-columns: 1fr; }
 }
 
-/* Better momentum scrolling on iOS inside modal */
-.edit-modal__body {
-  -webkit-overflow-scrolling: touch;
+/* Profile edit modal */
+@media (max-width: 800px) {
+  .edit-grid { grid-template-columns: 1fr; }
+  .edit-inline-row { grid-template-columns: 1fr 1fr auto; }
 }
 
-/* Mobile / iPhone: near full-screen modal + stack buttons + fix grid */
+/* BOOK responsive */
+@media (max-width: 700px) {
+  .availability-page .booking-main-columns { grid-template-columns: 1fr; }
+
+  .availability-page .calendar-day {
+    width: 42px;
+    height: 42px;
+  }
+
+  .availability-page .time-slots {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Global */
+@media (max-width: 600px) {
+  .hero-image {
+    width: 100%;
+    height: 200px;
+  }
+
+  .benefits-grid { grid-template-columns: 1fr; }
+
+  .logo-img { height: 80px; }
+
+  .top-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .logo-row {
+    display: grid;
+    grid-template-columns: 44px 1fr 44px;
+    align-items: center;
+    width: 100%;
+    padding: 0.25rem 0;
+    position: relative;
+    z-index: 1000;
+  }
+
+  .nav-toggle {
+    display: inline-flex;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    font-size: 22px;
+    line-height: 1;
+    position: relative;
+    z-index: 2000;
+    pointer-events: auto;
+    touch-action: manipulation;
+  }
+
+  .logo-link {
+    justify-self: center;
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    z-index: 1001;
+  }
+
+  .logo-spacer {
+    width: 44px;
+    height: 44px;
+  }
+
+  header nav {
+    width: 100%;
+    display: none;
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: 0.6rem;
+    position: relative;
+    z-index: 1500;
+  }
+
+  header nav.is-open { display: flex; }
+
+  .main-nav,
+  .auth-nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+    width: 100%;
+  }
+
+  .main-nav a,
+  .auth-nav a {
+    width: 100%;
+    display: block;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* BOOK: very small */
+@media (max-width: 420px) {
+  .availability-page .time-slots {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Modal: iPhone / mobile fix (merged into same breakpoint) */
 @media (max-width: 520px) {
+  .edit-modal__footer { flex-wrap: wrap; }
+
   .edit-modal__card {
     width: calc(100% - 16px);
     margin: calc(8px + var(--safe-top)) auto calc(8px + var(--safe-bottom));
@@ -1586,64 +1441,3 @@ body.modal-open {
     min-width: 520px; /* stays, but will scroll horizontally */
   }
 }
-
-
-
-/* =========================
-   Mobile: Weekly table becomes stacked cards (Profile Edit Modal)
-   ADD ONLY
-   ========================= */
-
-@media (max-width: 520px) {
-  /* hide header row on mobile */
-  .weekly-table thead {
-    display: none;
-  }
-
-  /* make table + rows behave like blocks */
-  .weekly-table,
-  .weekly-table tbody,
-  .weekly-table tr,
-  .weekly-table td {
-    display: block;
-    width: 100%;
-  }
-
-  /* cancel the forced min-width so it can fit */
-  .weekly-table {
-    min-width: 0;
-  }
-
-  /* each day becomes a "card" */
-  .weekly-table tr {
-    border: 1px solid #eee;
-    border-radius: 16px;
-    padding: 12px;
-    margin-bottom: 12px;
-    background: #fff;
-  }
-
-  /* each cell becomes a row with label+value */
-  .weekly-table td {
-    border: none;
-    padding: 8px 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    text-align: right;
-  }
-
-  /* labels for each column */
-  .weekly-table td:nth-child(1)::before { content: "יום"; font-weight: 800; color: var(--primary); }
-  .weekly-table td:nth-child(2)::before { content: "זמין"; font-weight: 800; color: var(--primary); }
-  .weekly-table td:nth-child(3)::before { content: "התחלה"; font-weight: 800; color: var(--primary); }
-  .weekly-table td:nth-child(4)::before { content: "סיום"; font-weight: 800; color: var(--primary); }
-
-  /* inputs shouldn’t overflow */
-  .weekly-table input[type="time"] {
-    width: 150px;
-    max-width: 60vw;
-  }
-}
-

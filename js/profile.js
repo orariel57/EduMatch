@@ -1,5 +1,5 @@
 // js/profile.js
-// Profile page + edit modal wizard (teacher/student demo)
+// Profile page + edit modal wizard (teacher/student demo) + Exceptions (date-specific)
 
 document.addEventListener("DOMContentLoaded", () => {
   const noUserCard = document.getElementById("no-user-card");
@@ -16,7 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ===== Demo data =====
-  // Quick role change (for your demo):
   const DEMO_ROLE = "teacher"; // "teacher" / "student"
 
   const DEMO_USER_TEACHER = {
@@ -31,6 +30,13 @@ document.addEventListener("DOMContentLoaded", () => {
       { subject: "מתמטיקה", price: 120 },
       { subject: "אנגלית", price: 110 },
     ],
+
+    // NEW: date exceptions
+    exceptions: [
+      { date: "2026-02-15", type: "off" },
+      { date: "2026-02-18", type: "custom", start: "10:00", end: "12:00" },
+    ],
+
     availabilityWeekly: {
       sun: { enabled: true, start: "16:00", end: "20:00" },
       mon: { enabled: true, start: "10:00", end: "14:00" },
@@ -56,7 +62,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // If you want to always show the demo even if not logged in, set this true:
   const FORCE_DEMO = false;
 
-  const user = (isLoggedIn || FORCE_DEMO) ? getDemoUser(DEMO_ROLE, DEMO_USER_TEACHER, DEMO_USER_STUDENT) : null;
+  const user =
+    isLoggedIn || FORCE_DEMO
+      ? getDemoUser(DEMO_ROLE, DEMO_USER_TEACHER, DEMO_USER_STUDENT)
+      : null;
 
   const dayKeys = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
 
@@ -89,7 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
     step3Btn: document.getElementById("step-teacher-3"),
   };
 
-  // Edit inputs (same ids as before)
+  // Edit inputs
   const edit = {
     editBtn: document.getElementById("edit-profile-btn"),
 
@@ -112,6 +121,15 @@ document.addEventListener("DOMContentLoaded", () => {
     errCity: document.getElementById("err-city"),
     errExperience: document.getElementById("err-experience"),
     errDuration: document.getElementById("err-duration"),
+
+    // NEW: Exceptions (teacher)
+    exDate: document.getElementById("ex-date"),
+    exType: document.getElementById("ex-type"),
+    exStart: document.getElementById("ex-start"),
+    exEnd: document.getElementById("ex-end"),
+    exAddBtn: document.getElementById("ex-add-btn"),
+    exList: document.getElementById("exceptions-list"),
+    exAlert: document.getElementById("ex-alert"),
   };
 
   if (!user) {
@@ -135,19 +153,28 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Close / cancel
-  modal.closeButtons.forEach((btn) => btn.addEventListener("click", () => closeModal(modal)));
-  if (modal.cancelBtn) modal.cancelBtn.addEventListener("click", () => closeModal(modal));
+  modal.closeButtons.forEach((btn) =>
+    btn.addEventListener("click", () => closeModal(modal))
+  );
+  if (modal.cancelBtn)
+    modal.cancelBtn.addEventListener("click", () => closeModal(modal));
 
   // Back / Next / Save
-  if (modal.backBtn) modal.backBtn.addEventListener("click", () => stepBack(modal, user));
-  if (modal.nextBtn) modal.nextBtn.addEventListener("click", () => stepNext(modal, user, edit, dayKeys));
-  if (modal.saveBtn) modal.saveBtn.addEventListener("click", () => saveWizard(user, ui, modal, edit, dayKeys));
+  if (modal.backBtn)
+    modal.backBtn.addEventListener("click", () => stepBack(modal, user));
+  if (modal.nextBtn)
+    modal.nextBtn.addEventListener("click", () =>
+      stepNext(modal, user, edit, dayKeys)
+    );
+  if (modal.saveBtn)
+    modal.saveBtn.addEventListener("click", () =>
+      saveWizard(user, ui, modal, edit, dayKeys)
+    );
 
   // Step clicks
   modal.stepButtons.forEach((btn) => {
     btn.addEventListener("click", () => {
       const step = Number(btn.dataset.step || "1");
-      // Only allow teacher to click steps 2-3
       if (user.role !== "teacher" && step !== 1) return;
       goToStep(modal, user, step);
     });
@@ -162,9 +189,26 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // ===== NEW: Exceptions handlers =====
+  if (edit.exType) {
+    edit.exType.addEventListener("change", () => {
+      const custom = edit.exType.value === "custom";
+      if (edit.exStart) edit.exStart.disabled = !custom;
+      if (edit.exEnd) edit.exEnd.disabled = !custom;
+    });
+  }
+
+  if (edit.exAddBtn) {
+    edit.exAddBtn.addEventListener("click", () => {
+      if (user.role !== "teacher") return;
+      addException(user, edit);
+      renderExceptions(user, edit);
+    });
+  }
+
   // Close modal on ESC
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && modal.root && modal.root.classList.contains("is-open")) {
+    if (e.key === "Escape" && modal.root?.classList.contains("is-open")) {
       closeModal(modal);
     }
   });
@@ -208,7 +252,10 @@ function renderRoleSpecificProfile(ui, user) {
     const experienceText =
       user.experience && user.experience > 0 ? ` • ${user.experience} שנות ניסיון` : "";
 
-    if (ui.fieldEl) ui.fieldEl.textContent = subjectsText ? `${subjectsText}${experienceText}` : "פרופיל מורה";
+    if (ui.fieldEl)
+      ui.fieldEl.textContent = subjectsText
+        ? `${subjectsText}${experienceText}`
+        : "פרופיל מורה";
   } else {
     if (ui.rolePill) ui.rolePill.textContent = "תלמיד/ה";
     if (ui.favoritesSection) ui.favoritesSection.style.display = "block";
@@ -236,24 +283,30 @@ function closeModal(modal) {
 }
 
 function prepareWizardForUser(user, modal, edit) {
-  // Teacher-only UI show/hide
   const teacherOnly = user.role === "teacher";
 
-  if (edit.teacherExpRow) edit.teacherExpRow.style.display = teacherOnly ? "block" : "none";
-  if (edit.teacherDurRow) edit.teacherDurRow.style.display = teacherOnly ? "block" : "none";
+  if (edit.teacherExpRow)
+    edit.teacherExpRow.style.display = teacherOnly ? "block" : "none";
+  if (edit.teacherDurRow)
+    edit.teacherDurRow.style.display = teacherOnly ? "block" : "none";
 
-  if (modal.step2Btn) modal.step2Btn.style.display = teacherOnly ? "inline-flex" : "none";
-  if (modal.step3Btn) modal.step3Btn.style.display = teacherOnly ? "inline-flex" : "none";
+  if (modal.step2Btn)
+    modal.step2Btn.style.display = teacherOnly ? "inline-flex" : "none";
+  if (modal.step3Btn)
+    modal.step3Btn.style.display = teacherOnly ? "inline-flex" : "none";
 }
 
 function goToStep(modal, user, step) {
   const maxStep = user.role === "teacher" ? 3 : 1;
   const safeStep = Math.max(1, Math.min(step, maxStep));
 
-  modal.stepButtons.forEach((b) => b.classList.toggle("is-active", Number(b.dataset.step) === safeStep));
-  modal.panels.forEach((p) => p.classList.toggle("is-active", Number(p.dataset.panel) === safeStep));
+  modal.stepButtons.forEach((b) =>
+    b.classList.toggle("is-active", Number(b.dataset.step) === safeStep)
+  );
+  modal.panels.forEach((p) =>
+    p.classList.toggle("is-active", Number(p.dataset.panel) === safeStep)
+  );
 
-  // Footer buttons
   if (modal.backBtn) modal.backBtn.disabled = safeStep === 1;
 
   if (user.role !== "teacher") {
@@ -272,7 +325,9 @@ function goToStep(modal, user, step) {
 }
 
 function getCurrentStep(modal) {
-  const activeBtn = modal.stepButtons.find((b) => b.classList.contains("is-active"));
+  const activeBtn = modal.stepButtons.find((b) =>
+    b.classList.contains("is-active")
+  );
   return Number(activeBtn?.dataset.step || "1");
 }
 
@@ -284,13 +339,11 @@ function stepBack(modal, user) {
 function stepNext(modal, user, edit, dayKeys) {
   const current = getCurrentStep(modal);
 
-  // Validate step 1 before moving forward
   if (current === 1) {
     const ok = validateStep1(edit, user, modal);
     if (!ok) return;
   }
 
-  // Step 2: no hard validation required, go next
   goToStep(modal, user, current + 1);
 }
 
@@ -311,6 +364,10 @@ function fillFormFromUser(user, edit, dayKeys) {
 
     renderSubjects(user, edit);
     setWeeklyAvailabilityToForm(user.availabilityWeekly, dayKeys);
+
+    // NEW
+    renderExceptions(user, edit);
+    resetExceptionsForm(edit);
   }
 }
 
@@ -318,14 +375,12 @@ function saveWizard(user, ui, modal, edit, dayKeys) {
   clearAlert(modal);
   clearInlineErrors(edit);
 
-  // Validate step 1 (always)
   const ok = validateStep1(edit, user, modal);
   if (!ok) {
     goToStep(modal, user, 1);
     return;
   }
 
-  // Teacher: validate weekly availability
   if (user.role === "teacher") {
     const weekly = getWeeklyAvailabilityFromForm(dayKeys);
     const weeklyValidation = validateWeeklyAvailability(weekly);
@@ -334,6 +389,15 @@ function saveWizard(user, ui, modal, edit, dayKeys) {
       goToStep(modal, user, 3);
       return;
     }
+
+    // NEW: validate exceptions
+    const exValidation = validateExceptions(user.exceptions || []);
+    if (!exValidation.ok) {
+      showAlert(modal, exValidation.message);
+      goToStep(modal, user, 3);
+      return;
+    }
+
     user.availabilityWeekly = weekly;
 
     const exp = Number(edit.editExperience?.value || 0);
@@ -342,12 +406,10 @@ function saveWizard(user, ui, modal, edit, dayKeys) {
     user.duration = dur;
   }
 
-  // Save basics
   user.fullName = (edit.editFullName?.value || "").trim();
   user.phone = (edit.editPhone?.value || "").trim();
   user.city = (edit.editCity?.value || "").trim();
 
-  // Refresh display
   renderBasicProfile(ui, user);
   renderRoleSpecificProfile(ui, user);
   renderGreeting(ui.greetingEl, user);
@@ -361,7 +423,6 @@ function validateStep1(edit, user, modal) {
 
   const fullName = (edit.editFullName?.value || "").trim();
   const phone = (edit.editPhone?.value || "").trim();
-  const city = (edit.editCity?.value || "").trim();
 
   if (!fullName) {
     errors.push("שם מלא הוא שדה חובה.");
@@ -372,12 +433,12 @@ function validateStep1(edit, user, modal) {
     if (edit.errPhone) edit.errPhone.textContent = "יש להזין טלפון";
   }
 
-  // Teacher additional checks
   if (user.role === "teacher") {
     const dur = Number(edit.editDuration?.value || 0);
     if (!Number.isFinite(dur) || dur <= 0) {
       errors.push("משך שיעור חייב להיות גדול מ-0.");
-      if (edit.errDuration) edit.errDuration.textContent = "משך שיעור חייב להיות גדול מ-0";
+      if (edit.errDuration)
+        edit.errDuration.textContent = "משך שיעור חייב להיות גדול מ-0";
     }
   }
 
@@ -443,9 +504,15 @@ function renderSubjects(user, edit) {
 function getWeeklyAvailabilityFromForm(dayKeys) {
   const weekly = {};
   dayKeys.forEach((day) => {
-    const cb = document.querySelector(`input[type="checkbox"][data-day="${day}"]`);
-    const start = document.querySelector(`input[type="time"][data-start="${day}"]`);
-    const end = document.querySelector(`input[type="time"][data-end="${day}"]`);
+    const cb = document.querySelector(
+      `input[type="checkbox"][data-day="${day}"]`
+    );
+    const start = document.querySelector(
+      `input[type="time"][data-start="${day}"]`
+    );
+    const end = document.querySelector(
+      `input[type="time"][data-end="${day}"]`
+    );
 
     const enabled = !!cb?.checked;
     const sVal = start?.value || "";
@@ -464,9 +531,15 @@ function getWeeklyAvailabilityFromForm(dayKeys) {
 function setWeeklyAvailabilityToForm(weekly, dayKeys) {
   const data = weekly || {};
   dayKeys.forEach((day) => {
-    const cb = document.querySelector(`input[type="checkbox"][data-day="${day}"]`);
-    const start = document.querySelector(`input[type="time"][data-start="${day}"]`);
-    const end = document.querySelector(`input[type="time"][data-end="${day}"]`);
+    const cb = document.querySelector(
+      `input[type="checkbox"][data-day="${day}"]`
+    );
+    const start = document.querySelector(
+      `input[type="time"][data-start="${day}"]`
+    );
+    const end = document.querySelector(
+      `input[type="time"][data-end="${day}"]`
+    );
 
     const obj = data[day] || { enabled: false, start: "", end: "" };
 
@@ -483,10 +556,143 @@ function validateWeeklyAvailability(weekly) {
     const s = obj.start || "";
     const e = obj.end || "";
 
-    if (!s || !e) return { ok: false, message: `ביום ${day} חסרה שעת התחלה או סיום.` };
-    if (s >= e) return { ok: false, message: `ביום ${day} שעת הסיום חייבת להיות אחרי שעת ההתחלה.` };
+    if (!s || !e)
+      return { ok: false, message: `ביום ${day} חסרה שעת התחלה או סיום.` };
+    if (s >= e)
+      return {
+        ok: false,
+        message: `ביום ${day} שעת הסיום חייבת להיות אחרי שעת ההתחלה.`,
+      };
   }
   return { ok: true };
+}
+
+/* =========================
+   Exceptions (date-specific)
+   ========================= */
+
+function resetExceptionsForm(edit) {
+  hideExAlert(edit);
+  if (edit.exType) edit.exType.value = "off";
+  if (edit.exStart) {
+    edit.exStart.value = "";
+    edit.exStart.disabled = true;
+  }
+  if (edit.exEnd) {
+    edit.exEnd.value = "";
+    edit.exEnd.disabled = true;
+  }
+}
+
+function addException(user, edit) {
+  hideExAlert(edit);
+
+  const date = (edit.exDate?.value || "").trim();
+  const type = (edit.exType?.value || "off").trim();
+
+  if (!date) return showExAlert(edit, "יש לבחור תאריך.");
+
+  const obj = { date, type };
+
+  if (type === "custom") {
+    const start = (edit.exStart?.value || "").trim();
+    const end = (edit.exEnd?.value || "").trim();
+
+    if (!start || !end)
+      return showExAlert(edit, "בשעות מיוחדות חובה למלא התחלה וסיום.");
+    if (start >= end)
+      return showExAlert(edit, "שעת הסיום חייבת להיות אחרי שעת ההתחלה.");
+
+    obj.start = start;
+    obj.end = end;
+  }
+
+  user.exceptions = user.exceptions || [];
+
+  // If exists for this date - replace (simple UX)
+  const idx = user.exceptions.findIndex((x) => x.date === date);
+  if (idx >= 0) user.exceptions[idx] = obj;
+  else user.exceptions.push(obj);
+
+  // clear
+  if (edit.exDate) edit.exDate.value = "";
+  resetExceptionsForm(edit);
+}
+
+function renderExceptions(user, edit) {
+  if (!edit.exList || user.role !== "teacher") return;
+
+  const arr = (user.exceptions || [])
+    .slice()
+    .sort((a, b) => (a.date || "").localeCompare(b.date || ""));
+
+  edit.exList.innerHTML = "";
+
+  if (arr.length === 0) {
+    edit.exList.innerHTML = `<p class="empty-state">אין חריגים שהוגדרו.</p>`;
+    return;
+  }
+
+  arr.forEach((ex) => {
+    const row = document.createElement("div");
+    row.className = "subject-row";
+
+    const text =
+      ex.type === "off"
+        ? `${formatDateHe(ex.date)} – לא זמינה`
+        : `${formatDateHe(ex.date)} – שעות מיוחדות: ${ex.start} עד ${ex.end}`;
+
+    row.innerHTML = `
+      <span class="subject-row__text">${text}</span>
+      <button type="button" class="btn-secondary subject-row__remove">❌</button>
+    `;
+
+    row.querySelector("button").addEventListener("click", () => {
+      user.exceptions = (user.exceptions || []).filter((x) => x.date !== ex.date);
+      renderExceptions(user, edit);
+    });
+
+    edit.exList.appendChild(row);
+  });
+}
+
+function validateExceptions(exceptions) {
+  const arr = exceptions || [];
+  for (const ex of arr) {
+    if (!ex?.date) return { ok: false, message: "קיים חריג ללא תאריך." };
+
+    if (ex.type !== "off" && ex.type !== "custom") {
+      return { ok: false, message: `סוג חריג לא תקין בתאריך ${formatDateHe(ex.date)}.` };
+    }
+
+    if (ex.type === "custom") {
+      if (!ex.start || !ex.end) {
+        return { ok: false, message: `ב-${formatDateHe(ex.date)} חסרות שעות חריג.` };
+      }
+      if (ex.start >= ex.end) {
+        return { ok: false, message: `ב-${formatDateHe(ex.date)} שעת הסיום חייבת להיות אחרי שעת ההתחלה.` };
+      }
+    }
+  }
+  return { ok: true };
+}
+
+function showExAlert(edit, msg) {
+  if (!edit.exAlert) return;
+  edit.exAlert.style.display = "block";
+  edit.exAlert.innerHTML = `<strong>${msg}</strong>`;
+}
+
+function hideExAlert(edit) {
+  if (!edit.exAlert) return;
+  edit.exAlert.style.display = "none";
+  edit.exAlert.innerHTML = "";
+}
+
+function formatDateHe(iso) {
+  const [y, m, d] = (iso || "").split("-");
+  if (!y || !m || !d) return iso;
+  return `${d}/${m}/${y}`;
 }
 
 /* =========================

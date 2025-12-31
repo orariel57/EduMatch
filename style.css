@@ -1520,3 +1520,70 @@ body.modal-open {
     flex-wrap: wrap;
   }
 }
+
+/* =========================
+   iPhone / Mobile Fix for Profile Edit Modal (ADD ONLY)
+   ========================= */
+
+/* iOS safe areas (notch) */
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Prefer "small viewport height" on mobile to avoid Safari address bar issues */
+.edit-modal__card {
+  max-height: calc(100svh - 24px);
+}
+
+/* Better momentum scrolling on iOS inside modal */
+.edit-modal__body {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Mobile / iPhone: near full-screen modal + stack buttons + fix grid */
+@media (max-width: 520px) {
+  .edit-modal__card {
+    width: calc(100% - 16px);
+    margin: calc(8px + var(--safe-top)) auto calc(8px + var(--safe-bottom));
+    max-height: calc(100svh - 16px - var(--safe-top) - var(--safe-bottom));
+    border-radius: 18px;
+  }
+
+  .edit-modal__header,
+  .edit-steps,
+  .edit-modal__body,
+  .edit-modal__footer {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  /* Make the "add subject" row stack instead of forcing 3 columns */
+  .edit-inline-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    align-items: stretch;
+  }
+
+  /* Buttons in footer: full width so nothing overflows */
+  .edit-modal__footer {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .edit-modal__footer .btn-primary,
+  .edit-modal__footer .btn-secondary {
+    width: 100%;
+  }
+
+  /* Weekly table: keep wide but enable horizontal scroll inside wrapper */
+  .table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .weekly-table {
+    min-width: 520px; /* stays, but will scroll horizontally */
+  }
+}
+

@@ -1587,3 +1587,63 @@ body.modal-open {
   }
 }
 
+
+
+/* =========================
+   Mobile: Weekly table becomes stacked cards (Profile Edit Modal)
+   ADD ONLY
+   ========================= */
+
+@media (max-width: 520px) {
+  /* hide header row on mobile */
+  .weekly-table thead {
+    display: none;
+  }
+
+  /* make table + rows behave like blocks */
+  .weekly-table,
+  .weekly-table tbody,
+  .weekly-table tr,
+  .weekly-table td {
+    display: block;
+    width: 100%;
+  }
+
+  /* cancel the forced min-width so it can fit */
+  .weekly-table {
+    min-width: 0;
+  }
+
+  /* each day becomes a "card" */
+  .weekly-table tr {
+    border: 1px solid #eee;
+    border-radius: 16px;
+    padding: 12px;
+    margin-bottom: 12px;
+    background: #fff;
+  }
+
+  /* each cell becomes a row with label+value */
+  .weekly-table td {
+    border: none;
+    padding: 8px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    text-align: right;
+  }
+
+  /* labels for each column */
+  .weekly-table td:nth-child(1)::before { content: "יום"; font-weight: 800; color: var(--primary); }
+  .weekly-table td:nth-child(2)::before { content: "זמין"; font-weight: 800; color: var(--primary); }
+  .weekly-table td:nth-child(3)::before { content: "התחלה"; font-weight: 800; color: var(--primary); }
+  .weekly-table td:nth-child(4)::before { content: "סיום"; font-weight: 800; color: var(--primary); }
+
+  /* inputs shouldn’t overflow */
+  .weekly-table input[type="time"] {
+    width: 150px;
+    max-width: 60vw;
+  }
+}
+

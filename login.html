@@ -31,9 +31,10 @@
           <li><a href="profile.html">הפרופיל שלי</a></li>
         </ul>
 
-        <ul class="auth-nav">
-          <li><a href="login.html" class="active">התחברות</a></li>
+        <ul class="auth-nav" id="auth-nav">
+          <li><a href="login.html">התחברות</a></li>
         </ul>
+
       </nav>
     </div>
   </header>
@@ -53,6 +54,8 @@
           <p class="auth-card-desc">
             משתמשים קיימים יכולים להיכנס כאן עם האימייל והסיסמה שלהם.
           </p>
+          <div class="form-alert" id="login-alert" role="alert" aria-live="polite" hidden></div>
+
 
           <div class="form-row">
             <label for="login-email">אימייל <span>*</span></label>

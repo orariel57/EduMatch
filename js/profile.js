@@ -5,6 +5,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const noUserCard = document.getElementById("no-user-card");
   const layout = document.getElementById("profile-layout");
 
+  // ===== Logout button (Demo only) =====
+  // Works only if profile.html contains: id="logout-btn"
+  const logoutBtn = document.getElementById("logout-btn");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      alert("התנתקת מהמערכת (דמו בלבד)");
+      window.location.href = "login.html";
+    });
+  }
+
   // Demo: choose role
   // For quick demo change: "teacher" / "student"
   const DEMO_ROLE = "teacher";
@@ -43,12 +53,12 @@ document.addEventListener("DOMContentLoaded", () => {
     city: "תל אביב-יפו",
   };
 
-  //  Create a "logged-in user" in demo 
+  //  Create a "logged-in user" in demo
   // If you want to demo a "not logged in" state:
   // const user = null;
   const user = getDemoUser(DEMO_ROLE, DEMO_USER_TEACHER, DEMO_USER_STUDENT);
 
-  // Elements for displaying profile details 
+  // Elements for displaying profile details
   const ui = {
     greetingEl: document.getElementById("profile-greeting"),
     nameEl: document.getElementById("profile-name"),
@@ -59,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
     favoritesSection: document.getElementById("favorites-section"),
   };
 
-  //  Elements for editing 
+  // Elements for editing
   const edit = {
     editBtn: document.getElementById("edit-profile-btn"),
     editForm: document.getElementById("edit-profile-form"),
@@ -80,7 +90,6 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const dayKeys = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
-
 
   if (!user) {
     // Show "no user" message and hide the entire profile
@@ -104,7 +113,6 @@ document.addEventListener("DOMContentLoaded", () => {
   bindEditEvents(user, ui, edit, dayKeys);
 });
 
-
 function getDemoUser(role, teacher, student) {
   return role === "teacher" ? teacher : student;
 }
@@ -121,7 +129,7 @@ function showUserState(noUserCard, layout) {
   if (layout) layout.style.display = "grid";
 }
 
-//  Writes "Hello + {name}," based on the first word of fullName
+// Writes "Hello + {name}," based on the first word of fullName
 function renderGreeting(greetingEl, user) {
   if (!greetingEl || !user?.fullName) return;
   const firstName = user.fullName.split(" ")[0];
@@ -205,7 +213,7 @@ function closeEditForm(edit) {
   edit.editForm.style.display = "none";
 }
 
-// Adds a new subject 
+// Adds a new subject
 function addSubject(user, edit) {
   const subject = (edit.newSubjectName?.value || "").trim();
   const price = Number(edit.newSubjectPrice?.value || 0);
@@ -290,7 +298,7 @@ function setWeeklyAvailabilityToForm(weekly, dayKeys) {
   });
 }
 
-// • Availability validation: start+end required, and end after start
+// Availability validation: start+end required, and end after start
 function validateWeeklyAvailability(weekly) {
   for (const [day, obj] of Object.entries(weekly || {})) {
     if (!obj || obj.enabled === false) continue;
@@ -304,7 +312,7 @@ function validateWeeklyAvailability(weekly) {
   return { ok: true };
 }
 
-// • Saves "edits" for display only + refreshes texts on screen
+// Saves "edits" for display only + refreshes texts on screen
 function submitEditForm(user, ui, edit, dayKeys) {
   const newFullName = (edit.editFullName?.value || "").trim();
   const newPhone = (edit.editPhone?.value || "").trim();

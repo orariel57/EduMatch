@@ -4,6 +4,7 @@
 
 document.addEventListener("DOMContentLoaded", () => {
   initMobileNavigation();
+  renderAuthNav();
 });
 
 // Initializes all navigation logic
@@ -36,5 +37,30 @@ function bindResizeReset(toggle, nav) {
       toggle.setAttribute("aria-expanded", "false");
       toggle.textContent = "☰";
     }
+  });
+}
+
+// ===== Auth nav (Login/Logout) using sessionStorage =====
+function renderAuthNav() {
+  const authNav = document.getElementById("auth-nav");
+  if (!authNav) return;
+
+  const isLoggedIn = sessionStorage.getItem("edumatchLoggedIn") === "true";
+
+  if (!isLoggedIn) {
+    authNav.innerHTML = `<li><a href="login.html">התחברות</a></li>`;
+    return;
+  }
+
+  authNav.innerHTML = `<li><a href="#" id="logout-link">התנתק</a></li>`;
+
+  const logoutLink = document.getElementById("logout-link");
+  if (!logoutLink) return;
+
+  logoutLink.addEventListener("click", (e) => {
+    e.preventDefault();
+    sessionStorage.removeItem("edumatchLoggedIn");
+    alert("התנתקת מהמערכת (דמו בלבד)");
+    window.location.href = "index.html";
   });
 }

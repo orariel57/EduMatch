@@ -483,10 +483,11 @@ function renderSubjects(user, edit) {
     const row = document.createElement("div");
     row.className = "subject-row";
 
-    row.innerHTML = `
-      <span class="subject-row__text">${s.subject} – ${s.price}₪</span>
-      <button type="button" class="btn-secondary subject-row__remove">❌</button>
-    `;
+   row.innerHTML = `
+  <span class="subject-row__text">${s.subject} – ${s.price}₪</span>
+  <button type="button" class="subject-row__remove">הסר</button>
+`;
+
 
     row.querySelector("button").addEventListener("click", () => {
       user.subjects.splice(index, 1);

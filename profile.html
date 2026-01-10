@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl">
+<html lang="he-IL" dir="rtl">
 
 <head>
   <meta charset="UTF-8" />
@@ -44,7 +44,7 @@
       <h1 id="profile-greeting">שלום</h1>
     </section>
 
-    <section class="profile-card no-user-card" id="no-user-card" style="display:none;">
+    <section class="profile-card no-user-card" id="no-user-card">
       <h2>לא נמצאה התחברות</h2>
       <p class="no-user-text">כדי לצפות בפרופיל יש להתחבר למערכת.</p>
 
@@ -54,7 +54,7 @@
     </section>
 
 
-    <section class="profile-layout" id="profile-layout" style="display:none;">
+    <section class="profile-layout" id="profile-layout">
 
       <!-- Right side -->
       <aside class="profile-sidebar profile-card">
@@ -72,11 +72,6 @@
           </div>
 
           <div class="profile-user-row">
-            <span class="profile-label">עיר:</span>
-            <span id="profile-city">—</span>
-          </div>
-
-          <div class="profile-user-row">
             <span class="profile-label">תחום:</span>
             <span id="profile-field">—</span>
           </div>
@@ -86,11 +81,11 @@
           </div>
         </div>
 
-        <div class="form-row" style="margin-top:16px;">
+        <div class="form-row mt-16">
           <button type="button" class="btn-secondary" id="edit-profile-btn">ערוך פרטים</button>
         </div>
 
-        <div class="form-row" style="margin-top:8px;">
+        <div class="form-row mt-8">
           <button type="button" class="btn-secondary" id="logout-btn">התנתק</button>
         </div>
       </aside>
@@ -117,8 +112,8 @@
     </section>
 
     <!-- =========================
-         EDIT MODAL (Wizard)
-         ========================= -->
+     EDIT MODAL (Wizard)
+     ========================= -->
     <div class="edit-modal" id="edit-modal" aria-hidden="true">
       <div class="edit-modal__backdrop" data-close="true"></div>
 
@@ -137,40 +132,61 @@
         <div class="edit-modal__body">
           <!-- STEP 1 -->
           <section class="edit-panel is-active" data-panel="1">
-            <div class="form-alert" id="edit-alert" style="display:none;"></div>
+            <div class="form-alert" id="edit-alert"></div>
 
             <div class="edit-grid">
               <div class="form-row">
-                <label for="edit-fullName">שם מלא <span>*</span></label>
-                <input type="text" id="edit-fullName" />
-                <div class="error-message" id="err-fullName"></div>
+                <label for="edit-firstName">שם פרטי <span>*</span></label>
+                <input type="text" id="edit-firstName" name="first_name" required />
+                <div class="error-message" id="err-firstName"></div>
               </div>
 
               <div class="form-row">
+                <label for="edit-lastName">שם משפחה <span>*</span></label>
+                <input type="text" id="edit-lastName" name="last_name" required />
+                <div class="error-message" id="err-lastName"></div>
+              </div>
+
+              <div class="form-row full">
                 <label for="edit-phone">טלפון <span>*</span></label>
-                <input type="tel" id="edit-phone" />
+                <input type="tel" id="edit-phone" name="phone" required maxlength="10" inputmode="numeric"
+                  autocomplete="tel" placeholder="לדוגמה: 0501234567" pattern="^05\d{8}$" />
                 <div class="error-message" id="err-phone"></div>
               </div>
 
-              <div class="form-row">
+              <div class="form-row teacher-only" id="teacher-city-row">
                 <label for="edit-city">עיר</label>
                 <input type="text" id="edit-city" />
                 <div class="error-message" id="err-city"></div>
               </div>
 
-              <!-- Teacher only (still inside Step 1 but small and clean) -->
-              <div class="form-row teacher-only" id="teacher-exp-row" style="display:none;">
+              <div class="form-row teacher-only" id="teacher-exp-row">
                 <label for="edit-experience">שנות ניסיון</label>
                 <input type="number" id="edit-experience" min="0" />
                 <div class="error-message" id="err-experience"></div>
               </div>
 
-              <div class="form-row teacher-only" id="teacher-dur-row" style="display:none;">
+              <div class="form-row teacher-only" id="teacher-dur-row">
                 <label for="edit-duration">משך שיעור (בדקות)</label>
                 <input type="number" id="edit-duration" min="15" step="5" />
                 <div class="error-message" id="err-duration"></div>
               </div>
             </div>
+          </section>
+
+
+          <!-- Teacher only (still inside Step 1 but small and clean) -->
+          <div class="form-row teacher-only" id="teacher-exp-row">
+            <label for="edit-experience">שנות ניסיון</label>
+            <input type="number" id="edit-experience" min="0" />
+            <div class="error-message" id="err-experience"></div>
+          </div>
+
+          <div class="form-row teacher-only" id="teacher-dur-row">
+            <label for="edit-duration">משך שיעור (בדקות)</label>
+            <input type="number" id="edit-duration" min="15" step="5" />
+            <div class="error-message" id="err-duration"></div>
+          </div>
           </section>
 
           <!-- STEP 2 (Teacher Only) -->
@@ -191,7 +207,6 @@
 
               <button type="button" class="btn-secondary subject-add-btn" id="add-subject-btn">➕</button>
             </div>
-
           </section>
 
           <!-- STEP 3 (Teacher Only) -->
@@ -254,14 +269,15 @@
                 </tbody>
               </table>
             </div>
-            <hr style="margin:18px 0; border:none; border-top:1px solid #eee;" />
 
-            <h3 style="margin-bottom:8px;">חריגים לפי תאריך</h3>
-            <p class="edit-hint" style="margin-top:0;">
+            <hr class="divider" />
+
+            <h3 class="mb-8">חריגים לפי תאריך</h3>
+            <p class="edit-hint mt-0">
               כאן אפשר לסמן תאריך שבו את לא זמינה בכלל, או להגדיר שעות שונות רק לתאריך הזה.
             </p>
 
-            <div class="exceptions-card" style="margin-top:10px;">
+            <div class="exceptions-card mt-10">
               <div class="exceptions-form">
                 <div class="form-row">
                   <label for="ex-date">תאריך</label>
@@ -286,22 +302,20 @@
                   <input type="time" id="ex-end" disabled />
                 </div>
 
-                <div class="form-row" style="align-self:end;">
+                <div class="form-row self-end">
                   <button type="button" class="btn-secondary" id="ex-add-btn">➕ הוסף</button>
                 </div>
               </div>
 
-              <div class="form-alert" id="ex-alert" style="display:none;"></div>
-
-              <div id="exceptions-list" style="margin-top:12px;"></div>
+              <div class="form-alert" id="ex-alert"></div>
+              <div id="exceptions-list" class="mt-12"></div>
             </div>
-
           </section>
         </div>
 
         <div class="edit-modal__footer">
           <button type="button" class="btn-primary" id="edit-next-btn">הבא</button>
-          <button type="button" class="btn-primary" id="edit-save-btn" style="display:none;">שמור</button>
+          <button type="button" class="btn-primary" id="edit-save-btn">שמור</button>
           <button type="button" class="btn-secondary" id="edit-cancel-btn">ביטול</button>
         </div>
 
@@ -320,8 +334,9 @@
     </div>
   </footer>
 
-  <script src="./js/profile.js"></script>
   <script src="./js/nav.js"></script>
+  <script src="./js/profile.js"></script>
+
 </body>
 
 </html>

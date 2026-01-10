@@ -4,9 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <title>EduMatch | הרשמה</title>
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" href="./image/favicon.png">
 </head>
@@ -34,7 +32,6 @@
         <ul class="auth-nav" id="auth-nav">
           <li><a href="login.html">התחברות</a></li>
         </ul>
-
       </nav>
     </div>
   </header>
@@ -49,41 +46,51 @@
 
       <div class="auth-layout auth-layout--single">
 
-        <form class="auth-card register-card" id="register-form" action="#" method="post" autocomplete="off">
+        <!-- 🔧 חיבור לשרת בלבד -->
+        <form class="auth-card register-card" id="register-form" action="/api/register" method="POST"
+          autocomplete="off">
+
           <h2>יצירת חשבון</h2>
           <p class="auth-card-desc">
             מלאו את הפרטים ובחרו תפקיד במערכת.
           </p>
+
           <div class="form-alert" id="register-alert" role="alert" aria-live="polite" hidden></div>
 
-
+          <!-- 🔧 name שונה – התוכן נשאר -->
           <div class="form-row">
-            <label for="full-name">שם מלא <span>*</span></label>
-            <input type="text" id="full-name" name="full-name" required>
+            <label for="first-name">שם פרטי <span>*</span></label>
+            <input type="text" id="first-name" name="first_name" required>
             <p class="error-message"></p>
           </div>
+
+          <div class="form-row">
+            <label for="last-name">שם משפחה <span>*</span></label>
+            <input type="text" id="last-name" name="last_name" required>
+            <p class="error-message"></p>
+          </div>
+
 
           <div class="form-row">
             <label for="register-email">אימייל <span>*</span></label>
-            <input type="email" id="register-email" name="register-email" autocomplete="off" required
-              pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$">
+            <input type="email" id="register-email" name="email" required>
             <p class="error-message"></p>
           </div>
 
           <div class="form-row">
-            <label for="register-phone">טלפון נייד <span>*</span></label>
-            <input type="tel" id="register-phone" name="register-phone" required pattern="^05[0-9]{8}$" maxlength="10"
-              inputmode="tel" placeholder="לדוגמה: 0521234567">
+            <label for="register-phone">טלפון נייד <span></span></label>
+            <input type="tel" id="register-phone" name="phone" pattern="^05[0-9]{8}$" maxlength="10" inputmode="tel"
+              placeholder="לדוגמה: 0521234567">
             <p class="error-message"></p>
           </div>
 
           <div class="form-row">
             <label for="register-password">סיסמה (מינימום 6 תווים) <span>*</span></label>
-            <input type="password" id="register-password" name="register-password" autocomplete="new-password"
-              minlength="6" required>
+            <input type="password" id="register-password" name="password" minlength="6" required>
             <p class="error-message"></p>
           </div>
 
+          <!-- ⚠️ לא נוגעים – זה מה שה־JS שלך משתמש בו -->
           <div class="form-row">
             <span class="field-label">תפקיד במערכת:</span>
             <div class="options-row">
@@ -98,6 +105,7 @@
             </div>
           </div>
 
+          <!-- ⚠️ לא נוגעים -->
           <div class="form-row">
             <span class="field-label">מצב מועדף לשיעור:</span>
             <div class="options-row">
@@ -106,7 +114,7 @@
                 מקוון
               </label>
               <label>
-                <input type="radio" name="lesson-mode" value="in-person">
+                <input type="radio" name="lesson-mode" value="frontal">
                 פרונטלי
               </label>
               <label>
@@ -116,43 +124,37 @@
             </div>
           </div>
 
-          <div class="role-fields role-teacher" style="display:none;">
+          <div class="role-fields role-teacher">
             <h3>פרטים למורה</h3>
 
             <div class="form-row">
               <label for="teacher-city">עיר</label>
-              <input list="cities-list" id="teacher-city" name="teacher-city" placeholder="התחל/י להקליד עיר">
+              <input list="cities-list" id="teacher-city" name="teacher-city">
             </div>
 
             <div class="form-row">
               <label>תחומי הוראה ומחיר לשעה</label>
-
               <div id="subjects-container" class="subjects-list">
                 <div class="subject-row">
-                  <input type="text" name="teacher-subject-1" placeholder="לדוגמה: מתמטיקה">
-                  <input type="number" name="teacher-price-1" min="0" step="1" inputmode="numeric" pattern="[0-9]*"
-                    placeholder="מחיר לשעה">
+                  <input type="text" name="teacher-subject[]" placeholder="מקצוע">
+                  <input type="number" name="teacher-price[]" placeholder="מחיר לשעה">
                 </div>
               </div>
-
-              <button type="button" id="add-subject-btn" class="add-subject-btn">
-                הוסף מקצוע
-              </button>
+              <button type="button" id="add-subject-btn" class="add-subject-btn">הוסף מקצוע</button>
             </div>
 
             <div class="form-row">
               <label for="teacher-experience">שנות ניסיון</label>
-              <input type="number" id="teacher-experience" name="teacher-experience" min="0" step="1"
-                inputmode="numeric" pattern="[0-9]*">
+              <input type="number" id="teacher-experience" name="teacher-experience">
             </div>
 
             <div class="form-row">
               <label for="lesson-duration">משך שיעור (בדקות)</label>
-              <input type="number" id="lesson-duration" name="lesson-duration" min="0" step="1" inputmode="numeric"
-                pattern="[0-9]*">
+              <input type="number" id="lesson-duration" name="lesson-duration">
             </div>
           </div>
 
+          <!-- ⚠️ תנאים – לא הוסר -->
           <div class="form-row checkbox-row">
             <label>
               <input type="checkbox" name="terms" required>
@@ -169,54 +171,18 @@
 
           <p class="auth-switch">
             כבר יש לך חשבון?
-            <a href="login.html" class="link-secondary">התחבר/י</a>
+            <a href="login.html">התחבר/י</a>
           </p>
+
         </form>
       </div>
     </section>
 
+    <!-- datalist נשאר -->
     <datalist id="cities-list">
-      <option value="אופקים">
-      <option value="אור יהודה">
-      <option value="אילת">
-      <option value="אריאל">
-      <option value="אשדוד">
-      <option value="אשקלון">
-      <option value="באר שבע">
-      <option value="בית שמש">
-      <option value="בת ים">
-      <option value="גבעתיים">
-      <option value="גדרה">
-      <option value="הרצליה">
-      <option value="חדרה">
-      <option value="חולון">
-      <option value="חיפה">
-      <option value="טבריה">
-      <option value="יהוד-מונוסון">
-      <option value="ירושלים">
-      <option value="כפר סבא">
-      <option value="כרמיאל">
-      <option value="מודיעין">
-      <option value="נהריה">
-      <option value="נס ציונה">
-      <option value="נתיבות">
-      <option value="נתניה">
-      <option value="עכו">
-      <option value="עפולה">
-      <option value="פתח תקווה">
-      <option value="צפת">
-      <option value="קיסריה">
-      <option value="קריית אונו">
-      <option value="קריית גת">
-      <option value="קריית מוצקין">
-      <option value="קריית שמונה">
-      <option value="ראש העין">
-      <option value="ראשון לציון">
-      <option value="רחובות">
-      <option value="רמת גן">
-      <option value="רעננה">
-      <option value="שדרות">
       <option value="תל אביב-יפו">
+      <option value="באר שבע">
+      <option value="ירושלים">
     </datalist>
   </main>
 
@@ -230,6 +196,7 @@
     </div>
   </footer>
 
+  <!-- ⚠️ ה־JS שלך נשאר -->
   <script src="./js/login.js"></script>
   <script src="./js/nav.js"></script>
 </body>

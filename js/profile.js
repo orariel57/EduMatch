@@ -1,728 +1,776 @@
-// js/profile.js
-// Profile page + edit modal wizard (teacher/student demo) + Exceptions (date-specific)
-
+// public/js/profile.js
 document.addEventListener("DOMContentLoaded", () => {
   const noUserCard = document.getElementById("no-user-card");
   const layout = document.getElementById("profile-layout");
 
-  // ===== Logout button (Demo) =====
+  // Sidebar buttons
+  const editBtn = document.getElementById("edit-profile-btn");
   const logoutBtn = document.getElementById("logout-btn");
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", () => {
-      sessionStorage.removeItem("edumatchLoggedIn");
-      alert("התנתקת מהמערכת (דמו בלבד)");
-      window.location.href = "index.html";
-    });
-  }
 
-  // ===== Demo data =====
-  const DEMO_ROLE = "teacher"; // "teacher" / "student"
-
-  const DEMO_USER_TEACHER = {
-    role: "teacher",
-    fullName: "דנה לוי",
-    email: "dana.levi@example.com",
-    phone: "0521234567",
-    city: "באר שבע",
-    experience: 3,
-    duration: 60,
-    subjects: [
-      { subject: "מתמטיקה", price: 120 },
-      { subject: "אנגלית", price: 110 },
-    ],
-
-    // NEW: date exceptions
-    exceptions: [
-      { date: "2026-02-15", type: "off" },
-      { date: "2026-02-18", type: "custom", start: "10:00", end: "12:00" },
-    ],
-
-    availabilityWeekly: {
-      sun: { enabled: true, start: "16:00", end: "20:00" },
-      mon: { enabled: true, start: "10:00", end: "14:00" },
-      tue: { enabled: false, start: "", end: "" },
-      wed: { enabled: true, start: "12:00", end: "18:00" },
-      thu: { enabled: true, start: "09:00", end: "13:00" },
-      fri: { enabled: false, start: "", end: "" },
-      sat: { enabled: false, start: "", end: "" },
-    },
-  };
-
-  const DEMO_USER_STUDENT = {
-    role: "student",
-    fullName: "נועה כהן",
-    email: "noa.cohen@example.com",
-    phone: "0549876543",
-    city: "תל אביב-יפו",
-  };
-
-  // Logged-in state (your nav.js uses this flag)
-  const isLoggedIn = sessionStorage.getItem("edumatchLoggedIn") === "true";
-
-  // If you want to always show the demo even if not logged in, set this true:
-  const FORCE_DEMO = false;
-
-  const user =
-    isLoggedIn || FORCE_DEMO
-      ? getDemoUser(DEMO_ROLE, DEMO_USER_TEACHER, DEMO_USER_STUDENT)
-      : null;
-
-  const dayKeys = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
-
-  // UI (profile display)
+  // Profile UI
   const ui = {
     greetingEl: document.getElementById("profile-greeting"),
     nameEl: document.getElementById("profile-name"),
     emailEl: document.getElementById("profile-email"),
-    cityEl: document.getElementById("profile-city"),
     fieldEl: document.getElementById("profile-field"),
     rolePill: document.getElementById("profile-role-pill"),
     favoritesSection: document.getElementById("favorites-section"),
   };
 
-  // Modal elements
-  const modal = {
-    root: document.getElementById("edit-modal"),
-    stepsWrap: document.getElementById("edit-steps"),
-    stepButtons: Array.from(document.querySelectorAll(".edit-step")),
-    panels: Array.from(document.querySelectorAll(".edit-panel")),
-    closeButtons: Array.from(document.querySelectorAll("[data-close='true']")),
-    cancelBtn: document.getElementById("edit-cancel-btn"),
-    backBtn: document.getElementById("edit-back-btn"),
-    nextBtn: document.getElementById("edit-next-btn"),
-    saveBtn: document.getElementById("edit-save-btn"),
-    alertBox: document.getElementById("edit-alert"),
+  // ===== Modal elements =====
+  const modal = document.getElementById("edit-modal");
+  const panels = Array.from(document.querySelectorAll(".edit-panel"));
+  const alertBox = document.getElementById("edit-alert");
 
-    // Teacher step buttons (for hiding)
-    step2Btn: document.getElementById("step-teacher-2"),
-    step3Btn: document.getElementById("step-teacher-3"),
-  };
+  // Step buttons
+  const stepBtns = Array.from(document.querySelectorAll(".edit-step"));
 
-  // Edit inputs
-  const edit = {
-    editBtn: document.getElementById("edit-profile-btn"),
+  // Footer buttons
+  const nextBtn = document.getElementById("edit-next-btn");
+  const saveBtn = document.getElementById("edit-save-btn");
+  const cancelBtn = document.getElementById("edit-cancel-btn");
 
-    editFullName: document.getElementById("edit-fullName"),
-    editPhone: document.getElementById("edit-phone"),
-    editCity: document.getElementById("edit-city"),
+  // Close triggers
+  const closeTriggers = modal ? Array.from(modal.querySelectorAll("[data-close='true']")) : [];
 
-    teacherExpRow: document.getElementById("teacher-exp-row"),
-    teacherDurRow: document.getElementById("teacher-dur-row"),
-    editExperience: document.getElementById("edit-experience"),
-    editDuration: document.getElementById("edit-duration"),
+  // Inputs (Step 1)
+  const inpFirstName = document.getElementById("edit-firstName");
+  const inpLastName = document.getElementById("edit-lastName");
+  const inpPhone = document.getElementById("edit-phone");
+  const inpCity = document.getElementById("edit-city");
+  const inpExperience = document.getElementById("edit-experience"); // teacher
+  const inpDuration = document.getElementById("edit-duration");     // teacher (default duration)
 
-    subjectsList: document.getElementById("subjects-list"),
-    newSubjectName: document.getElementById("new-subject-name"),
-    newSubjectPrice: document.getElementById("new-subject-price"),
-    addSubjectBtn: document.getElementById("add-subject-btn"),
+  // Teacher only rows
+  const teacherExpRow = document.getElementById("teacher-exp-row");
+  const teacherDurRow = document.getElementById("teacher-dur-row");
 
-    errFullName: document.getElementById("err-fullName"),
-    errPhone: document.getElementById("err-phone"),
-    errCity: document.getElementById("err-city"),
-    errExperience: document.getElementById("err-experience"),
-    errDuration: document.getElementById("err-duration"),
+  // Step 2 (subjects)
+  const subjectsListEl = document.getElementById("subjects-list");
+  const newSubjectName = document.getElementById("new-subject-name");
+  const newSubjectPrice = document.getElementById("new-subject-price");
+  const addSubjectBtn = document.getElementById("add-subject-btn");
 
-    // NEW: Exceptions (teacher)
-    exDate: document.getElementById("ex-date"),
-    exType: document.getElementById("ex-type"),
-    exStart: document.getElementById("ex-start"),
-    exEnd: document.getElementById("ex-end"),
-    exAddBtn: document.getElementById("ex-add-btn"),
-    exList: document.getElementById("exceptions-list"),
-    exAlert: document.getElementById("ex-alert"),
-  };
+  // ===== Exceptions UI elements =====
+  const exDate = document.getElementById("ex-date");
+  const exType = document.getElementById("ex-type");
+  const exStart = document.getElementById("ex-start");
+  const exEnd = document.getElementById("ex-end");
+  const exAddBtn = document.getElementById("ex-add-btn");
+  const exAlert = document.getElementById("ex-alert");
+  const exList = document.getElementById("exceptions-list");
 
-  if (!user) {
-    showNoUserState(noUserCard, layout);
-    return;
+  // ===== Weekly availability mapping =====
+  const DAY_TO_NUM = { sun: 0, mon: 1, tue: 2, wed: 3, thu: 4, fri: 5, sat: 6 };
+  const NUM_TO_DAY = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+
+  // ===== State =====
+  let currentUser = null;
+  let activeStep = 1;
+  let isTeacher = false;
+
+  // each: { subject_name, price_per_hour, duration_minutes }
+  let subjectsDraft = [];
+  // each: { date, type: "off"|"custom", start_time, end_time }
+  let exceptionsDraft = [];
+  // each: { day_of_week: 0..6, start_time:"HH:MM", end_time:"HH:MM" }
+  let availabilityDraft = [];
+
+  // =======================
+  // Helpers
+  // =======================
+  const setText = (el, txt) => { if (el) el.textContent = txt; };
+  const setDisplay = (el, value) => { if (el) el.style.display = value; };
+
+  function showNoUser() {
+    setDisplay(noUserCard, "block");
+    setDisplay(layout, "none");
   }
 
-  showUserState(noUserCard, layout);
-  renderGreeting(ui.greetingEl, user);
-  renderBasicProfile(ui, user);
-  renderRoleSpecificProfile(ui, user);
+  function showLayout() {
+    setDisplay(noUserCard, "none");
+    setDisplay(layout, "grid");
+  }
 
-  // ===== Bind "Edit" => open modal wizard =====
-  if (edit.editBtn) {
-    edit.editBtn.addEventListener("click", () => {
-      prepareWizardForUser(user, modal, edit);
-      fillFormFromUser(user, edit, dayKeys);
-      openModal(modal);
-      goToStep(modal, user, 1);
+  function openModal() {
+    if (!modal) return;
+    modal.classList.add("is-open");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+  }
+
+  function closeModal() {
+    if (!modal) return;
+    modal.classList.remove("is-open");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("modal-open");
+    hideAlert();
+    clearErrors();
+  }
+
+  function showAlert(msg) {
+    if (!alertBox) return;
+    alertBox.style.display = "block";
+    alertBox.textContent = msg;
+  }
+
+  function hideAlert() {
+    if (!alertBox) return;
+    alertBox.style.display = "none";
+    alertBox.textContent = "";
+  }
+
+  function clearErrors() {
+    const ids = ["err-firstName", "err-lastName", "err-phone", "err-city", "err-experience", "err-duration"];
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = "";
     });
   }
 
-  // Close / cancel
-  modal.closeButtons.forEach((btn) =>
-    btn.addEventListener("click", () => closeModal(modal))
-  );
-  if (modal.cancelBtn)
-    modal.cancelBtn.addEventListener("click", () => closeModal(modal));
-
-  // Back / Next / Save
-  if (modal.backBtn)
-    modal.backBtn.addEventListener("click", () => stepBack(modal, user));
-  if (modal.nextBtn)
-    modal.nextBtn.addEventListener("click", () =>
-      stepNext(modal, user, edit, dayKeys)
-    );
-  if (modal.saveBtn)
-    modal.saveBtn.addEventListener("click", () =>
-      saveWizard(user, ui, modal, edit, dayKeys)
-    );
-
-  // Step clicks
-  modal.stepButtons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const step = Number(btn.dataset.step || "1");
-      if (user.role !== "teacher" && step !== 1) return;
-      goToStep(modal, user, step);
-    });
-  });
-
-  // Add subject
-  if (edit.addSubjectBtn) {
-    edit.addSubjectBtn.addEventListener("click", () => {
-      if (user.role !== "teacher") return;
-      addSubject(user, edit);
-      renderSubjects(user, edit);
-    });
+  function setError(id, msg) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = msg;
   }
 
-  // ===== NEW: Exceptions handlers =====
-  if (edit.exType) {
-    edit.exType.addEventListener("change", () => {
-      const custom = edit.exType.value === "custom";
-      if (edit.exStart) edit.exStart.disabled = !custom;
-      if (edit.exEnd) edit.exEnd.disabled = !custom;
-    });
+  // =======================
+  // Phone validation
+  // =======================
+  function toDigits(str) {
+    return String(str || "").replace(/\D/g, "");
   }
 
-  if (edit.exAddBtn) {
-    edit.exAddBtn.addEventListener("click", () => {
-      if (user.role !== "teacher") return;
-      addException(user, edit);
-      renderExceptions(user, edit);
-    });
+  function isValidIsraeliMobile(phoneDigits) {
+    return /^05\d{8}$/.test(phoneDigits);
   }
 
-  // Close modal on ESC
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && modal.root?.classList.contains("is-open")) {
-      closeModal(modal);
+  function validatePhoneField({ normalize = true } = {}) {
+    const raw = (inpPhone?.value || "").trim();
+    const digits = toDigits(raw);
+
+    if (normalize && inpPhone) inpPhone.value = digits;
+
+    if (!digits) {
+      setError("err-phone", "חובה להזין טלפון");
+      return false;
     }
-  });
-});
+    if (!isValidIsraeliMobile(digits)) {
+      setError("err-phone", "טלפון חייב להתחיל ב־05 ולהכיל בדיוק 10 ספרות");
+      return false;
+    }
 
-function getDemoUser(role, teacher, student) {
-  return role === "teacher" ? teacher : student;
-}
-
-function showNoUserState(noUserCard, layout) {
-  if (noUserCard) noUserCard.style.display = "block";
-  if (layout) layout.style.display = "none";
-}
-
-function showUserState(noUserCard, layout) {
-  if (noUserCard) noUserCard.style.display = "none";
-  if (layout) layout.style.display = "grid";
-}
-
-function renderGreeting(greetingEl, user) {
-  if (!greetingEl || !user?.fullName) return;
-  const firstName = user.fullName.split(" ")[0];
-  greetingEl.textContent = `שלום ${firstName},`;
-}
-
-function renderBasicProfile(ui, user) {
-  if (ui.nameEl) ui.nameEl.textContent = user.fullName || "—";
-  if (ui.emailEl) ui.emailEl.textContent = user.email || "—";
-  if (ui.cityEl) ui.cityEl.textContent = user.city || "—";
-}
-
-function renderRoleSpecificProfile(ui, user) {
-  if (user.role === "teacher") {
-    if (ui.rolePill) ui.rolePill.textContent = "מורה";
-    if (ui.favoritesSection) ui.favoritesSection.style.display = "none";
-
-    const subjectsText = (user.subjects || [])
-      .map((s) => `${s.subject} (${s.price}₪ לשיעור)`)
-      .join(", ");
-
-    const experienceText =
-      user.experience && user.experience > 0 ? ` • ${user.experience} שנות ניסיון` : "";
-
-    if (ui.fieldEl)
-      ui.fieldEl.textContent = subjectsText
-        ? `${subjectsText}${experienceText}`
-        : "פרופיל מורה";
-  } else {
-    if (ui.rolePill) ui.rolePill.textContent = "תלמיד/ה";
-    if (ui.favoritesSection) ui.favoritesSection.style.display = "block";
-    if (ui.fieldEl) ui.fieldEl.textContent = "פרופיל תלמיד/ה";
-  }
-}
-
-/* =========================
-   Modal + Wizard
-   ========================= */
-
-function openModal(modal) {
-  if (!modal.root) return;
-  modal.root.classList.add("is-open");
-  modal.root.setAttribute("aria-hidden", "false");
-  document.body.classList.add("modal-open");
-}
-
-function closeModal(modal) {
-  if (!modal.root) return;
-  modal.root.classList.remove("is-open");
-  modal.root.setAttribute("aria-hidden", "true");
-  document.body.classList.remove("modal-open");
-  clearAlert(modal);
-}
-
-function prepareWizardForUser(user, modal, edit) {
-  const teacherOnly = user.role === "teacher";
-
-  if (edit.teacherExpRow)
-    edit.teacherExpRow.style.display = teacherOnly ? "block" : "none";
-  if (edit.teacherDurRow)
-    edit.teacherDurRow.style.display = teacherOnly ? "block" : "none";
-
-  if (modal.step2Btn)
-    modal.step2Btn.style.display = teacherOnly ? "inline-flex" : "none";
-  if (modal.step3Btn)
-    modal.step3Btn.style.display = teacherOnly ? "inline-flex" : "none";
-}
-
-function goToStep(modal, user, step) {
-  const maxStep = user.role === "teacher" ? 3 : 1;
-  const safeStep = Math.max(1, Math.min(step, maxStep));
-
-  modal.stepButtons.forEach((b) =>
-    b.classList.toggle("is-active", Number(b.dataset.step) === safeStep)
-  );
-  modal.panels.forEach((p) =>
-    p.classList.toggle("is-active", Number(p.dataset.panel) === safeStep)
-  );
-
-  if (modal.backBtn) modal.backBtn.disabled = safeStep === 1;
-
-  if (user.role !== "teacher") {
-    if (modal.nextBtn) modal.nextBtn.style.display = "none";
-    if (modal.saveBtn) modal.saveBtn.style.display = "inline-block";
-    return;
+    setError("err-phone", "");
+    return true;
   }
 
-  if (safeStep < 3) {
-    if (modal.nextBtn) modal.nextBtn.style.display = "inline-block";
-    if (modal.saveBtn) modal.saveBtn.style.display = "none";
-  } else {
-    if (modal.nextBtn) modal.nextBtn.style.display = "none";
-    if (modal.saveBtn) modal.saveBtn.style.display = "inline-block";
-  }
-}
+  // =======================
+  // Steps UI
+  // =======================
+  function setActiveStep(step) {
+    activeStep = step;
 
-function getCurrentStep(modal) {
-  const activeBtn = modal.stepButtons.find((b) =>
-    b.classList.contains("is-active")
-  );
-  return Number(activeBtn?.dataset.step || "1");
-}
+    stepBtns.forEach((b) => b.classList.toggle("is-active", Number(b.dataset.step) === step));
+    panels.forEach((p) => p.classList.toggle("is-active", Number(p.dataset.panel) === step));
 
-function stepBack(modal, user) {
-  const current = getCurrentStep(modal);
-  goToStep(modal, user, current - 1);
-}
-
-function stepNext(modal, user, edit, dayKeys) {
-  const current = getCurrentStep(modal);
-
-  if (current === 1) {
-    const ok = validateStep1(edit, user, modal);
-    if (!ok) return;
+    if (isTeacher) {
+      if (step < 3) {
+        nextBtn.style.display = "inline-flex";
+        saveBtn.style.display = "none";
+      } else {
+        nextBtn.style.display = "none";
+        saveBtn.style.display = "inline-flex";
+      }
+    } else {
+      nextBtn.style.display = "none";
+      saveBtn.style.display = "inline-flex";
+    }
   }
 
-  goToStep(modal, user, current + 1);
-}
+  function toggleTeacherSteps(teacher) {
+    isTeacher = teacher;
 
-/* =========================
-   Fill / Save
-   ========================= */
+    if (teacherExpRow) teacherExpRow.style.display = teacher ? "block" : "none";
+    if (teacherDurRow) teacherDurRow.style.display = teacher ? "block" : "none";
 
-function fillFormFromUser(user, edit, dayKeys) {
-  clearInlineErrors(edit);
+    const step2Btn = document.getElementById("step-teacher-2");
+    const step3Btn = document.getElementById("step-teacher-3");
 
-  if (edit.editFullName) edit.editFullName.value = user.fullName || "";
-  if (edit.editPhone) edit.editPhone.value = user.phone || "";
-  if (edit.editCity) edit.editCity.value = user.city || "";
+    if (step2Btn) step2Btn.style.display = teacher ? "inline-flex" : "none";
+    if (step3Btn) step3Btn.style.display = teacher ? "inline-flex" : "none";
 
-  if (user.role === "teacher") {
-    if (edit.editExperience) edit.editExperience.value = user.experience ?? 0;
-    if (edit.editDuration) edit.editDuration.value = user.duration ?? 60;
-
-    renderSubjects(user, edit);
-    setWeeklyAvailabilityToForm(user.availabilityWeekly, dayKeys);
-
-    // NEW
-    renderExceptions(user, edit);
-    resetExceptionsForm(edit);
-  }
-}
-
-function saveWizard(user, ui, modal, edit, dayKeys) {
-  clearAlert(modal);
-  clearInlineErrors(edit);
-
-  const ok = validateStep1(edit, user, modal);
-  if (!ok) {
-    goToStep(modal, user, 1);
-    return;
+    if (!teacher) setActiveStep(1);
   }
 
-  if (user.role === "teacher") {
-    const weekly = getWeeklyAvailabilityFromForm(dayKeys);
-    const weeklyValidation = validateWeeklyAvailability(weekly);
-    if (!weeklyValidation.ok) {
-      showAlert(modal, weeklyValidation.message);
-      goToStep(modal, user, 3);
+  // =======================
+  // Render user card
+  // =======================
+  function renderUser(u) {
+    showLayout();
+
+    const teacherCityRow = document.getElementById("teacher-city-row");
+
+    if (u.role === "teacher") {
+      if (teacherCityRow) teacherCityRow.style.display = "block";
+    } else {
+      if (teacherCityRow) teacherCityRow.style.display = "none";
+    }
+
+    const fullName = `${u.first_name || ""} ${u.last_name || ""}`.trim();
+    const first = (fullName.split(" ")[0] || "").trim() || "🙂";
+
+    setText(ui.greetingEl, `שלום ${first},`);
+    setText(ui.nameEl, fullName || "—");
+    setText(ui.emailEl, u.email || "—");
+
+    if (u.role === "teacher") {
+      setText(ui.rolePill, "מורה");
+      if (ui.favoritesSection) ui.favoritesSection.style.display = "none";
+
+      const subjectsText =
+        u.subjects && u.subjects.length
+          ? u.subjects.map((s) => `${s.subject} (${s.price}₪)`).join(", ")
+          : "טרם הוגדרו מקצועות";
+
+      const expText = u.years_experience ? ` • ${u.years_experience} שנות ניסיון` : "";
+      setText(ui.fieldEl, subjectsText + expText);
+    } else {
+      setText(ui.rolePill, "תלמיד/ה");
+      if (ui.favoritesSection) ui.favoritesSection.style.display = "block";
+      setText(ui.fieldEl, "פרופיל תלמיד/ה");
+    }
+  }
+
+  // =======================
+  // Subjects UI
+  // =======================
+  function normalizeSubjectsFromServer(serverUser) {
+    const arr = Array.isArray(serverUser.subjects) ? serverUser.subjects : [];
+    return arr
+      .map((s) => ({
+        subject_name: s.subject ?? s.subject_name ?? "",
+        price_per_hour: Number(s.price ?? s.price_per_hour ?? 0),
+        duration_minutes: Number(s.duration_minutes ?? 0),
+      }))
+      .filter((x) => x.subject_name.trim());
+  }
+
+  function renderSubjectsDraft() {
+    if (!subjectsListEl) return;
+
+    subjectsListEl.innerHTML = "";
+
+    if (!subjectsDraft.length) {
+      const p = document.createElement("p");
+      p.className = "edit-hint";
+      p.style.margin = "0";
+      p.textContent = "אין תחומים שהוגדרו עדיין.";
+      subjectsListEl.appendChild(p);
       return;
     }
 
-    // NEW: validate exceptions
-    const exValidation = validateExceptions(user.exceptions || []);
-    if (!exValidation.ok) {
-      showAlert(modal, exValidation.message);
-      goToStep(modal, user, 3);
+    subjectsDraft.forEach((s, idx) => {
+      const row = document.createElement("div");
+      row.className = "subject-row";
+
+      const text = document.createElement("div");
+      text.className = "subject-row__text";
+      text.textContent = `${s.subject_name} • ${s.price_per_hour}₪ • ${s.duration_minutes} דק׳`;
+
+      const remove = document.createElement("button");
+      remove.type = "button";
+      remove.className = "btn-secondary subject-row__remove";
+      remove.textContent = "❌";
+      remove.addEventListener("click", () => {
+        subjectsDraft.splice(idx, 1);
+        renderSubjectsDraft();
+      });
+
+      row.appendChild(text);
+      row.appendChild(remove);
+      subjectsListEl.appendChild(row);
+    });
+  }
+
+  function addSubjectFromInputs() {
+    hideAlert();
+
+    const name = (newSubjectName?.value || "").trim();
+    const price = Number(newSubjectPrice?.value || "");
+    const defaultDur = Number(inpDuration?.value || 0);
+
+    if (!name) return showAlert("יש להזין תחום לימוד.");
+    if (!Number.isFinite(price) || price <= 0) return showAlert("יש להזין מחיר תקין (> 0).");
+    if (!Number.isFinite(defaultDur) || defaultDur <= 0) return showAlert("יש להזין משך שיעור תקין בשלב 1 (בדקות).");
+
+    const exists = subjectsDraft.some((s) => s.subject_name === name);
+    if (exists) return showAlert("התחום כבר קיים ברשימה.");
+
+    subjectsDraft.push({
+      subject_name: name,
+      price_per_hour: price,
+      duration_minutes: defaultDur,
+    });
+
+    if (newSubjectName) newSubjectName.value = "";
+    if (newSubjectPrice) newSubjectPrice.value = "";
+
+    renderSubjectsDraft();
+  }
+
+  // =======================
+  // Exceptions UI
+  // =======================
+  function setExAlert(msg = "") {
+    if (!exAlert) return;
+    exAlert.style.display = msg ? "block" : "none";
+    exAlert.textContent = msg;
+  }
+
+  function isTimeOrderOk(start, end) {
+    return start && end && start < end;
+  }
+
+  function renderExceptions() {
+    if (!exList) return;
+    exList.innerHTML = "";
+
+    if (!exceptionsDraft.length) {
+      const p = document.createElement("p");
+      p.className = "edit-hint";
+      p.style.margin = "0";
+      p.textContent = "אין חריגות שהוגדרו עדיין.";
+      exList.appendChild(p);
       return;
     }
 
-    user.availabilityWeekly = weekly;
+    exceptionsDraft
+      .slice()
+      .sort((a, b) => String(a.date).localeCompare(String(b.date)))
+      .forEach((ex, idx) => {
+        const row = document.createElement("div");
+        row.className = "subject-row"; // reuse existing style
 
-    const exp = Number(edit.editExperience?.value || 0);
-    const dur = Number(edit.editDuration?.value || 60);
-    user.experience = exp;
-    user.duration = dur;
+        const text = document.createElement("div");
+        text.className = "subject-row__text";
+
+        if (ex.type === "off") {
+          text.textContent = `${ex.date} • לא זמין`;
+        } else {
+          text.textContent = `${ex.date} • זמינות מיוחדת: ${ex.start_time}–${ex.end_time}`;
+        }
+
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.className = "btn-secondary subject-row__remove";
+        remove.textContent = "❌";
+        remove.addEventListener("click", () => {
+          exceptionsDraft.splice(idx, 1);
+          renderExceptions();
+        });
+
+        row.appendChild(text);
+        row.appendChild(remove);
+        exList.appendChild(row);
+      });
   }
 
-  user.fullName = (edit.editFullName?.value || "").trim();
-  user.phone = (edit.editPhone?.value || "").trim();
-  user.city = (edit.editCity?.value || "").trim();
+  function syncTimeInputsByType() {
+    if (!exType || !exStart || !exEnd) return;
+    const t = exType.value;
 
-  renderBasicProfile(ui, user);
-  renderRoleSpecificProfile(ui, user);
-  renderGreeting(ui.greetingEl, user);
+    const isCustom = t === "custom";
+    exStart.disabled = !isCustom;
+    exEnd.disabled = !isCustom;
 
-  closeModal(modal);
-  alert("הפרטים עודכנו בהצלחה! (דמו בלבד)");
-}
-
-function validateStep1(edit, user, modal) {
-  const errors = [];
-
-  const fullName = (edit.editFullName?.value || "").trim();
-  const phone = (edit.editPhone?.value || "").trim();
-
-  if (!fullName) {
-    errors.push("שם מלא הוא שדה חובה.");
-    if (edit.errFullName) edit.errFullName.textContent = "יש להזין שם מלא";
-  }
-  if (!phone) {
-    errors.push("טלפון הוא שדה חובה.");
-    if (edit.errPhone) edit.errPhone.textContent = "יש להזין טלפון";
-  }
-
-  if (user.role === "teacher") {
-    const dur = Number(edit.editDuration?.value || 0);
-    if (!Number.isFinite(dur) || dur <= 0) {
-      errors.push("משך שיעור חייב להיות גדול מ-0.");
-      if (edit.errDuration)
-        edit.errDuration.textContent = "משך שיעור חייב להיות גדול מ-0";
+    if (!isCustom) {
+      exStart.value = "";
+      exEnd.value = "";
     }
   }
 
-  if (errors.length > 0) {
-    showAlert(modal, errors);
-    return false;
+  function addExceptionFromInputs() {
+    setExAlert("");
+
+    const date = exDate?.value || "";
+    const type = exType?.value || "off";
+    const start = exStart?.value || "";
+    const end = exEnd?.value || "";
+
+    if (!date) return setExAlert("חובה לבחור תאריך.");
+
+    if (type === "custom") {
+      if (!start || !end) return setExAlert("בשעות זמינות ספציפיות חובה למלא התחלה וסיום.");
+      if (!isTimeOrderOk(start, end)) return setExAlert("שעת הסיום חייבת להיות אחרי שעת ההתחלה.");
+    }
+
+    const existingIdx = exceptionsDraft.findIndex((x) => x.date === date);
+
+    const newEx = {
+      date,
+      type,
+      start_time: type === "custom" ? start : null,
+      end_time: type === "custom" ? end : null,
+    };
+
+    if (existingIdx >= 0) {
+      exceptionsDraft[existingIdx] = newEx; // replace
+    } else {
+      exceptionsDraft.push(newEx);
+    }
+
+    // reset UI
+    if (exDate) exDate.value = "";
+    if (exType) exType.value = "off";
+    syncTimeInputsByType();
+
+    renderExceptions();
   }
 
-  return true;
-}
-
-/* =========================
-   Subjects
-   ========================= */
-
-function addSubject(user, edit) {
-  const subject = (edit.newSubjectName?.value || "").trim();
-  const price = Number(edit.newSubjectPrice?.value || 0);
-
-  if (!subject) {
-    alert("יש להזין שם תחום");
-    return;
+  // =======================
+  // Weekly Availability UI
+  // =======================
+  function getStartEl(dayKey) {
+    return document.querySelector(`input[type='time'][data-start='${dayKey}']`);
   }
-  if (!Number.isFinite(price) || price < 0) {
-    alert("יש להזין מחיר תקין");
-    return;
+  function getEndEl(dayKey) {
+    return document.querySelector(`input[type='time'][data-end='${dayKey}']`);
+  }
+  function getCheckEl(dayKey) {
+    return document.querySelector(`input[type='checkbox'][data-day='${dayKey}']`);
   }
 
-  user.subjects = user.subjects || [];
-  user.subjects.push({ subject, price });
+  function syncDayRowUI(dayKey) {
+    const cb = getCheckEl(dayKey);
+    const st = getStartEl(dayKey);
+    const en = getEndEl(dayKey);
+    if (!cb || !st || !en) return;
 
-  if (edit.newSubjectName) edit.newSubjectName.value = "";
-  if (edit.newSubjectPrice) edit.newSubjectPrice.value = "";
-}
-
-function renderSubjects(user, edit) {
-  if (!edit.subjectsList || user.role !== "teacher") return;
-
-  edit.subjectsList.innerHTML = "";
-
-  (user.subjects || []).forEach((s, index) => {
-    const row = document.createElement("div");
-    row.className = "subject-row";
-
-   row.innerHTML = `
-  <span class="subject-row__text">${s.subject} – ${s.price}₪</span>
-  <button type="button" class="subject-row__remove">הסר</button>
-`;
-
-
-    row.querySelector("button").addEventListener("click", () => {
-      user.subjects.splice(index, 1);
-      renderSubjects(user, edit);
-    });
-
-    edit.subjectsList.appendChild(row);
-  });
-}
-
-/* =========================
-   Weekly availability
-   ========================= */
-
-function getWeeklyAvailabilityFromForm(dayKeys) {
-  const weekly = {};
-  dayKeys.forEach((day) => {
-    const cb = document.querySelector(
-      `input[type="checkbox"][data-day="${day}"]`
-    );
-    const start = document.querySelector(
-      `input[type="time"][data-start="${day}"]`
-    );
-    const end = document.querySelector(
-      `input[type="time"][data-end="${day}"]`
-    );
-
-    const enabled = !!cb?.checked;
-    const sVal = start?.value || "";
-    const eVal = end?.value || "";
+    const enabled = cb.checked;
+    st.disabled = !enabled;
+    en.disabled = !enabled;
 
     if (!enabled) {
-      weekly[day] = { enabled: false, start: "", end: "" };
+      st.value = "";
+      en.value = "";
+    }
+  }
+
+  function readAvailabilityFromUI() {
+    const out = [];
+
+    for (const dayKey of Object.keys(DAY_TO_NUM)) {
+      const cb = getCheckEl(dayKey);
+      const st = getStartEl(dayKey);
+      const en = getEndEl(dayKey);
+      if (!cb || !st || !en) continue;
+
+      if (!cb.checked) continue;
+
+      const startVal = (st.value || "").trim();
+      const endVal = (en.value || "").trim();
+
+      if (!startVal || !endVal) {
+        showAlert("בזמינות שבועית: אם יום מסומן כזמין חייבים לבחור שעות התחלה וסיום.");
+        return null;
+      }
+      if (!(startVal < endVal)) {
+        showAlert("בזמינות שבועית: שעת הסיום חייבת להיות אחרי שעת ההתחלה.");
+        return null;
+      }
+
+      out.push({
+        day_of_week: DAY_TO_NUM[dayKey],
+        start_time: startVal,
+        end_time: endVal,
+      });
+    }
+
+    return out;
+  }
+
+  function applyAvailabilityToUI(list) {
+    // reset all
+    for (const dayKey of Object.keys(DAY_TO_NUM)) {
+      const cb = getCheckEl(dayKey);
+      if (cb) cb.checked = false;
+      syncDayRowUI(dayKey);
+    }
+
+    const arr = Array.isArray(list) ? list : [];
+
+    // UI תומך רק בטווח אחד לכל יום -> ניקח ראשון לכל יום
+    const firstPerDay = new Map();
+    for (const a of arr) {
+      const dow = Number(a.day_of_week);
+      if (!Number.isFinite(dow) || dow < 0 || dow > 6) continue;
+      if (firstPerDay.has(dow)) continue;
+
+      const st = String(a.start_time || "").slice(0, 5);
+      const en = String(a.end_time || "").slice(0, 5);
+      if (!st || !en || !(st < en)) continue;
+
+      firstPerDay.set(dow, { day_of_week: dow, start_time: st, end_time: en });
+    }
+
+    for (const a of Array.from(firstPerDay.values())) {
+      const dayKey = NUM_TO_DAY[a.day_of_week];
+      const cb = getCheckEl(dayKey);
+      const st = getStartEl(dayKey);
+      const en = getEndEl(dayKey);
+      if (!cb || !st || !en) continue;
+
+      cb.checked = true;
+      syncDayRowUI(dayKey);
+      st.value = a.start_time;
+      en.value = a.end_time;
+    }
+  }
+
+  // =======================
+  // Validation
+  // =======================
+  function validateStep1() {
+    clearErrors();
+    hideAlert();
+
+    const firstName = (inpFirstName?.value || "").trim();
+    const lastName = (inpLastName?.value || "").trim();
+
+    let ok = true;
+
+    if (!firstName) { setError("err-firstName", "חובה להזין שם פרטי"); ok = false; }
+    if (!lastName)  { setError("err-lastName", "חובה להזין שם משפחה"); ok = false; }
+
+    if (!validatePhoneField({ normalize: true })) ok = false;
+
+    if (isTeacher) {
+      const years = Number(inpExperience?.value || 0);
+      const dur = Number(inpDuration?.value || 0);
+
+      if (!Number.isFinite(years) || years < 0) { setError("err-experience", "שנות ניסיון חייב להיות מספר תקין"); ok = false; }
+      if (!Number.isFinite(dur) || dur <= 0)    { setError("err-duration", "משך שיעור חייב להיות מספר תקין (>0)"); ok = false; }
+    }
+
+    return ok;
+  }
+
+  // =======================
+  // Load user
+  // =======================
+  async function loadMe() {
+    try {
+      const res = await fetch(`/api/me?ts=${Date.now()}`, {
+        credentials: "same-origin",
+        cache: "no-store",
+      });
+
+      const data = await res.json();
+
+      if (!data?.ok || !data.user) {
+        showNoUser();
+        return;
+      }
+
+      currentUser = data.user;
+
+      toggleTeacherSteps(currentUser.role === "teacher");
+      renderUser(currentUser);
+    } catch (err) {
+      console.error("Profile load error:", err);
+      showNoUser();
+    }
+  }
+
+  // =======================
+  // Prefill modal
+  // =======================
+  function prefillModalFromCurrentUser() {
+    if (!currentUser) return;
+
+    if (inpFirstName) inpFirstName.value = currentUser.first_name || "";
+    if (inpLastName) inpLastName.value = currentUser.last_name || "";
+    if (inpPhone) inpPhone.value = currentUser.phone || "";
+    if (inpCity) inpCity.value = currentUser.city || "";
+
+    if (isTeacher) {
+      if (inpExperience) inpExperience.value = currentUser.years_experience ?? 0;
+
+      const durFromFirst =
+        currentUser.subjects && currentUser.subjects[0]?.duration_minutes
+          ? Number(currentUser.subjects[0].duration_minutes)
+          : 45;
+      if (inpDuration) inpDuration.value = durFromFirst;
+
+      subjectsDraft = normalizeSubjectsFromServer(currentUser);
+      renderSubjectsDraft();
+
+      availabilityDraft = Array.isArray(currentUser.availability) ? currentUser.availability : [];
+      applyAvailabilityToUI(availabilityDraft);
+
+      exceptionsDraft = Array.isArray(currentUser.exceptions) ? currentUser.exceptions : [];
+      renderExceptions();
+    } else {
+      subjectsDraft = [];
+      renderSubjectsDraft();
+    }
+
+    setActiveStep(1);
+  }
+
+  // =======================
+  // Save profile
+  // =======================
+  async function saveProfile() {
+    if (!currentUser) return;
+
+    if (!validateStep1()) {
+      showAlert("אנא תקני את השדות המסומנים לפני שמירה.");
       return;
     }
 
-    weekly[day] = { enabled: true, start: sVal, end: eVal };
-  });
-  return weekly;
-}
+    const payload = {
+      first_name: (inpFirstName?.value || "").trim(),
+      last_name: (inpLastName?.value || "").trim(),
+      phone: toDigits(inpPhone?.value || ""),
+      city: (inpCity?.value || "").trim(),
+    };
 
-function setWeeklyAvailabilityToForm(weekly, dayKeys) {
-  const data = weekly || {};
-  dayKeys.forEach((day) => {
-    const cb = document.querySelector(
-      `input[type="checkbox"][data-day="${day}"]`
-    );
-    const start = document.querySelector(
-      `input[type="time"][data-start="${day}"]`
-    );
-    const end = document.querySelector(
-      `input[type="time"][data-end="${day}"]`
-    );
+    if (isTeacher) {
+      payload.years_experience = Number(inpExperience?.value || 0);
+      payload.lesson_mode = currentUser.lesson_mode ?? null;
 
-    const obj = data[day] || { enabled: false, start: "", end: "" };
+      // ✅ תיקון חשוב: להבטיח שלכל subject יש duration_minutes תקין
+      const defaultDur = Number(inpDuration?.value || 0);
+      subjectsDraft = (Array.isArray(subjectsDraft) ? subjectsDraft : []).map((s) => ({
+        subject_name: s.subject_name,
+        price_per_hour: Number(s.price_per_hour),
+        duration_minutes: Number(s.duration_minutes) > 0 ? Number(s.duration_minutes) : defaultDur,
+      }));
+      payload.subjects = subjectsDraft;
 
-    if (cb) cb.checked = !!obj.enabled;
-    if (start) start.value = obj.start || "";
-    if (end) end.value = obj.end || "";
-  });
-}
+      const av = readAvailabilityFromUI();
+      if (av === null) return;
 
-function validateWeeklyAvailability(weekly) {
-  for (const [day, obj] of Object.entries(weekly || {})) {
-    if (!obj || obj.enabled === false) continue;
+      availabilityDraft = av;
+      payload.availability = availabilityDraft;
+      payload.exceptions = exceptionsDraft;
+    }
 
-    const s = obj.start || "";
-    const e = obj.end || "";
+    // ✅ עוזר לדיבוג: לראות מה נשלח
+    console.log("PUT /api/me payload:", payload);
 
-    if (!s || !e)
-      return { ok: false, message: `ביום ${day} חסרה שעת התחלה או סיום.` };
-    if (s >= e)
-      return {
-        ok: false,
-        message: `ביום ${day} שעת הסיום חייבת להיות אחרי שעת ההתחלה.`,
-      };
-  }
-  return { ok: true };
-}
+    try {
+      const res = await fetch("/api/me", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        body: JSON.stringify(payload),
+      });
 
-/* =========================
-   Exceptions (date-specific)
-   ========================= */
+      const data = await res.json();
 
-function resetExceptionsForm(edit) {
-  hideExAlert(edit);
-  if (edit.exType) edit.exType.value = "off";
-  if (edit.exStart) {
-    edit.exStart.value = "";
-    edit.exStart.disabled = true;
-  }
-  if (edit.exEnd) {
-    edit.exEnd.value = "";
-    edit.exEnd.disabled = true;
-  }
-}
+      if (!res.ok || !data.ok) {
+        const msg = data.message || "שגיאה בעדכון פרטים";
+        if (msg.toLowerCase().includes("phone") || msg.includes("טלפון")) {
+          setError("err-phone", "טלפון חייב להתחיל ב־05 ולהכיל בדיוק 10 ספרות");
+        }
+        showAlert(msg);
+        return;
+      }
 
-function addException(user, edit) {
-  hideExAlert(edit);
-
-  const date = (edit.exDate?.value || "").trim();
-  const type = (edit.exType?.value || "off").trim();
-
-  if (!date) return showExAlert(edit, "יש לבחור תאריך.");
-
-  const obj = { date, type };
-
-  if (type === "custom") {
-    const start = (edit.exStart?.value || "").trim();
-    const end = (edit.exEnd?.value || "").trim();
-
-    if (!start || !end)
-      return showExAlert(edit, "בשעות מיוחדות חובה למלא התחלה וסיום.");
-    if (start >= end)
-      return showExAlert(edit, "שעת הסיום חייבת להיות אחרי שעת ההתחלה.");
-
-    obj.start = start;
-    obj.end = end;
+      closeModal();
+      await loadMe();
+    } catch (err) {
+      console.error("Save error:", err);
+      showAlert("שגיאת תקשורת בעדכון");
+    }
   }
 
-  user.exceptions = user.exceptions || [];
-
-  // If exists for this date - replace (simple UX)
-  const idx = user.exceptions.findIndex((x) => x.date === date);
-  if (idx >= 0) user.exceptions[idx] = obj;
-  else user.exceptions.push(obj);
-
-  // clear
-  if (edit.exDate) edit.exDate.value = "";
-  resetExceptionsForm(edit);
-}
-
-function renderExceptions(user, edit) {
-  if (!edit.exList || user.role !== "teacher") return;
-
-  const arr = (user.exceptions || [])
-    .slice()
-    .sort((a, b) => (a.date || "").localeCompare(b.date || ""));
-
-  edit.exList.innerHTML = "";
-
-  if (arr.length === 0) {
-    edit.exList.innerHTML = `<p class="empty-state">אין חריגים שהוגדרו.</p>`;
-    return;
-  }
-
-  arr.forEach((ex) => {
-    const row = document.createElement("div");
-    row.className = "subject-row";
-
-    const text =
-      ex.type === "off"
-        ? `${formatDateHe(ex.date)} – לא זמינה`
-        : `${formatDateHe(ex.date)} – שעות מיוחדות: ${ex.start} עד ${ex.end}`;
-
-    row.innerHTML = `
-      <span class="subject-row__text">${text}</span>
-      <button type="button" class="btn-secondary subject-row__remove">❌</button>
-    `;
-
-    row.querySelector("button").addEventListener("click", () => {
-      user.exceptions = (user.exceptions || []).filter((x) => x.date !== ex.date);
-      renderExceptions(user, edit);
+  // =======================
+  // Events
+  // =======================
+  if (inpPhone) {
+    inpPhone.addEventListener("blur", () => {
+      clearErrors();
+      validatePhoneField({ normalize: true });
     });
 
-    edit.exList.appendChild(row);
-  });
-}
-
-function validateExceptions(exceptions) {
-  const arr = exceptions || [];
-  for (const ex of arr) {
-    if (!ex?.date) return { ok: false, message: "קיים חריג ללא תאריך." };
-
-    if (ex.type !== "off" && ex.type !== "custom") {
-      return { ok: false, message: `סוג חריג לא תקין בתאריך ${formatDateHe(ex.date)}.` };
-    }
-
-    if (ex.type === "custom") {
-      if (!ex.start || !ex.end) {
-        return { ok: false, message: `ב-${formatDateHe(ex.date)} חסרות שעות חריג.` };
-      }
-      if (ex.start >= ex.end) {
-        return { ok: false, message: `ב-${formatDateHe(ex.date)} שעת הסיום חייבת להיות אחרי שעת ההתחלה.` };
-      }
-    }
+    inpPhone.addEventListener("input", () => {
+      const digits = toDigits(inpPhone.value);
+      if (inpPhone.value !== digits) inpPhone.value = digits;
+    });
   }
-  return { ok: true };
-}
 
-function showExAlert(edit, msg) {
-  if (!edit.exAlert) return;
-  edit.exAlert.style.display = "block";
-  edit.exAlert.innerHTML = `<strong>${msg}</strong>`;
-}
+  if (editBtn) {
+    editBtn.addEventListener("click", () => {
+      prefillModalFromCurrentUser();
+      openModal();
+    });
+  }
 
-function hideExAlert(edit) {
-  if (!edit.exAlert) return;
-  edit.exAlert.style.display = "none";
-  edit.exAlert.innerHTML = "";
-}
+  closeTriggers.forEach((el) => el.addEventListener("click", closeModal));
+  if (cancelBtn) cancelBtn.addEventListener("click", closeModal);
 
-function formatDateHe(iso) {
-  const [y, m, d] = (iso || "").split("-");
-  if (!y || !m || !d) return iso;
-  return `${d}/${m}/${y}`;
-}
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modal?.classList.contains("is-open")) closeModal();
+  });
 
-/* =========================
-   Alert + inline errors
-   ========================= */
+  stepBtns.forEach((b) => {
+    b.addEventListener("click", () => {
+      const step = Number(b.dataset.step);
+      if (!isTeacher && step !== 1) return;
 
-function showAlert(modal, messages) {
-  if (!modal.alertBox) return;
-  const list = Array.isArray(messages) ? messages : [messages];
+      if (step === 2 || step === 3) {
+        if (!validateStep1()) {
+          showAlert("לפני מעבר לשלב הבא יש למלא את הפרטים בצורה תקינה.");
+          return;
+        }
+      }
+      setActiveStep(step);
+    });
+  });
 
-  modal.alertBox.style.display = "block";
-  modal.alertBox.innerHTML = `
-    <strong>יש לתקן את השדות הבאים:</strong>
-    <ul>
-      ${list.map((m) => `<li>${m}</li>`).join("")}
-    </ul>
-  `;
-}
+  if (nextBtn) {
+    nextBtn.addEventListener("click", () => {
+      if (!isTeacher) return;
 
-function clearAlert(modal) {
-  if (!modal.alertBox) return;
-  modal.alertBox.style.display = "none";
-  modal.alertBox.innerHTML = "";
-}
+      if (!validateStep1()) {
+        showAlert("לפני מעבר לשלב הבא יש למלא את הפרטים בצורה תקינה.");
+        return;
+      }
 
-function clearInlineErrors(edit) {
-  if (edit.errFullName) edit.errFullName.textContent = "";
-  if (edit.errPhone) edit.errPhone.textContent = "";
-  if (edit.errCity) edit.errCity.textContent = "";
-  if (edit.errExperience) edit.errExperience.textContent = "";
-  if (edit.errDuration) edit.errDuration.textContent = "";
-}
+      if (activeStep < 3) setActiveStep(activeStep + 1);
+    });
+  }
+
+  if (saveBtn) saveBtn.addEventListener("click", saveProfile);
+  if (addSubjectBtn) addSubjectBtn.addEventListener("click", addSubjectFromInputs);
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", async () => {
+      try {
+        await fetch("/api/logout", { method: "POST", credentials: "same-origin" });
+      } finally {
+        window.location.href = "login.html";
+      }
+    });
+  }
+
+  // Exceptions listeners
+  if (exType) exType.addEventListener("change", syncTimeInputsByType);
+  if (exAddBtn) exAddBtn.addEventListener("click", addExceptionFromInputs);
+
+  // Weekly availability checkbox listeners
+  const availCheckboxes = Array.from(document.querySelectorAll("input[type='checkbox'][data-day]"));
+  availCheckboxes.forEach((cb) => {
+    cb.addEventListener("change", () => syncDayRowUI(cb.dataset.day));
+  });
+
+  // init UI state
+  syncTimeInputsByType();
+  renderExceptions();
+  Object.keys(DAY_TO_NUM).forEach(syncDayRowUI);
+
+  // init
+  loadMe();
+});

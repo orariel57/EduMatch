@@ -23,10 +23,10 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     if (lessonMode === "online") addTag("online", "💻 מקוון");
-    else if (lessonMode === "in-person") addTag("in-person", "🏫 פרונטלי");
+    else if (lessonMode === "frontal") addTag("frontal", "🏫 פרונטלי");
     else {
       addTag("online", "💻 מקוון");
-      addTag("in-person", "🏫 פרונטלי");
+      addTag("frontal", "🏫 פרונטלי");
     }
   }
 
@@ -45,10 +45,10 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     if (lessonMode === "online") mk("online", "מקוון", true);
-    else if (lessonMode === "in-person") mk("in-person", "פרונטלי", true);
+    else if (lessonMode === "frontal") mk("frontal", "פרונטלי", true);
     else {
       mk("online", "מקוון", true);
-      mk("in-person", "פרונטלי", false);
+      mk("frontal", "פרונטלי", false);
     }
   }
 
@@ -167,7 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
       fullName: "יואב כהן",
       email: "yoav.cohen@example.com",
       city: "תל אביב",
-      lessonMode: "in-person",
+      lessonMode: "frontal",
       duration: 45,
       subjects: [
         { subject: "פייתון", price: 180 },
@@ -296,7 +296,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateModeChosenLine() {
     const picked =
       document.querySelector('input[name="summary-lesson-mode"]:checked')?.value || "online";
-    modeChosenLine.textContent = `נבחר: ${picked === "in-person" ? "פרונטלי" : "מקוון"}`;
+    modeChosenLine.textContent = `נבחר: ${picked === "frontal" ? "פרונטלי" : "מקוון"}`;
   }
 
   if (summaryModeBox && !document.getElementById("mode-chosen-line")) {
@@ -485,7 +485,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const pickedMode =
       document.querySelector('input[name="summary-lesson-mode"]:checked')?.value || "online";
-    const modeLabel = pickedMode === "in-person" ? "פרונטלי" : "מקוון";
+    const modeLabel = pickedMode === "frontal" ? "פרונטלי" : "מקוון";
 
     alert(
       "הזמנה נשלחה .\n\n" +

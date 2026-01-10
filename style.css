@@ -592,13 +592,15 @@ footer {
 
 .checkbox-row label {
   display: inline-flex;
-  align-items: center; /* במקום flex-start */
+  align-items: center;
+  /* במקום flex-start */
   gap: 10px;
   line-height: 1.4;
 }
 
 .checkbox-row input[type="checkbox"] {
-  margin: 0;           /* במקום margin-top */
+  margin: 0;
+  /* במקום margin-top */
   transform: translateY(1px);
 }
 
@@ -1120,6 +1122,14 @@ footer {
   box-shadow: 0 10px 20px rgba(0, 149, 182, 0.20);
 }
 
+/* BOOK page: hidden sections by default (JS will show them) */
+#booking-error,
+#booking-no-availability,
+#booking-layout {
+  display: none;
+}
+
+
 /* Times */
 .availability-page .booking-times-hint {
   font-size: 14px;
@@ -1333,6 +1343,20 @@ body.modal-open {
   min-width: 0;
 }
 
+.edit-grid .form-row.full {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 720px) {
+  .edit-grid {
+    grid-template-columns: 1fr;
+  }
+  .edit-grid .form-row.full {
+    grid-column: auto;
+  }
+}
+
+
 /* full width rows */
 .edit-grid .form-row.full {
   grid-column: 1 / -1;
@@ -1345,12 +1369,49 @@ body.modal-open {
   align-items: end;
 }
 
-.subject-row {
+/* Register - subjects list */
+.subjects-list {
   display: flex;
-  gap: 8px;
-  align-items: center;
-  margin-bottom: 8px;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
 }
+
+.subject-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 44px;
+  /* טור קבוע לכפתור */
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+}
+
+.subject-row input {
+  width: 100%;
+  min-width: 0;
+  padding: 0.6rem 0.8rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid #d0d0d0;
+  font-size: 15px;
+  height: 44px;
+}
+
+.subject-remove-btn {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+  line-height: 1;
+  font-size: 18px;
+
+  /* שלא "יברח" מחוץ לגריד */
+  justify-self: end;
+}
+
 
 .subject-row__text {
   flex: 1;
@@ -1698,3 +1759,85 @@ body.modal-open {
   /* הרווח בין הטקסט לכפתור */
 }
 
+/* =========================
+   Utilities (tiny helpers)
+   ========================= */
+.mt-0 {
+  margin-top: 0 !important;
+}
+
+.mt-8 {
+  margin-top: 8px !important;
+}
+
+.mt-10 {
+  margin-top: 10px !important;
+}
+
+.mt-12 {
+  margin-top: 12px !important;
+}
+
+.mt-16 {
+  margin-top: 16px !important;
+}
+
+.mb-8 {
+  margin-bottom: 8px !important;
+}
+
+.self-end {
+  align-self: end !important;
+}
+
+.divider {
+  margin: 18px 0;
+  border: none;
+  border-top: 1px solid #eee;
+}
+
+
+/* =========================
+   Profile page: hidden states (JS toggles)
+   ========================= */
+#no-user-card,
+#profile-layout,
+#edit-alert,
+#ex-alert,
+#edit-save-btn {
+  display: none;
+}
+
+.teacher-only {
+  display: none;
+}
+
+/* edit hint small tweak from inline */
+.edit-hint--spaced {
+  margin-top: 6px;
+  display: block;
+}
+
+/* Register page: teacher fields are hidden until role=teacher */
+/* keep layout height stable */
+.role-teacher {
+  visibility: hidden;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.25s ease, max-height 0.25s ease;
+}
+
+.role-teacher.is-open {
+  visibility: visible;
+  opacity: 1;
+  max-height: 1000px;
+  /* מספיק לכל שדות המורה */
+}
+
+
+/* Teachers page: results are hidden until search runs (JS toggles) */
+#results-section,
+#no-results {
+  display: none;
+}
